@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ssafy.home.apt.mapper.AptMapper">
+
+
+    <select id="getGugun" parameterType="String" resultType="String">
+        select distinct gugunName
+        from dongcode
+        where sidoName = #{sido} and gugunName is not null
+    </select>
+
+    <select id="getDong" parameterType="map" resultType="String">
+        select distinct dongName
+        from dongcode
+        where sidoName = #{sido} and gugunName = #{gugun} and dongName is not null
+    </select>
+
+    <select id="getHouseDealInfo" parameterType="map" resultType="apartment">
+        select i.dong, i.roadName, i.apartmentName, i.lat, i.lng, d.floor, d.area, d.dealAmount, d.no
+        from houseinfo as i
+        inner join housedeal as d
+        on i.aptCode = d.aptCode
+        where i.dongCode = (select dongCode from dongcode where sidoName = #{sido} and gugunName = #{gugun} and dongName = #{dong})
+        and d.dealYear = #{year}
+        and d.dealMonth = #{month}
+    </select>
+
+</mapper>

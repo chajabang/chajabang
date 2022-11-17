@@ -5,6 +5,8 @@
 - 박윤환
 - 공진호
 
+## 진행상황
+[🗓 Notion](https://halved-octave-4e7.notion.site/621e89afe3294ff899525ced8ee6d868?v=2603f2a168ba4af4921a7021eeddaaaa)
 
 ## 기능적 요구사항
 

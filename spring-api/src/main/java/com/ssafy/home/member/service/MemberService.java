@@ -1,0 +1,64 @@
+package com.ssafy.home.member.service;
+
+import com.ssafy.home.member.dto.Member;
+import com.ssafy.home.member.mapper.MemberMapper;
+import com.ssafy.home.security.dto.SecVO;
+import com.ssafy.home.security.mapper.SecMapper;
+import com.ssafy.home.util.OpenCrypt;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import java.util.Map;
+import java.util.UUID;
+
+@Service
+public class MemberService {
+
+    @Autowired
+    MemberMapper memberMapper;
+
+    @Autowired
+    SecMapper secMapper;
+
+    public String login(Member m) throws Exception{
+        SecVO sec = secMapper.selectSecById(m.getId());
+        if (sec != null) {
+            String pw = OpenCrypt.byteArrayToHex(OpenCrypt.getSHA256(m.getPw(), sec.getSalt()));
+            m.setPw(pw);
+        }
+        return memberMapper.login(m);
+    }
+
+    @Transactional
+    public int register(Member m) throws Exception {
+        int cnt = memberMapper.idCheck(m.getId());
+        if (cnt > 0) {
+            return 0;
+        }
+        byte[] key = OpenCrypt.generateKey("AES", 128);
+        SecVO secVO = new SecVO(m.getId(), UUID.randomUUID().toString(), OpenCrypt.byteArrayToHex(key));
+        cnt = secMapper.insertSec(secVO);
+        if (cnt > 0) {
+            m.setPw(OpenCrypt.byteArrayToHex(OpenCrypt.getSHA256(m.getPw(), secVO.getSalt())));
+            return memberMapper.register(m);
+        } else {
+            return 0;
+        }
+    }
+
+    public  int update(Map<String,String> map) throws Exception{
+        SecVO sec=secMapper.selectSecById(map.get("id"));
+        map.put("pw", new String(OpenCrypt.byteArrayToHex(OpenCrypt.getSHA256(map.get("newPw"), sec.getSalt()))));
+        System.out.println(map.get("pw"));
+        return memberMapper.update(map);
+    }
+
+
+    @Transactional
+    public int delete(String id ) throws Exception{
+        memberMapper.delete(id);
+        return secMapper.delete(id);
+    }
+
+}
