@@ -296,8 +296,8 @@
             color: inherit;
             font-size: $navbar-font-size;
             height: $navbar-height;
-            padding-left: 0.7rem;
-            padding-right: 0.7rem;
+            padding-left: 0.4rem;
+            padding-right: 0.4rem;
             @include display-flex;
             @include align-items(center);
             @media (max-width: 576px) {

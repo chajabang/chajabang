@@ -20,152 +20,28 @@
       >
         <span class="mdi mdi-menu"></span>
       </button>
-      <div class="search-field d-none d-md-block">
-        <form action="#">
-          <div class="d-flex align-items-center input-group">
-            <div class="input-group-prepend bg-transparent">
-              <i class="input-group-text border-0 mdi mdi-magnify"></i>
+      <b-navbar-nav v-if="logined" class="navbar-nav-right ml-auto">
+        <b-nav-item>
+          <span class="nav-link">
+            <div class="nav-profile-img mx-2">
+              <img src="@/assets/images/faces-clipart/pic-1.png" alt="image" />
+              <span class="availability-status online"></span>
             </div>
-            <input
-              type="text"
-              class="form-control bg-transparent border-0"
-              placeholder="Search projects"
-            />
-          </div>
-        </form>
-      </div>
-      <b-navbar-nav class="navbar-nav-right ml-auto">
-        <b-nav-item-dropdown right class="nav-profile">
-          <template slot="button-content">
-            <span
-              class="nav-link dropdown-toggle"
-              id="profileDropdown"
-              href="javascript:void(0);"
-              data-toggle="dropdown"
-              aria-expanded="false"
-            >
-              <div class="nav-profile-img">
-                <img src="@/assets/images/faces-clipart/pic-1.png" alt="image" />
-                <span class="availability-status online"></span>
-              </div>
-              <div class="nav-profile-text">
-                <p class="mb-1 text-black">David Greymaax</p>
-              </div>
-            </span>
-          </template>
-          <b-dropdown-item class="preview-item">
-            <i class="mdi mdi-cached mr-2 text-success"></i> Activity Log
-          </b-dropdown-item>
-          <b-dropdown-item class="preview-item">
-            <i class="mdi mdi-logout mr-2 text-primary"></i> Signout
-          </b-dropdown-item>
-        </b-nav-item-dropdown>
-        <b-nav-item-dropdown right class="preview-list">
-          <template slot="button-content">
-            <div class="nav-link count-indicator dropdown-toggle">
-              <i class="mdi mdi-email-outline"></i>
-              <span class="count-symbol bg-warning"></span>
+            <div class="nav-profile-text">
+              <p class="text-black">David Greymaax</p>
             </div>
-          </template>
-          <h6 class="p-3 mb-0">Messages</h6>
-          <b-dropdown-item class="preview-item">
-            <div class="preview-thumbnail">
-              <img src="@/assets/images/faces-clipart/pic-1.png" alt="image" class="profile-pic" />
-            </div>
-            <div
-              class="preview-item-content d-flex align-items-start flex-column justify-content-center"
-            >
-              <h6 class="preview-subject ellipsis mb-1 font-weight-normal">
-                Cregh send you a message
-              </h6>
-              <p class="text-gray mb-0">15 Minutes ago</p>
-            </div>
-          </b-dropdown-item>
-          <b-dropdown-item class="preview-item">
-            <div class="preview-thumbnail">
-              <img src="@/assets/images/faces-clipart/pic-2.png" alt="image" class="profile-pic" />
-            </div>
-            <div
-              class="preview-item-content d-flex align-items-start flex-column justify-content-center"
-            >
-              <h6 class="preview-subject ellipsis mb-1 font-weight-normal">
-                Profile picture updated
-              </h6>
-              <p class="text-gray mb-0">18 Minutes ago</p>
-            </div>
-          </b-dropdown-item>
-          <b-dropdown-item class="preview-item">
-            <div class="preview-thumbnail">
-              <img src="@/assets/images/faces-clipart/pic-3.png" alt="image" class="profile-pic" />
-            </div>
-            <div
-              class="preview-item-content d-flex align-items-start flex-column justify-content-center"
-            >
-              <h6 class="preview-subject ellipsis mb-1 font-weight-normal">
-                Mark send you a message
-              </h6>
-              <p class="text-gray mb-0">1 Minutes ago</p>
-            </div>
-          </b-dropdown-item>
-          <h6 class="p-3 mb-0 text-center border-top">4 new messages</h6>
-        </b-nav-item-dropdown>
-        <b-nav-item-dropdown right class="preview-list">
-          <template slot="button-content">
-            <div class="nav-link count-indicator dropdown-toggle">
-              <i class="mdi mdi-bell-outline"></i>
-              <span class="count-symbol bg-danger"></span>
-            </div>
-          </template>
-          <h6 class="p-3 mb-0">Notifications</h6>
-          <b-dropdown-item class="preview-item">
-            <div class="preview-thumbnail">
-              <div class="preview-icon bg-success">
-                <i class="mdi mdi-calendar"></i>
-              </div>
-            </div>
-            <div
-              class="preview-item-content d-flex align-items-start flex-column justify-content-center"
-            >
-              <h6 class="preview-subject font-weight-normal mb-1">Event today</h6>
-              <p class="text-gray ellipsis mb-0">
-                Just a reminder that you have an event today
-              </p>
-            </div>
-          </b-dropdown-item>
-          <b-dropdown-item class="preview-item">
-            <div class="preview-thumbnail">
-              <div class="preview-icon bg-warning">
-                <i class="mdi mdi-settings"></i>
-              </div>
-            </div>
-            <div
-              class="preview-item-content d-flex align-items-start flex-column justify-content-center"
-            >
-              <h6 class="preview-subject font-weight-normal mb-1">Settings</h6>
-              <p class="text-gray ellipsis mb-0">
-                Update dashboard
-              </p>
-            </div>
-          </b-dropdown-item>
-          <b-dropdown-item class="preview-item">
-            <div class="preview-thumbnail">
-              <div class="preview-icon bg-info">
-                <i class="mdi mdi-link-variant"></i>
-              </div>
-            </div>
-            <div
-              class="preview-item-content d-flex align-items-start flex-column justify-content-center"
-            >
-              <h6 class="preview-subject font-weight-normal mb-1">Launch Admin</h6>
-              <p class="text-gray ellipsis mb-0">
-                New admin wow!
-              </p>
-            </div>
-          </b-dropdown-item>
-          <h6 class="p-3 mb-0 text-center border-top">4 new messages</h6>
-        </b-nav-item-dropdown>
+          </span>
+        </b-nav-item>
         <b-nav-item class="nav-logout d-none d-lg-block">
           <i class="mdi mdi-power"></i>
+        </b-nav-item>
+      </b-navbar-nav>
+      <b-navbar-nav v-else class="navbar-nav-right ml-auto">
+        <b-nav-item>
+          <button type="button" class="btn btn-outline-primary btn-sm">Login</button>
+        </b-nav-item>
+        <b-nav-item>
+          <button type="button" class="btn btn-outline-info btn-sm">Sing Up</button>
         </b-nav-item>
       </b-navbar-nav>
       <button
@@ -193,4 +69,9 @@ export default {
 };
 </script>
 
-<style scoped></style>
+<style scoped>
+p {
+  margin-top: 0;
+  margin-bottom: 0;
+}
+</style>

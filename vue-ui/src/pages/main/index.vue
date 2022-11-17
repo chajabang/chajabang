@@ -174,7 +174,7 @@ export default {
   height: 100%;
   text-align: center;
   position: relative;
-  z-index: 1;
+  z-index: 0;
 }
 .main-card::after {
   width: 100%;
