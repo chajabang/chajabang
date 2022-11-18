@@ -13,12 +13,24 @@
                 <h6 class="font-weight-light">Sign Up is easy. It only takes a few steps</h6>
                 <form class="pt-3">
                   <div class="form-group">
-                    <input
-                      type="text"
-                      class="form-control form-control-lg"
-                      placeholder="ID"
-                      v-model="id"
-                    />
+                    <b-row>
+                      <b-col>
+                        <input
+                          type="text"
+                          class="form-control form-control-lg"
+                          placeholder="ID"
+                          v-model="id"
+                        />
+                      </b-col>
+                      <b-col cols="auto" class="pt-1">
+                        <button
+                          type="button"
+                          class="btn btn-gradient-primary btn-sm font-weight-medium"
+                        >
+                          Check
+                        </button>
+                      </b-col>
+                    </b-row>
                   </div>
                   <div class="form-group">
                     <input
@@ -43,12 +55,24 @@
                     </p>
                   </div>
                   <div class="form-group">
-                    <input
-                      type="text"
-                      class="form-control form-control-lg"
-                      placeholder="Username"
-                      v-model="username"
-                    />
+                    <b-row>
+                      <b-col>
+                        <input
+                          type="text"
+                          class="form-control form-control-lg"
+                          placeholder="Username"
+                          v-model="username"
+                        />
+                      </b-col>
+                      <b-col cols="auto" class="pt-1">
+                        <button
+                          type="button"
+                          class="btn btn-gradient-primary btn-sm font-weight-medium"
+                        >
+                          Check
+                        </button>
+                      </b-col>
+                    </b-row>
                   </div>
                   <div class="form-group">
                     <input
@@ -60,15 +84,6 @@
                     <p v-if="valid.email" class="input-error">
                       이메일 주소를 정확히 입력해주세요.
                     </p>
-                  </div>
-                  <div class="mb-4">
-                    <div class="form-check">
-                      <label class="form-check-label text-muted">
-                        <input type="checkbox" class="form-check-input" />
-                        I agree to all Terms & Conditions
-                        <i class="input-helper"></i>
-                      </label>
-                    </div>
                   </div>
                   <div class="mt-3">
                     <button
