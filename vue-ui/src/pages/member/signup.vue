@@ -13,14 +13,19 @@
                 <h6 class="font-weight-light">Sign Up is easy. It only takes a few steps</h6>
                 <form class="pt-3">
                   <div class="form-group">
-                    <input type="text" class="form-control form-control-lg" placeholder="ID" v-model="id" />
+                    <input
+                      type="text"
+                      class="form-control form-control-lg"
+                      placeholder="ID"
+                      v-model="this.values.id"
+                    />
                   </div>
                   <div class="form-group">
                     <input
                       type="password"
                       class="form-control form-control-lg"
                       placeholder="Password"
-                      v-model="pw"
+                      v-model="this.values.pw"
                       @keyup="checkPassword"
                     />
                     <p v-if="valid.pw" class="input-error">
@@ -32,10 +37,10 @@
                       type="password"
                       class="form-control form-control-lg"
                       placeholder="Confirm Password"
-                      v-model="confirmPw"
+                      v-model="this.values.confirmPw"
                       @keyup="checkConfirmPw"
                     />
-                    <p v-if="valid.confirmPw" class="input-error">
+                    <p v-if="this.valid.confirmPw" class="input-error">
                       비밀번호가 동일하지 않습니다.
                     </p>
                   </div>
@@ -47,9 +52,14 @@
                     />
                   </div>
                   <div class="form-group">
-                    <input type="email" class="form-control form-control-lg" placeholder="Email" v-model="email"
-                           @keyup="checkEmail" />
-                    <p v-if="valid.email" class="input-error">
+                    <input
+                      type="email"
+                      class="form-control form-control-lg"
+                      placeholder="Email"
+                      v-model="this.values.email"
+                      @keyup="checkEmail"
+                    />
+                    <p v-if="this.valid.email" class="input-error">
                       이메일 주소를 정확히 입력해주세요.
                     </p>
                   </div>
@@ -65,8 +75,9 @@
                   <div class="mt-3">
                     <button
                       class="btn btn-block btn-gradient-primary btn-lg font-weight-medium auth-form-btn"
-                      >SIGN UP</button
                     >
+                      SIGN UP
+                    </button>
                   </div>
                   <div class="text-center mt-4 font-weight-light">
                     Already have an account?
@@ -85,52 +96,17 @@
 </template>
 
 <script>
+import { mapActions, mapState } from "vuex";
+
+const memberStore = "memberStore";
+
 export default {
   name: "signup",
-
-  data() {
-    return {
-      valid: {
-        id: false,
-        pw: false,
-        confirmPw: false,
-        email: false,
-        nickname: false,
-      },
-      id: "",
-      pw: "",
-      confirmPw: "",
-      email: "",
-      nickname: "",
-    };
-  },
   methods: {
-    checkEmail() {
-      // 이메일 형식 검사
-      const validateEmail = /^[A-Za-z0-9_\\.\\-]+@[A-Za-z0-9\\-]+\.[A-Za-z0-9\\-]+/;
-      if (!validateEmail.test(this.email) || !this.email) {
-        this.valid.email = true;
-      } else {
-        this.valid.email = false;
-      }
-    },
-    checkPassword() {
-      // 비밀번호 형식 검사(영문, 숫자, 특수문자)
-      const validatePassword = /^(?=.*[a-zA-z])(?=.*[0-9])(?=.*[$`~!@$!%*#^?&\\(\\)\-_=+]).{8,16}$/;
-      if (!validatePassword.test(this.pw) || !this.pw) {
-        this.valid.pw = true;
-      } else {
-        this.valid.pw = false;
-      }
-    },
-    checkConfirmPw() {
-      // 비밀번호 확인
-      if (this.pw !== this.confirmPw) {
-        this.valid.confirmPw = true;
-      } else {
-        this.valid.confirmPw = false;
-      }
-    },
+    ...mapActions(memberStore, ["checkEmail", "checkPassword", "checkConfirmPw"]),
+  },
+  computed: {
+    ...mapState(memberStore, ["valid", "values"]),
   },
 };
 </script>
