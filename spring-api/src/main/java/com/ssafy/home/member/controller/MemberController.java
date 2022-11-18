@@ -87,10 +87,37 @@ public class MemberController {
         return map;
 
     }
+    @GetMapping("/id")
+    @ResponseBody
+    public String idCheck(@RequestParam String id){
+        try {
+            int cnt  = memberService.idCheck(id);
+            System.out.println("IDCHECK : "+cnt);
+            if(cnt>0){
+                return id+"(은)는 중복입니다.";
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return id+"(은)는 사용가능합니다.";
+    }
+    @GetMapping("/nickname")
+    @ResponseBody
+    public String nicknameCheck(@RequestParam String nickname){
+        try {
+            int cnt  = memberService.nicknameCheck(nickname);
+            if(cnt>0){
+                return nickname+"(은)는 중복입니다.";
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return nickname+"(은)는 사용가능합니다.";
+    }
 
     @PostMapping("/update")
     @ResponseBody
-    public String update(@RequestParam Map<String, String> map, HttpServletRequest request) {
+    public String update(@RequestParam Map<String, String> map , HttpServletRequest request) {
         HttpSession session = request.getSession(false);
         if (session != null) {
             Member m = (Member) session.getAttribute("member");
@@ -99,6 +126,7 @@ public class MemberController {
             String id = map.get("id");
             String pw = map.get("pw");
             String name = map.get("name");
+            String email = map.get("email");
             Member l = new Member(id, pw);
             try {
                 String loginM = memberService.login(l);
@@ -108,8 +136,7 @@ public class MemberController {
                         try {
                             i = memberService.update(map);
                             if (i > 0) {
-                                session.setAttribute("member",new Member(name,id,pw));
-
+                                session.setAttribute("member",new Member(id,pw,name,email));
                                 return "업데이트 성공";
                             }
                         } catch (Exception e) {
