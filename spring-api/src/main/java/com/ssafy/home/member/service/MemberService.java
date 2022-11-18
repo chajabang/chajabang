@@ -30,15 +30,19 @@ public class MemberService {
         return memberMapper.login(m);
     }
 
+    public int idCheck(String id) throws Exception{
+        return memberMapper.idCheck(id);
+    }
+
+    public int nicknameCheck(String nickname) throws Exception{
+        return memberMapper.nicknameCheck(nickname);
+    }
+
     @Transactional
     public int register(Member m) throws Exception {
-        int cnt = memberMapper.idCheck(m.getId());
-        if (cnt > 0) {
-            return 0;
-        }
         byte[] key = OpenCrypt.generateKey("AES", 128);
         SecVO secVO = new SecVO(m.getId(), UUID.randomUUID().toString(), OpenCrypt.byteArrayToHex(key));
-        cnt = secMapper.insertSec(secVO);
+        int cnt = secMapper.insertSec(secVO);
         if (cnt > 0) {
             m.setPw(OpenCrypt.byteArrayToHex(OpenCrypt.getSHA256(m.getPw(), secVO.getSalt())));
             return memberMapper.register(m);
