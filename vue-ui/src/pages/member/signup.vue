@@ -26,11 +26,18 @@
                         <button
                           type="button"
                           class="btn btn-gradient-primary btn-sm font-weight-medium"
+                          @click="clickIdBtn"
                         >
                           Check
                         </button>
                       </b-col>
                     </b-row>
+                    <p v-if="valid.idOk" class="text-info">
+                      {{ message.id }}(은)는 사용가능합니다.
+                    </p>
+                    <p v-if="valid.idFail" class="text-danger">
+                      {{ message.id }}(은)는 존재합니다.
+                    </p>
                   </div>
                   <div class="form-group">
                     <input
@@ -39,7 +46,7 @@
                       placeholder="Password"
                       v-model="pw"
                     />
-                    <p v-if="valid.pw" class="input-error">
+                    <p v-if="valid.pw" class="text-danger">
                       영문, 숫자, 특수문자를 조합하여 입력해주세요. (8-16)자
                     </p>
                   </div>
@@ -50,9 +57,7 @@
                       placeholder="Confirm Password"
                       v-model="confirmPw"
                     />
-                    <p v-if="valid.confirmPw" class="input-error">
-                      비밀번호가 동일하지 않습니다.
-                    </p>
+                    <p v-if="valid.confirmPw" class="text-danger">비밀번호가 동일하지 않습니다.</p>
                   </div>
                   <div class="form-group">
                     <b-row>
@@ -68,11 +73,18 @@
                         <button
                           type="button"
                           class="btn btn-gradient-primary btn-sm font-weight-medium"
+                          @click="clickUsernameBtn"
                         >
                           Check
                         </button>
                       </b-col>
                     </b-row>
+                    <p v-if="valid.usernameOk" class="text-info">
+                      {{ message.username }}는 사용가능합니다.
+                    </p>
+                    <p v-if="valid.usernameFail" class="text-danger">
+                      {{ message.username }}는 존재합니다.
+                    </p>
                   </div>
                   <div class="form-group">
                     <input
@@ -81,13 +93,13 @@
                       placeholder="Email"
                       v-model="email"
                     />
-                    <p v-if="valid.email" class="input-error">
-                      이메일 주소를 정확히 입력해주세요.
-                    </p>
+                    <p v-if="valid.email" class="text-danger">이메일 주소를 정확히 입력해주세요.</p>
                   </div>
                   <div class="mt-3">
                     <button
-                      class="btn btn-block btn-gradient-primary btn-lg font-weight-medium auth-form-btn"
+                      type="button"
+                      class="btn btn-block btn-gradient-primary btn-lg font-weight-medium"
+                      @click="clickSignUpBtn"
                     >
                       SIGN UP
                     </button>
@@ -122,6 +134,8 @@ export default {
       confirmPw: "",
       email: "",
       username: "",
+      idMessage: "",
+      usernameMessage: "",
     };
   },
   watch: {
@@ -137,18 +151,45 @@ export default {
     },
   },
   methods: {
-    ...mapActions(memberStore, ["checkEmail", "checkPassword", "checkConfirmPw"]),
+    ...mapActions(memberStore, [
+      "checkEmail",
+      "checkPassword",
+      "checkConfirmPw",
+      "checkId",
+      "checkUsername",
+      "registerMember",
+    ]),
+    clickIdBtn() {
+      this.checkId(this.id);
+    },
+    clickUsernameBtn() {
+      this.checkUsername(this.username);
+    },
+    clickSignUpBtn() {
+      // 회원가입 버튼
+      console.log(this.valid.pw);
+      if (this.valid.idFail) {
+        alert("아이디를 확인하세요");
+        return;
+      } else if (this.valid.pw) {
+        alert("비밀번호를 확인하세요");
+        return;
+      } else if (this.valid.confirmPw) {
+        alert("비밀번호가 같지 않습니다.");
+        return;
+      } else if (this.valid.usernameFail) {
+        alert("닉네임을 확인하세요");
+        return;
+      } else if (this.valid.email) {
+        alert("이메일을 확인하세요");
+        return;
+      }
+
+      this.registerMember({ id: this.id, pw: this.pw, username: this.username, email: this.email });
+    },
   },
   computed: {
-    ...mapState(memberStore, ["valid"]),
+    ...mapState(memberStore, ["valid", "message"]),
   },
 };
 </script>
-
-<style scoped>
-.input-error {
-  line-height: 16px;
-  font-size: 11px;
-  color: red;
-}
-</style>

@@ -11,15 +11,14 @@ import javax.servlet.http.HttpSession;
 import java.util.HashMap;
 import java.util.Map;
 
-@Controller
+@RestController
+@CrossOrigin("http://localhost:8080")
 @RequestMapping("/member")
 public class MemberController {
-
     @Autowired
     MemberService memberService;
 
     @PostMapping("/logout")
-    @ResponseBody
     public String logout(HttpServletRequest request) {
         HttpSession session = request.getSession(false);
         if(session != null) {
@@ -29,14 +28,13 @@ public class MemberController {
     }
 
     @PostMapping("/login")
-    @ResponseBody
     public Map<String, Object> login(Member m, HttpServletRequest request) {
         Map<String, Object> map = new HashMap<>();
-        String name = null;
+        String username = null;
         try {
-            name = memberService.login(m);
-            if (name != null) {
-                m.setName(name);
+            username = memberService.login(m);
+            if (username != null) {
+                m.setUsername(username);
                 HttpSession session = request.getSession();
                 session.setAttribute("member", m);
                 map.put("member", m);
@@ -51,7 +49,6 @@ public class MemberController {
     }
 
     @PostMapping("/register")
-    @ResponseBody
     public String register(Member m) {
         System.out.println(m);
         int idx = 0;
@@ -67,8 +64,7 @@ public class MemberController {
         return "회원가입 실패";
     }
 
-    @GetMapping("/info")
-    @ResponseBody
+    @PostMapping("/info")
     public Map<String, Object> getInfo(HttpServletRequest request) {
         Map<String, Object> map = new HashMap<>();
         HttpSession session = request.getSession(false);
@@ -76,7 +72,7 @@ public class MemberController {
             Member m = (Member) session.getAttribute("member");
             if (m != null) {
                 map.put("id",m.getId());
-                map.put("name",m.getName());
+                map.put("username",m.getUsername());
                 return map;
             }else{
                 map.put("msg","fail");
@@ -87,36 +83,35 @@ public class MemberController {
         return map;
 
     }
+
+
     @GetMapping("/id")
-    @ResponseBody
-    public String idCheck(@RequestParam String id){
+    public String idCheck(@RequestParam("id") String id){
         try {
             int cnt  = memberService.idCheck(id);
-            System.out.println("IDCHECK : "+cnt);
-            if(cnt>0){
-                return id+"(은)는 중복입니다.";
+            System.out.println("값 :"+cnt);
+            if(cnt==0){
+                return "success";
             }
         } catch (Exception e) {
             e.printStackTrace();
         }
-        return id+"(은)는 사용가능합니다.";
+        return "fail";
     }
-    @GetMapping("/nickname")
-    @ResponseBody
-    public String nicknameCheck(@RequestParam String nickname){
+    @GetMapping("/username")
+    public String usernameCheck(@RequestParam("username") String username){
         try {
-            int cnt  = memberService.nicknameCheck(nickname);
-            if(cnt>0){
-                return nickname+"(은)는 중복입니다.";
+            int cnt  = memberService.usernameCheck(username);
+            if(cnt==0){
+                return "success";
             }
         } catch (Exception e) {
             e.printStackTrace();
         }
-        return nickname+"(은)는 사용가능합니다.";
+        return "fail";
     }
 
     @PostMapping("/update")
-    @ResponseBody
     public String update(@RequestParam Map<String, String> map , HttpServletRequest request) {
         HttpSession session = request.getSession(false);
         if (session != null) {
@@ -125,7 +120,7 @@ public class MemberController {
 
             String id = map.get("id");
             String pw = map.get("pw");
-            String name = map.get("name");
+            String username = map.get("username");
             String email = map.get("email");
             Member l = new Member(id, pw);
             try {
@@ -136,7 +131,7 @@ public class MemberController {
                         try {
                             i = memberService.update(map);
                             if (i > 0) {
-                                session.setAttribute("member",new Member(id,pw,name,email));
+                                session.setAttribute("member",new Member(id,pw,username,email));
                                 return "업데이트 성공";
                             }
                         } catch (Exception e) {
@@ -155,7 +150,6 @@ public class MemberController {
     }
 
     @PostMapping("/delete")
-    @ResponseBody
     public String delete(@RequestParam String id, HttpServletRequest request) {
         HttpSession session = request.getSession(false);
         System.out.println("ID" + id);

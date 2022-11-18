@@ -12,7 +12,7 @@ public interface MemberMapper {
     String login(Member m) throws SQLException;
     int register(Member m)throws SQLException;
     int idCheck(String id)throws SQLException;
-    int nicknameCheck(String nickname)throws SQLException;
+    int usernameCheck(String username)throws SQLException;
     int update(Map<String,String> map)throws SQLException;
 
     int delete(String id)throws SQLException;

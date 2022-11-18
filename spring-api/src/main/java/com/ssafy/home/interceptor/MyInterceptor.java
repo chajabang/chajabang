@@ -15,7 +15,7 @@ public class MyInterceptor implements HandlerInterceptor {
         HttpSession session = request.getSession(false);
         if(session != null) {
             Member m = (Member) session.getAttribute("member");
-            if(m != null && m.getName() != null) {
+            if(m != null && m.getUsername() != null) {
                 return true;
             }
         } else {//login 안되었을 때

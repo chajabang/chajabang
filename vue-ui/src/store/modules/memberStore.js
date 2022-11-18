@@ -1,12 +1,19 @@
+import { usernameCheck, userIdCheck, userRegister } from "@/api/member";
 const memberStore = {
   namespaced: true,
   state: {
     valid: {
-      id: false,
+      idOk: false,
+      idFail: false,
       pw: false,
       confirmPw: false,
       email: false,
-      username: false,
+      usernameOk: false,
+      usernameFail: false,
+    },
+    message: {
+      id: "",
+      username: "",
     },
   },
   getters: {},
@@ -32,6 +39,30 @@ const memberStore = {
         state.valid.confirmPw = false;
       }
     },
+    CHECK_ID_SUCCESS(state, id) {
+      state.valid.idOk = true;
+      state.valid.idFail = false;
+      state.message.id = id;
+    },
+    CHECK_ID_FAIL(state, id) {
+      state.valid.idOk = false;
+      state.valid.idFail = true;
+      state.message.id = id;
+    },
+    CHECK_USERNAME_SUCCESS(state, username) {
+      state.valid.usernameOk = true;
+      state.valid.usernameFail = false;
+      state.message.username = username;
+    },
+    CHECK_USERNAME_FAIL(state, username) {
+      state.valid.usernameOk = false;
+      state.valid.usernameFail = true;
+      state.message.username = username;
+    },
+    REGISTER_MEMBER(data) {
+      console.log("MUTA");
+      console.log(data);
+    },
   },
   actions: {
     checkEmail({ commit }, email) {
@@ -47,6 +78,55 @@ const memberStore = {
     checkConfirmPw({ commit }, { pw, confirmPw }) {
       // 비밀번호 확인
       commit("CHECK_CONFIRMPW", { pw, confirmPw });
+    },
+
+    async checkId({ commit }, id) {
+      // 아이디 중복 확인
+      await userIdCheck(
+        id,
+        ({ data }) => {
+          console.log(data);
+          if (data === "success") {
+            commit("CHECK_ID_SUCCESS", id);
+          } else {
+            commit("CHECK_ID_FAIL", id);
+          }
+        },
+        async (error) => {
+          console.log("에러발생... ", error.response.status);
+        }
+      );
+    },
+    async checkUsername({ commit }, username) {
+      // 아이디 중복 확인
+      await usernameCheck(
+        username,
+        ({ data }) => {
+          if (data === "success") {
+            commit("CHECK_USERNAME_SUCCESS", username);
+          } else {
+            commit("CHECK_USERNAME_FAIL", username);
+          }
+        },
+        async (error) => {
+          console.log("에러발생... ", error.response.status);
+        }
+      );
+    },
+    async registerMember({ commit }, member) {
+      await userRegister(
+        member,
+        ({ data }) => {
+          if (data === "success") {
+            commit("REGISTER_MEMBER", "회원가입 성공");
+          } else {
+            commit("REGISTER_MEMBER", "회원가입 실패");
+          }
+        },
+        async (error) => {
+          console.log("에러발생... ", error.response.status);
+        }
+      );
     },
   },
 };

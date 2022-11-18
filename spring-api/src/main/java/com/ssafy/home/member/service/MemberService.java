@@ -34,8 +34,8 @@ public class MemberService {
         return memberMapper.idCheck(id);
     }
 
-    public int nicknameCheck(String nickname) throws Exception{
-        return memberMapper.nicknameCheck(nickname);
+    public int usernameCheck(String username) throws Exception{
+        return memberMapper.usernameCheck(username);
     }
 
     @Transactional
