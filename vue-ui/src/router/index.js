@@ -65,27 +65,23 @@ export default new Router({
       ],
     },
     {
-      path: "/auth-pages",
-      component: {
-        render(c) {
-          return c("router-view");
-        },
-      },
+      path: "/member",
+      component: layout,
       children: [
         {
           path: "login",
           name: "login",
-          component: () => import("@/pages/samples/auth-pages/login"),
+          component: () => import("@/pages/member/login"),
         },
         {
-          path: "register",
-          name: "register",
-          component: () => import("@/pages/samples/auth-pages/register"),
+          path: "signup",
+          name: "signup",
+          component: () => import("@/pages/member/signup"),
         },
       ],
     },
     {
-      path: "/error-pages",
+      path: "/error",
       component: {
         render(c) {
           return c("router-view");
@@ -95,12 +91,12 @@ export default new Router({
         {
           path: "error-404",
           name: "error-404",
-          component: () => import("@/pages/samples/error-pages/error-404"),
+          component: () => import("@/pages/error/error-404"),
         },
         {
           path: "error-500",
           name: "error-500",
-          component: () => import("@/pages/samples/error-pages/error-500"),
+          component: () => import("@/pages/error/error-500"),
         },
       ],
     },
@@ -126,7 +122,7 @@ export default new Router({
       children: [
         {
           path: "error-404",
-          component: () => import("@/pages/samples/error-pages/error-404"),
+          component: () => import("@/pages/error/error-404"),
         },
       ],
     },

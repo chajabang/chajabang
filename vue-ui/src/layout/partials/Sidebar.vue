@@ -65,14 +65,10 @@
           <b-collapse accordion="sidebar-accordion" id="user-page-dropdown">
             <ul class="nav flex-column sub-menu">
               <li class="nav-item">
-                <router-link class="nav-link" target="_blank" to="/auth-pages/login/"
-                  >Login</router-link
-                >
+                <router-link class="nav-link" to="/auth-pages/login/">Login</router-link>
               </li>
               <li class="nav-item">
-                <router-link class="nav-link" target="_blank" to="/auth-pages/register/"
-                  >Register</router-link
-                >
+                <router-link class="nav-link" to="/auth-pages/register/">Register</router-link>
               </li>
             </ul>
           </b-collapse>
@@ -86,12 +82,12 @@
           <b-collapse accordion="sidebar-accordion" id="error-page-dropdown">
             <ul class="nav flex-column sub-menu">
               <li class="nav-item">
-                <router-link class="nav-link" target="_blank" to="/error-pages/error-404/"
+                <router-link class="nav-link" target="_blank" to="/error/error-404/"
                   >404</router-link
                 >
               </li>
               <li class="nav-item">
-                <router-link class="nav-link" target="_blank" to="/error-pages/error-500/"
+                <router-link class="nav-link" target="_blank" to="/error/error-500/"
                   >500</router-link
                 >
               </li>

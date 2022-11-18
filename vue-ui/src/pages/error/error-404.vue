@@ -1,5 +1,4 @@
 <template>
-
   <section class="error_404">
     <div class="container-scroller">
       <div class="container-fluid page-body-wrapper full-page-wrapper">
@@ -17,12 +16,16 @@
               </div>
               <div class="row mt-5">
                 <div class="col-12 text-center mt-xl-2">
-                  <router-link class="text-white font-weight-medium" to="/">Back to home</router-link>
+                  <router-link class="text-white font-weight-medium" to="/"
+                    >Back to home</router-link
+                  >
                 </div>
               </div>
               <div class="row mt-5">
                 <div class="col-12 mt-xl-2">
-                  <p class="text-white font-weight-medium text-center">Copyright &copy; 2020  All rights reserved.</p>
+                  <p class="text-white font-weight-medium text-center">
+                    Copyright &copy; 2020 All rights reserved.
+                  </p>
                 </div>
               </div>
             </div>
@@ -33,11 +36,10 @@
       <!-- page-body-wrapper ends -->
     </div>
   </section>
-
 </template>
 
 <script>
 export default {
-  name: 'error404'
-}
+  name: "error404",
+};
 </script>

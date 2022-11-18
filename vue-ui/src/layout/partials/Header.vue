@@ -38,10 +38,14 @@
       </b-navbar-nav>
       <b-navbar-nav v-else class="navbar-nav-right ml-auto">
         <b-nav-item>
-          <button type="button" class="btn btn-outline-primary btn-sm">Login</button>
+          <router-link :to="{ name: 'login' }">
+            <button type="button" class="btn btn-outline-primary btn-sm">Login</button>
+          </router-link>
         </b-nav-item>
         <b-nav-item>
-          <button type="button" class="btn btn-outline-info btn-sm">Sing Up</button>
+          <router-link :to="{ name: 'signup' }">
+            <button type="button" class="btn btn-outline-info btn-sm">Sing Up</button>
+          </router-link>
         </b-nav-item>
       </b-navbar-nav>
       <button
@@ -58,6 +62,9 @@
 <script>
 export default {
   name: "app-header",
+  created() {
+    this.toggleSidebar();
+  },
   methods: {
     toggleSidebar: () => {
       document.querySelector("body").classList.toggle("sidebar-icon-only");
