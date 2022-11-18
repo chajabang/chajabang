@@ -17,7 +17,7 @@
                       type="text"
                       class="form-control form-control-lg"
                       placeholder="ID"
-                      v-model="this.values.id"
+                      v-model="id"
                     />
                   </div>
                   <div class="form-group">
@@ -25,8 +25,7 @@
                       type="password"
                       class="form-control form-control-lg"
                       placeholder="Password"
-                      v-model="this.values.pw"
-                      @keyup="checkPassword"
+                      v-model="pw"
                     />
                     <p v-if="valid.pw" class="input-error">
                       영문, 숫자, 특수문자를 조합하여 입력해주세요. (8-16)자
@@ -37,10 +36,9 @@
                       type="password"
                       class="form-control form-control-lg"
                       placeholder="Confirm Password"
-                      v-model="this.values.confirmPw"
-                      @keyup="checkConfirmPw"
+                      v-model="confirmPw"
                     />
-                    <p v-if="this.valid.confirmPw" class="input-error">
+                    <p v-if="valid.confirmPw" class="input-error">
                       비밀번호가 동일하지 않습니다.
                     </p>
                   </div>
@@ -49,6 +47,7 @@
                       type="text"
                       class="form-control form-control-lg"
                       placeholder="Username"
+                      v-model="username"
                     />
                   </div>
                   <div class="form-group">
@@ -56,10 +55,9 @@
                       type="email"
                       class="form-control form-control-lg"
                       placeholder="Email"
-                      v-model="this.values.email"
-                      @keyup="checkEmail"
+                      v-model="email"
                     />
-                    <p v-if="this.valid.email" class="input-error">
+                    <p v-if="valid.email" class="input-error">
                       이메일 주소를 정확히 입력해주세요.
                     </p>
                   </div>
@@ -102,11 +100,32 @@ const memberStore = "memberStore";
 
 export default {
   name: "signup",
+  data() {
+    return {
+      id: "",
+      pw: "",
+      confirmPw: "",
+      email: "",
+      username: "",
+    };
+  },
+  watch: {
+    pw(val) {
+      this.checkPassword(val);
+      this.checkConfirmPw({ pw: val, confirmPw: this.confirmPw });
+    },
+    confirmPw(val) {
+      this.checkConfirmPw({ pw: this.pw, confirmPw: val });
+    },
+    email(val) {
+      this.checkEmail(val);
+    },
+  },
   methods: {
     ...mapActions(memberStore, ["checkEmail", "checkPassword", "checkConfirmPw"]),
   },
   computed: {
-    ...mapState(memberStore, ["valid", "values"]),
+    ...mapState(memberStore, ["valid"]),
   },
 };
 </script>
