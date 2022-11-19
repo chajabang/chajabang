@@ -44,7 +44,7 @@
         </b-nav-item>
         <b-nav-item>
           <router-link :to="{ name: 'signup' }">
-            <button type="button" class="btn btn-outline-info btn-sm">Sing Up</button>
+            <button type="button" class="btn btn-outline-info btn-sm">Sign Up</button>
           </router-link>
         </b-nav-item>
       </b-navbar-nav>

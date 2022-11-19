@@ -151,4 +151,7 @@ export default {
   font-size: 11px;
   color: red;
 }
+* {
+  font-family: "TmoneyRoundWindExtraBold";
+}
 </style>

@@ -2,7 +2,7 @@
 <!DOCTYPE mapper
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.ssafy.home.apt.mapper.AptMapper">
+<mapper namespace="com.ssafy.home.house.mapper.HouseMapper">
 
 
     <select id="getGugun" parameterType="String" resultType="String">
@@ -11,13 +11,13 @@
         where sidoName = #{sido} and gugunName is not null
     </select>
 
-    <select id="getDong" parameterType="map" resultType="String">
+    <select id="getDong" parameterType="String" resultType="String">
         select distinct dongName
         from dongcode
         where sidoName = #{sido} and gugunName = #{gugun} and dongName is not null
     </select>
 
-    <select id="getHouseDealInfo" parameterType="map" resultType="apartment">
+    <select id="getHouseDealInfo" parameterType="map" resultType="house">
         select i.dong, i.roadName, i.apartmentName, i.lat, i.lng, d.floor, d.area, d.dealAmount, d.no
         from houseinfo as i
         inner join housedeal as d

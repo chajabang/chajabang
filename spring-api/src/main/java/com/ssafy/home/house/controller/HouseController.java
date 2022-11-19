@@ -1,7 +1,7 @@
-package com.ssafy.home.apt.controller;
+package com.ssafy.home.house.controller;
 
-import com.ssafy.home.apt.dto.Apartment;
-import com.ssafy.home.apt.service.AptService;
+import com.ssafy.home.house.dto.House;
+import com.ssafy.home.house.service.HouseService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -11,15 +11,15 @@ import java.util.List;
 import java.util.Map;
 
 @RestController
-@RequestMapping("/apt")
-public class AptController {
+@RequestMapping("/house")
+public class HouseController {
 
     @Autowired
-    AptService aptService;
+    HouseService houseService;
 
     @PostMapping("/dealinfo")
     public ResponseEntity<?> getHouseDealInfo(@RequestBody Map<String, Object> map) {
-        List<Apartment> list = aptService.getHouseDealInfo(map);
+        List<House> list = houseService.getHouseDealInfo(map);
         if(list != null) {
             return new ResponseEntity<>(list, HttpStatus.OK);
         } else {
@@ -27,9 +27,10 @@ public class AptController {
         }
     }
 
-    @PostMapping("/dong")
-    public ResponseEntity<?> getDong(@RequestBody Map<String, String> map) {
-        List<String> list = aptService.getDong(map);
+    @CrossOrigin(origins = "http://localhost:8080")
+    @GetMapping("/dong")
+    public ResponseEntity<?> getDong(@RequestParam("sido") String sido, @RequestParam("gugun") String gugun) {
+        List<String> list = houseService.getDong(sido, gugun);
         if(list != null) {
             return new ResponseEntity<>(list, HttpStatus.OK);
         } else {
@@ -37,10 +38,11 @@ public class AptController {
         }
     }
 
-    @PostMapping("/gugun")
-    public ResponseEntity<?> getGugun(@RequestBody Map<String, String> map) {
-        String sido = map.get("sido");
-        List<String> list = aptService.getGugun(sido);
+    @CrossOrigin(origins = "http://localhost:8080")
+    @GetMapping("/gugun")
+    public ResponseEntity<?> getGugun(@RequestParam("sido") String sido) {
+        System.out.println(sido);
+        List<String> list = houseService.getGugun(sido);
         if(list != null) {
             return new ResponseEntity<>(list, HttpStatus.OK);
         } else {

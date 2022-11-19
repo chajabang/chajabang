@@ -1,14 +1,14 @@
-package com.ssafy.home.apt.dto;
+package com.ssafy.home.house.dto;
 
-public class Apartment {
+public class House {
     private long no;
     private String dong, roadName, apartmentName, lat, lng, floor, area, dealAmount;
 
-    public Apartment() {
+    public House() {
     }
 
-    public Apartment(long no, String dong, String roadName, String apartmentName, String lat, String lng, String floor,
-                     String area, String dealAmount) {
+    public House(long no, String dong, String roadName, String apartmentName, String lat, String lng, String floor,
+                 String area, String dealAmount) {
         setNo(no);
         setDong(dong);
         setRoadName(roadName);

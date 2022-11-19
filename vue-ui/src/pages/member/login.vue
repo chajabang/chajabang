@@ -60,3 +60,9 @@ export default {
   name: "login",
 };
 </script>
+
+<style scoped>
+* {
+  font-family: "TmoneyRoundWindExtraBold";
+}
+</style>
