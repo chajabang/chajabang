@@ -59,9 +59,8 @@ const memberStore = {
       state.valid.usernameFail = true;
       state.message.username = username;
     },
-    REGISTER_MEMBER(data) {
-      console.log("MUTA");
-      console.log(data);
+    REGISTER_MEMBER(_, message) {
+      alert(message);
     },
   },
   actions: {
@@ -84,16 +83,18 @@ const memberStore = {
       // 아이디 중복 확인
       await userIdCheck(
         id,
-        ({ data }) => {
-          console.log(data);
-          if (data === "success") {
+        ({ status }) => {
+          if (status == 200) {
             commit("CHECK_ID_SUCCESS", id);
-          } else {
-            commit("CHECK_ID_FAIL", id);
           }
         },
         async (error) => {
-          console.log("에러발생... ", error.response.status);
+          if (error.response.status == 409) {
+            commit("CHECK_ID_FAIL", id);
+          } else {
+            console.log("에러발생... ", error.response.status);
+            alert("에러! 잠시후에 시도해주세요.");
+          }
         }
       );
     },
@@ -101,31 +102,35 @@ const memberStore = {
       // 아이디 중복 확인
       await usernameCheck(
         username,
-        ({ data }) => {
-          if (data === "success") {
+        ({ status }) => {
+          if (status == 200) {
             commit("CHECK_USERNAME_SUCCESS", username);
-          } else {
-            commit("CHECK_USERNAME_FAIL", username);
           }
         },
         async (error) => {
-          console.log("에러발생... ", error.response.status);
+          if (error.response.status == 409) {
+            commit("CHECK_USERNAME_FAIL", username);
+          } else {
+            console.log("에러발생... ", error.response.status);
+            alert("에러! 잠시후에 시도해주세요.");
+          }
         }
       );
     },
     async registerMember({ commit }, member) {
-      console.log(member);
       await userRegister(
         member,
-        ({ data }) => {
-          if (data === "success") {
+        ({ status }) => {
+          if (status == 201) {
             commit("REGISTER_MEMBER", "회원가입 성공");
-          } else {
-            commit("REGISTER_MEMBER", "회원가입 실패");
           }
         },
         async (error) => {
-          console.log("에러발생... ", error.response.status);
+          if (error.response.status == 400) {
+            commit("REGISTER_MEMBER", "회원가입 실패!");
+          } else {
+            alert("에러! 잠시후에 시도해주세요.");
+          }
         }
       );
     },

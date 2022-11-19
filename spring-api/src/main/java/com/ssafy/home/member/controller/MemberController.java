@@ -1,9 +1,12 @@
 package com.ssafy.home.member.controller;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import com.ssafy.home.member.dto.Member;
 import com.ssafy.home.member.service.MemberService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
@@ -15,6 +18,12 @@ import java.util.Map;
 @CrossOrigin("http://localhost:8080")
 @RequestMapping("/member")
 public class MemberController {
+
+    private static final Logger logger = LoggerFactory.getLogger(MemberController.class);
+    private static final String SUCCESS = "success";
+    private static final String FAIL = "fail";
+    private static final String ERROR = "error";
+
     @Autowired
     MemberService memberService;
 
@@ -49,19 +58,19 @@ public class MemberController {
     }
 
     @PostMapping("/register")
-    public String register(@RequestBody Member m) {
-        System.out.println(m);
+    public ResponseEntity<String> register(@RequestBody Member m) {
+        logger.info("Member Register 호출 - {}",m);
         int idx = 0;
         try {
             idx = memberService.register(m);
             if (idx > 0) {
-                return "회원가입 성공";
+                return new ResponseEntity<String>(SUCCESS, HttpStatus.CREATED);
             }
+            return new ResponseEntity<String>(FAIL, HttpStatus.BAD_REQUEST);
         } catch (Exception e) {
             e.printStackTrace();
-
         }
-        return "회원가입 실패";
+        return new ResponseEntity<String>(ERROR, HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
     @PostMapping("/info")
@@ -86,29 +95,33 @@ public class MemberController {
 
 
     @GetMapping("/id")
-    public String idCheck(@RequestParam("id") String id){
+    public ResponseEntity<String> idCheck(@RequestParam("id") String id){
+        logger.info("Member ID 중복 체크 호출 - {}",id);
         try {
             int cnt  = memberService.idCheck(id);
             System.out.println("값 :"+cnt);
             if(cnt==0){
-                return "success";
+                return new ResponseEntity<String>(SUCCESS, HttpStatus.OK);
             }
+            return new ResponseEntity<String>(FAIL, HttpStatus.CONFLICT);
         } catch (Exception e) {
             e.printStackTrace();
         }
-        return "fail";
+        return new ResponseEntity<String>(ERROR, HttpStatus.INTERNAL_SERVER_ERROR);
     }
     @GetMapping("/username")
-    public String usernameCheck(@RequestParam("username") String username){
+    public ResponseEntity<String> usernameCheck(@RequestParam("username") String username){
+        logger.info("Member username 중복 체크 호출 - {}",username);
         try {
             int cnt  = memberService.usernameCheck(username);
             if(cnt==0){
-                return "success";
+                return new ResponseEntity<String>(SUCCESS, HttpStatus.OK);
             }
+            return new ResponseEntity<String>(FAIL, HttpStatus.CONFLICT);
         } catch (Exception e) {
             e.printStackTrace();
         }
-        return "fail";
+        return new ResponseEntity<String>(ERROR, HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
     @PostMapping("/update")
