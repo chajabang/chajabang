@@ -17,9 +17,10 @@ public class HouseController {
     @Autowired
     HouseService houseService;
 
-    @PostMapping("/dealinfo")
-    public ResponseEntity<?> getHouseDealInfo(@RequestBody Map<String, Object> map) {
-        List<House> list = houseService.getHouseDealInfo(map);
+    @CrossOrigin(origins = "http://localhost:8080")
+    @GetMapping("/houselist")
+    public ResponseEntity<?> getHouseList(@RequestParam("sido") String sido, @RequestParam("gugun") String gugun, @RequestParam("dong") String dong) {
+        List<House> list = houseService.getHouseList(sido, gugun, dong);
         if(list != null) {
             return new ResponseEntity<>(list, HttpStatus.OK);
         } else {
@@ -41,7 +42,6 @@ public class HouseController {
     @CrossOrigin(origins = "http://localhost:8080")
     @GetMapping("/gugun")
     public ResponseEntity<?> getGugun(@RequestParam("sido") String sido) {
-        System.out.println(sido);
         List<String> list = houseService.getGugun(sido);
         if(list != null) {
             return new ResponseEntity<>(list, HttpStatus.OK);

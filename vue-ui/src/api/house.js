@@ -16,4 +16,11 @@ function getDongList(params, success, fail) {
     .catch(fail);
 }
 
-export { getGugunList, getDongList };
+function getHouseList(params, success, fail) {
+  api
+    .get(`/house/houselist`, { params: params })
+    .then(success)
+    .catch(fail);
+}
+
+export { getGugunList, getDongList, getHouseList };

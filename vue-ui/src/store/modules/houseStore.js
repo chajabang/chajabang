@@ -1,8 +1,12 @@
-import { getGugunList, getDongList } from "@/api/house.js";
+import { getGugunList, getDongList, getHouseList } from "@/api/house.js";
+import router from "../../router";
 
 const houseStore = {
   namespaced: true,
   state: {
+    sidoState: null,
+    gugunState: null,
+    dongState: null,
     sidos: [
       { value: null, text: "시도" },
       { value: "서울특별시", text: "서울특별시" },
@@ -25,6 +29,8 @@ const houseStore = {
     ],
     guguns: [{ value: null, text: "구군" }],
     dongs: [{ value: null, text: "동" }],
+    houses: [],
+    house: null,
   },
   mutations: {
     CLEAR_GUGUN_LIST(state) {
@@ -32,6 +38,15 @@ const houseStore = {
     },
     CLEAR_DONG_LIST(state) {
       state.dongs = [{ value: null, text: "동" }];
+    },
+    SET_SIDO(state, sido) {
+      state.sidoState = sido;
+    },
+    SET_GUGUN(state, gugun) {
+      state.gugunState = gugun;
+    },
+    SET_DONG(state, dong) {
+      state.dongState = dong;
     },
     SET_GUGUN_LIST(state, guguns) {
       guguns.forEach((gugun) => {
@@ -42,6 +57,10 @@ const houseStore = {
       dongs.forEach((dong) => {
         state.dongs.push({ value: dong, text: dong });
       });
+    },
+    SET_HOUSE_LIST(state, houses) {
+      state.houses = houses;
+      console.log(state.houses);
     },
   },
   actions: {
@@ -59,7 +78,7 @@ const houseStore = {
           commit("SET_GUGUN_LIST", data);
         },
         (error) => {
-          console.log(error);
+          alert(error);
         }
       );
     },
@@ -71,7 +90,25 @@ const houseStore = {
           commit("SET_DONG_LIST", data);
         },
         (error) => {
-          console.log(error);
+          alert(error);
+        }
+      );
+    },
+    mvHouseView({ commit }, { sido, gugun, dong }) {
+      commit("SET_SIDO", sido);
+      commit("SET_GUGUN", gugun);
+      commit("SET_DONG", dong);
+      router.push({ name: "houseview" });
+    },
+    getHouses({ commit }, { sido, gugun, dong }) {
+      const params = { sido, gugun, dong };
+      getHouseList(
+        params,
+        ({ data }) => {
+          commit("SET_HOUSE_LIST", data);
+        },
+        (error) => {
+          alert(error);
         }
       );
     },

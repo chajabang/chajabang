@@ -4,11 +4,10 @@ import com.ssafy.home.house.dto.House;
 import org.apache.ibatis.annotations.Mapper;
 
 import java.util.List;
-import java.util.Map;
 
 @Mapper
 public interface HouseMapper {
-    List<House> getHouseDealInfo(Map<String, Object> map);
+    List<House> getHouseList(String sido, String gugun, String dong);
 
     List<String> getDong(String sido, String gugun);
 

@@ -35,7 +35,9 @@
           </b-col>
         </b-row>
         <div class="text-center mt-5">
-          <b-button type="button" class="btn btn-gradient-info btn-fw">아파트 정보 검색</b-button>
+          <b-button type="button" class="btn btn-gradient-info btn-fw" @click="getHouseList"
+            >아파트 정보 검색</b-button
+          >
         </div>
       </b-container>
     </div>
@@ -126,7 +128,14 @@ export default {
     this.clearDongList();
   },
   methods: {
-    ...mapActions(houseStore, ["clearGugunList", "clearDongList", "getGugun", "getDong"]),
+    ...mapActions(houseStore, [
+      "clearGugunList",
+      "clearDongList",
+      "getGugun",
+      "getDong",
+      "mvHouseView",
+      "getHouses",
+    ]),
     getGugunList() {
       this.clearGugunList();
       this.gugun = null;
@@ -136,6 +145,18 @@ export default {
       this.clearDongList();
       this.dong = null;
       if (this.gugun) this.getDong({ sido: this.sido, gugun: this.gugun });
+    },
+    getHouseList() {
+      if (!this.sido) {
+        alert("시도가 선택되지 않았습니다.");
+      } else if (!this.gugun) {
+        alert("구군이 선택되지 않았습니다.");
+      } else if (!this.dong) {
+        alert("동이 선택되지 않았습니다.");
+      } else {
+        this.getHouses({ sido: this.sido, gugun: this.gugun, dong: this.dong });
+        this.mvHouseView({ sido: this.sido, gugun: this.gugun, dong: this.dong });
+      }
     },
   },
   computed: {

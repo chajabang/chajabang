@@ -1,9 +1,37 @@
 <template>
   <div>
-    <b-row>
+    <b-row align-v="center" class="my-5">
       <b-col cols="4">
-        <house-list></house-list>
+        <b-form-select
+          v-model="sido"
+          :options="sidos"
+          @change="getGugunList"
+          class="text-dark"
+        ></b-form-select>
       </b-col>
+      <b-col>
+        <b-form-select
+          v-model="gugun"
+          :options="guguns"
+          @change="getDongList"
+          class="text-dark"
+        ></b-form-select>
+      </b-col>
+      <b-col>
+        <b-form-select
+          v-model="dong"
+          :options="dongs"
+          @change="getHouseList"
+          class="text-dark"
+        ></b-form-select>
+      </b-col>
+    </b-row>
+    <b-row>
+      <b-card>
+        <b-col cols="4">
+          <house-list class="card-body"></house-list>
+        </b-col>
+      </b-card>
       <b-col>
         지도 들어갈 곳
       </b-col>
@@ -12,14 +40,66 @@
 </template>
 
 <script>
+import { mapActions, mapState } from "vuex";
 import HouseList from "@/components/house/HouseList";
+
+const houseStore = "houseStore";
 
 export default {
   name: "HouseView",
+  data() {
+    return {
+      sido: null,
+      gugun: null,
+      dong: null,
+    };
+  },
   components: {
     HouseList,
+  },
+  created() {
+    this.sido = this.sidoState;
+    this.gugun = this.gugunState;
+    this.dong = this.dongState;
+  },
+  methods: {
+    ...mapActions(houseStore, [
+      "clearGugunList",
+      "clearDongList",
+      "getGugun",
+      "getDong",
+      "getHouses",
+    ]),
+    getGugunList() {
+      this.clearGugunList();
+      this.gugun = null;
+      if (this.sido) this.getGugun(this.sido);
+    },
+    getDongList() {
+      this.clearDongList();
+      this.dong = null;
+      if (this.gugun) this.getDong({ sido: this.sido, gugun: this.gugun });
+    },
+    getHouseList() {
+      if (!this.sido) {
+        alert("시도가 선택되지 않았습니다.");
+      } else if (!this.gugun) {
+        alert("구군이 선택되지 않았습니다.");
+      } else if (!this.dong) {
+        alert("동이 선택되지 않았습니다.");
+      } else {
+        this.getHouses({ sido: this.sido, gugun: this.gugun, dong: this.dong });
+      }
+    },
+  },
+  computed: {
+    ...mapState(houseStore, ["sidoState", "gugunState", "dongState", "sidos", "guguns", "dongs"]),
   },
 };
 </script>
 
-<style></style>
+<style scope>
+.card .card-body {
+  padding: 0.5rem;
+}
+</style>

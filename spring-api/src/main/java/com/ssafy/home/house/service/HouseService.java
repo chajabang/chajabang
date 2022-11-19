@@ -6,7 +6,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Map;
 
 @Service
 public class HouseService {
@@ -14,8 +13,8 @@ public class HouseService {
     @Autowired
     HouseMapper houseMapper;
 
-    public List<House> getHouseDealInfo(Map<String, Object> map) {
-        return houseMapper.getHouseDealInfo(map);
+    public List<House> getHouseList(String sido, String gugun, String dong) {
+        return houseMapper.getHouseList(sido, gugun, dong);
     }
 
     public List<String> getDong(String sido, String gugun) {
