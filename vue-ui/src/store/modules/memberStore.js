@@ -114,6 +114,7 @@ const memberStore = {
       );
     },
     async registerMember({ commit }, member) {
+      console.log(member);
       await userRegister(
         member,
         ({ data }) => {

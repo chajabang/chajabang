@@ -49,7 +49,7 @@ public class MemberController {
     }
 
     @PostMapping("/register")
-    public String register(Member m) {
+    public String register(@RequestBody Member m) {
         System.out.println(m);
         int idx = 0;
         try {
