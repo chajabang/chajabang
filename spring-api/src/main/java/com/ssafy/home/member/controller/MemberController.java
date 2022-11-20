@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
+import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -43,7 +44,7 @@ public class MemberController {
     }
 
     @PostMapping("/login")
-    public ResponseEntity<Member> login(Member m, HttpServletRequest request) {
+    public ResponseEntity<Member> login(@RequestBody Member m, HttpServletRequest request) {
         logger.info("Member login 호출 - {}", m);
         Map<String, Object> map = new HashMap<>();
         try {
@@ -54,15 +55,15 @@ public class MemberController {
                 HttpSession session = request.getSession();
                 session.setAttribute("member", m);
                 return new ResponseEntity<>(m, HttpStatus.OK);
-            } else {
-                //로그인 실패
-                return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
             }
+        } catch (SQLException e) {
+            // 로그인 실패
+            return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
         } catch (Exception e) {
-            // 에러
             logger.warn("Exception -  {} ", e.getMessage());
-            return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
         }
+        return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
+
     }
 
     @PostMapping("/register")
@@ -95,15 +96,15 @@ public class MemberController {
                 // 멤버가 존재할 때
                 map.put("id", m.getId());
                 map.put("username", m.getUsername());
-                return new ResponseEntity<>(map,HttpStatus.OK);
+                return new ResponseEntity<>(map, HttpStatus.OK);
             } else {
                 // 세션에 멤버가 존재하지 않을 때
-                return new ResponseEntity<>(null,HttpStatus.NOT_FOUND);
+                return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
             }
         } else {
             // 세션 만료
             map.put("msg", "다시 로그인 해주세요");
-            return new ResponseEntity<>(map,HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>(map, HttpStatus.BAD_REQUEST);
         }
 
     }
@@ -158,7 +159,7 @@ public class MemberController {
                             int i = memberService.update(map);
                             if (i > 0) {
                                 session.setAttribute("member", new Member(id, pw, username, email));
-                                return new ResponseEntity<>(SUCCESS,HttpStatus.OK);
+                                return new ResponseEntity<>(SUCCESS, HttpStatus.OK);
                             }
                         } catch (Exception e) {
                             logger.warn("Exception -  {} ", e.getMessage());
@@ -177,20 +178,20 @@ public class MemberController {
 
     @PostMapping("/delete")
     public ResponseEntity<String> delete(@RequestParam String id, HttpServletRequest request) {
-        logger.info("Member Update 호출 - ID : {}",id);
+        logger.info("Member Update 호출 - ID : {}", id);
         HttpSession session = request.getSession(false);
         if (session != null) {
             try {
                 int i = memberService.delete(id);
                 if (i > 0) {
                     session.invalidate();
-                    return new ResponseEntity<>(SUCCESS,HttpStatus.OK);
+                    return new ResponseEntity<>(SUCCESS, HttpStatus.OK);
                 }
-                return new ResponseEntity<>(FAIL,HttpStatus.NOT_FOUND);
+                return new ResponseEntity<>(FAIL, HttpStatus.NOT_FOUND);
             } catch (Exception e) {
                 logger.warn("Exception -  {} , id : { }", e.getMessage());
             }
         }
-        return new ResponseEntity<>(ERROR,HttpStatus.INTERNAL_SERVER_ERROR);
+        return new ResponseEntity<>(ERROR, HttpStatus.INTERNAL_SERVER_ERROR);
     }
 }

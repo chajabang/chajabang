@@ -167,7 +167,6 @@ export default {
     },
     clickSignUpBtn() {
       // 회원가입 버튼
-      console.log(this.valid.pw);
       if (this.valid.idFail) {
         alert("아이디를 확인하세요");
         return;

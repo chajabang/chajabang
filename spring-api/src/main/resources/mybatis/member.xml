@@ -4,7 +4,7 @@
         "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.ssafy.home.member.mapper.MemberMapper">
     <select id="login" resultType="String" parameterType="member">
-        select name from member where id = #{id} and pw = #{pw}
+        select username from member where id = #{id} and pw = #{pw}
     </select>
     
     <insert id="register" parameterType="member">

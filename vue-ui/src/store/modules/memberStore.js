@@ -1,4 +1,4 @@
-import { usernameCheck, userIdCheck, userRegister } from "@/api/member";
+import { usernameCheck, userIdCheck, userRegister, userLogin } from "@/api/member";
 const memberStore = {
   namespaced: true,
   state: {
@@ -82,7 +82,7 @@ const memberStore = {
     async checkId({ commit }, id) {
       // 아이디 중복 확인
       await userIdCheck(
-        id,
+        { id: id },
         ({ status }) => {
           if (status == 200) {
             commit("CHECK_ID_SUCCESS", id);
@@ -101,7 +101,7 @@ const memberStore = {
     async checkUsername({ commit }, username) {
       // 아이디 중복 확인
       await usernameCheck(
-        username,
+        { username: username },
         ({ status }) => {
           if (status == 200) {
             commit("CHECK_USERNAME_SUCCESS", username);
@@ -130,6 +130,25 @@ const memberStore = {
             commit("REGISTER_MEMBER", "회원가입 실패!");
           } else {
             alert("에러! 잠시후에 시도해주세요.");
+          }
+        }
+      );
+    },
+    async loginMember({ commit }, member) {
+      await userLogin(
+        member,
+        ({ status }) => {
+          if (status == 200) {
+            alert("로그인 성공");
+            commit("REGISTER_MEMBER", "회원가입 성공");
+          }
+        },
+        async (error) => {
+          if (error.response.status == 400) {
+            alert("로그인 실패");
+            // commit("REGISTER_MEMBER", "회원가입 실패!");
+          } else {
+            // alert("에러! 잠시후에 시도해주세요.");
           }
         }
       );
