@@ -26,7 +26,6 @@
                         <button
                           type="button"
                           class="btn btn-gradient-primary btn-sm font-weight-medium"
-                          @click="clickIdBtn"
                         >
                           Check
                         </button>
@@ -134,8 +133,6 @@ export default {
       confirmPw: "",
       email: "",
       username: "",
-      idMessage: "",
-      usernameMessage: "",
     };
   },
   watch: {
@@ -192,3 +189,9 @@ export default {
   },
 };
 </script>
+
+<style scoped>
+* {
+  font-family: "TmoneyRoundWindExtraBold";
+}
+</style>

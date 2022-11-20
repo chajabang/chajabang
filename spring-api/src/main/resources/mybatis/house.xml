@@ -2,7 +2,7 @@
 <!DOCTYPE mapper
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.ssafy.home.apt.mapper.AptMapper">
+<mapper namespace="com.ssafy.home.house.mapper.HouseMapper">
 
 
     <select id="getGugun" parameterType="String" resultType="String">
@@ -11,20 +11,18 @@
         where sidoName = #{sido} and gugunName is not null
     </select>
 
-    <select id="getDong" parameterType="map" resultType="String">
+    <select id="getDong" parameterType="String" resultType="String">
         select distinct dongName
         from dongcode
         where sidoName = #{sido} and gugunName = #{gugun} and dongName is not null
     </select>
 
-    <select id="getHouseDealInfo" parameterType="map" resultType="apartment">
-        select i.dong, i.roadName, i.apartmentName, i.lat, i.lng, d.floor, d.area, d.dealAmount, d.no
+    <select id="getHouseList" parameterType="String" resultType="house">
+        select distinct i.aptCode, i.dong, i.roadName, cast(i.roadNameBonbun as signed) roadNameBonbun, cast(i.roadNameBubun as signed) roadNameBubun, i.apartmentName, i.lat, i.lng, d.floor, d.area
         from houseinfo as i
         inner join housedeal as d
         on i.aptCode = d.aptCode
         where i.dongCode = (select dongCode from dongcode where sidoName = #{sido} and gugunName = #{gugun} and dongName = #{dong})
-        and d.dealYear = #{year}
-        and d.dealMonth = #{month}
     </select>
 
 </mapper>

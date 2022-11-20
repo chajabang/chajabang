@@ -1,15 +1,19 @@
-package com.ssafy.home.apt.dto;
+package com.ssafy.home.house.dto;
 
-public class Apartment {
+public class House {
     private long no;
-    private String dong, roadName, apartmentName, lat, lng, floor, area, dealAmount;
+    private int roadNameBonbun, roadNameBubun;
+    private String aptCode, dong, roadName, apartmentName, lat, lng, floor, area, dealAmount;
 
-    public Apartment() {
+    public House() {
     }
 
-    public Apartment(long no, String dong, String roadName, String apartmentName, String lat, String lng, String floor,
-                     String area, String dealAmount) {
+    public House(long no, int roadNameBonbun, int roadNameBubun, String aptCode, String dong, String roadName, String apartmentName, String lat, String lng, String floor,
+                 String area, String dealAmount) {
+        setRoadNameBonbun(roadNameBonbun);
+        setRoadNameBubun(roadNameBubun);
         setNo(no);
+        setAptCode(aptCode);
         setDong(dong);
         setRoadName(roadName);
         setApartmentName(apartmentName);
@@ -32,6 +36,42 @@ public class Apartment {
         }
     }
 
+    public int getRoadNameBonbun() {
+        return roadNameBonbun;
+    }
+
+    public void setRoadNameBonbun(int roadNameBonbun) {
+        if(roadNameBonbun < 0) {
+            System.out.println("유효하지 않은 값입니다.");
+        } else {
+            this.roadNameBonbun = roadNameBonbun;
+        }
+    }
+
+    public int getRoadNameBubun() {
+        return roadNameBubun;
+    }
+
+    public void setRoadNameBubun(int roadNameBubun) {
+        if(roadNameBubun < 0) {
+            System.out.println("유효하지 않은 값입니다.");
+        } else {
+            this.roadNameBubun = roadNameBubun;
+        }
+    }
+
+    public String getAptCode() {
+        return aptCode;
+    }
+
+    public void setAptCode(String aptCode) {
+        if(aptCode != null) {
+            this.aptCode = aptCode;
+        } else {
+            System.out.println("유효하지 않은 값입니다.");
+        }
+    }
+
     public String getDong() {
         return dong;
     }
@@ -42,7 +82,6 @@ public class Apartment {
         } else {
             System.out.println("유효하지 않은 값입니다.");
         }
-
     }
 
     public String getRoadName() {

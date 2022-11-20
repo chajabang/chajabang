@@ -16,8 +16,13 @@ export default new Router({
       children: [
         {
           path: "",
-          name: "main",
-          component: () => import("@/pages/main"),
+          name: "housemain",
+          component: () => import("@/pages/house/HouseMain"),
+        },
+        {
+          path: "/house",
+          name: "houseview",
+          component: () => import("@/pages/house/HouseView"),
         },
       ],
     },

@@ -83,3 +83,9 @@ export default {
   },
 };
 </script>
+
+<style scoped>
+* {
+  font-family: "TmoneyRoundWindExtraBold";
+}
+</style>

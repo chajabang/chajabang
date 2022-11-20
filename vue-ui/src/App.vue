@@ -6,10 +6,9 @@
 
 <script>
 export default {
-  name: 'app',
-  components: {
-  }
-}
+  name: "app",
+  components: {},
+};
 </script>
 
 <style lang="scss">
@@ -25,4 +24,7 @@ export default {
 @import "../node_modules/c3/c3.min.css";
 @import "../node_modules/chartist/dist/chartist.min.css";
 @import "./assets/scss/style";
+* {
+  font-family: "TmoneyRoundWindExtraBold";
+}
 </style>
