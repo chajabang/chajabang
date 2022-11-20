@@ -1,4 +1,5 @@
-import { usernameCheck, userIdCheck, userRegister, userLogin } from "@/api/member";
+import { usernameCheck, userIdCheck, userRegister, userLogin, userLogout } from "@/api/member";
+import router from "@/router";
 const memberStore = {
   namespaced: true,
   state: {
@@ -66,6 +67,9 @@ const memberStore = {
     },
     REGISTER_MEMBER(_, message) {
       alert(message);
+      if (message == "회원가입 성공") {
+        router.push("/");
+      }
     },
     CLEAR_LOGIN_STATE(state) {
       state.valid.loginFail = false;
@@ -79,11 +83,15 @@ const memberStore = {
       state.valid.usernameOk = false;
       state.valid.usernameFail = false;
     },
+    CLEAR_USER_STATE(state) {
+      state.user.id = "";
+      state.user.username = "";
+    },
     LOGIN_SUCCESS(state, user) {
-      alert("LOGIN 성공! 라우팅해주세요");
       state.valid.loginFail = false;
       state.user.id = user.id;
       state.user.username = user.username;
+      router.go(-1);
     },
     LOGIN_FAIL(state) {
       state.valid.loginFail = true;
@@ -166,7 +174,6 @@ const memberStore = {
         ({ data, status }) => {
           if (status == 200) {
             commit("LOGIN_SUCCESS", data);
-            // this.$router.push("housemain");
           }
         },
         async (error) => {
@@ -175,6 +182,23 @@ const memberStore = {
           } else {
             alert("에러! 잠시후에 시도해주세요.");
           }
+        }
+      );
+    },
+    async logoutMember({ commit }) {
+      await userLogout(
+        ({ status }) => {
+          if (status == 200) {
+            commit("CLEAR_USER_STATE");
+            commit("LOGOUT_SUCCESS");
+            router.push("/");
+          }
+        },
+        async () => {
+          alert("다시 로그인 해주세요.");
+          commit("CLEAR_USER_STATE");
+          commit("LOGOUT_SUCCESS");
+          router.push("/");
         }
       );
     },

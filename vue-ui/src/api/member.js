@@ -22,11 +22,11 @@ async function usernameCheck(params, success, fail) {
   await api.get(`/member/username`, { params: params }).then(success).catch(fail);
 }
 
-async function logout(userid, success, fail) {
-  await api.post(`/member/logout/${userid}`).then(success).catch(fail);
+async function userLogout(success, fail) {
+  await api.post(`/member/logout`).then(success).catch(fail);
 }
 async function userRegister(data, success, fail) {
   await api.post("/member/register", data).then(success).catch(fail);
 }
 
-export { userLogin, findById, userIdCheck, usernameCheck, logout, userRegister };
+export { userLogin, findById, userIdCheck, usernameCheck, userLogout, userRegister };

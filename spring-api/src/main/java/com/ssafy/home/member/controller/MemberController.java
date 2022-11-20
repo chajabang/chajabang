@@ -34,6 +34,8 @@ public class MemberController {
         HttpSession session = request.getSession(false);
         if (session != null) {
             // 로그아웃 성공
+            Member m = (Member) session.getAttribute("member");
+            logger.info("MEMBER 정보 {}",m);
             session.invalidate();
             return new ResponseEntity<>(SUCCESS, HttpStatus.OK);
         } else {
@@ -46,7 +48,7 @@ public class MemberController {
     @PostMapping("/login")
     public ResponseEntity<Member> login(@RequestBody Member m, HttpServletRequest request) {
         logger.info("Member login 호출 - {}", m);
-        if(m.getId()==null || m.getPw()==null){
+        if (m.getId() == null || m.getPw() == null) {
             return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
         }
         Map<String, Object> map = new HashMap<>();
@@ -57,7 +59,7 @@ public class MemberController {
                 m.setUsername(username);
                 HttpSession session = request.getSession();
                 session.setAttribute("member", m);
-                    return new ResponseEntity<>(m, HttpStatus.OK);
+                return new ResponseEntity<>(m, HttpStatus.OK);
             }
             // 로그인 실패
             return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
@@ -97,6 +99,7 @@ public class MemberController {
         if (session != null) {
             // 세션이 있을 경우 member가 있는지 갖고오기
             Member m = (Member) session.getAttribute("member");
+
             if (m != null) {
                 // 멤버가 존재할 때
                 map.put("id", m.getId());
