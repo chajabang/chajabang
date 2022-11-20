@@ -11,7 +11,11 @@
                 </div>
                 <h4>Hello! let's get started</h4>
                 <h6 class="font-weight-light">Login to continue.</h6>
+
                 <form class="pt-3">
+                  <div v-if="valid.loginFail" class="alert alert-danger" role="alert">
+                    ID, Password을 확인해주세요.
+                  </div>
                   <div class="form-group">
                     <input
                       type="text"
@@ -64,7 +68,7 @@
 </template>
 
 <script>
-import { mapActions } from "vuex";
+import { mapActions, mapState, mapMutations } from "vuex";
 
 const memberStore = "memberStore";
 export default {
@@ -77,9 +81,16 @@ export default {
   },
   methods: {
     ...mapActions(memberStore, ["loginMember"]),
+    ...mapMutations(memberStore, ["CLEAR_LOGIN_STATE"]),
     clickLoginBtn() {
       this.loginMember({ id: this.id, pw: this.pw });
     },
+  },
+  created() {
+    this.CLEAR_LOGIN_STATE();
+  },
+  computed: {
+    ...mapState(memberStore, ["valid"]),
   },
 };
 </script>

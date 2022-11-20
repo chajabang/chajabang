@@ -10,8 +10,13 @@ const memberStore = {
       email: false,
       usernameOk: false,
       usernameFail: false,
+      loginFail: false,
     },
     message: {
+      id: "",
+      username: "",
+    },
+    user: {
       id: "",
       username: "",
     },
@@ -61,6 +66,27 @@ const memberStore = {
     },
     REGISTER_MEMBER(_, message) {
       alert(message);
+    },
+    CLEAR_LOGIN_STATE(state) {
+      state.valid.loginFail = false;
+    },
+    CLEAR_REGISTER_STATE(state) {
+      state.valid.idOk = false;
+      state.valid.idFail = false;
+      state.valid.pw = false;
+      state.valid.confirmPw = false;
+      state.valid.email = false;
+      state.valid.usernameOk = false;
+      state.valid.usernameFail = false;
+    },
+    LOGIN_SUCCESS(state, user) {
+      alert("LOGIN 성공! 라우팅해주세요");
+      state.valid.loginFail = false;
+      state.user.id = user.id;
+      state.user.username = user.username;
+    },
+    LOGIN_FAIL(state) {
+      state.valid.loginFail = true;
     },
   },
   actions: {
@@ -137,18 +163,17 @@ const memberStore = {
     async loginMember({ commit }, member) {
       await userLogin(
         member,
-        ({ status }) => {
+        ({ data, status }) => {
           if (status == 200) {
-            alert("로그인 성공");
-            commit("REGISTER_MEMBER", "회원가입 성공");
+            commit("LOGIN_SUCCESS", data);
+            // this.$router.push("housemain");
           }
         },
         async (error) => {
           if (error.response.status == 400) {
-            alert("로그인 실패");
-            // commit("REGISTER_MEMBER", "회원가입 실패!");
+            commit("LOGIN_FAIL");
           } else {
-            // alert("에러! 잠시후에 시도해주세요.");
+            alert("에러! 잠시후에 시도해주세요.");
           }
         }
       );

@@ -46,6 +46,9 @@ public class MemberController {
     @PostMapping("/login")
     public ResponseEntity<Member> login(@RequestBody Member m, HttpServletRequest request) {
         logger.info("Member login 호출 - {}", m);
+        if(m.getId()==null || m.getPw()==null){
+            return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
+        }
         Map<String, Object> map = new HashMap<>();
         try {
             String username = memberService.login(m);
@@ -54,10 +57,12 @@ public class MemberController {
                 m.setUsername(username);
                 HttpSession session = request.getSession();
                 session.setAttribute("member", m);
-                return new ResponseEntity<>(m, HttpStatus.OK);
+                    return new ResponseEntity<>(m, HttpStatus.OK);
             }
-        } catch (SQLException e) {
             // 로그인 실패
+            return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
+        } catch (SQLException e) {
+            //실패
             return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
         } catch (Exception e) {
             logger.warn("Exception -  {} ", e.getMessage());
@@ -153,6 +158,7 @@ public class MemberController {
             Member l = new Member(id, pw);
             try {
                 String loginM = memberService.login(l);
+
                 if (loginM != null && loginM != "") {
                     if (m != null && m.getId().equals(map.get("id"))) {
                         try {

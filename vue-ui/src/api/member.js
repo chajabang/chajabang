@@ -3,7 +3,7 @@ import { apiInstance } from "./index.js";
 const api = apiInstance();
 
 async function userLogin(data, success, fail) {
-  await api.post(`/member/login`, JSON.stringify(data)).then(success).catch(fail);
+  await api.post("/member/login", data).then(success).catch(fail);
 }
 
 async function findById(userid, success, fail) {
