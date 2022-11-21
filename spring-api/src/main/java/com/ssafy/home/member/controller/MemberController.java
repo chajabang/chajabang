@@ -35,7 +35,7 @@ public class MemberController {
         if (session != null) {
             // 로그아웃 성공
             Member m = (Member) session.getAttribute("member");
-            logger.info("MEMBER 정보 {}",m);
+            logger.info("MEMBER 정보 {}", m);
             session.invalidate();
             return new ResponseEntity<>(SUCCESS, HttpStatus.OK);
         } else {
@@ -91,28 +91,30 @@ public class MemberController {
         }
     }
 
-    @PostMapping("/info")
-    public ResponseEntity<Map<String, Object>> getInfo(HttpServletRequest request) {
+    @GetMapping("/info")
+    public ResponseEntity<Member> getInfo(HttpServletRequest request) {
         logger.info("Member Register 호출 ");
         Map<String, Object> map = new HashMap<>();
         HttpSession session = request.getSession(false);
         if (session != null) {
-            // 세션이 있을 경우 member가 있는지 갖고오기
+            // 세션이 있을 경우에만 있는지 갖고오기
             Member m = (Member) session.getAttribute("member");
-
             if (m != null) {
                 // 멤버가 존재할 때
-                map.put("id", m.getId());
-                map.put("username", m.getUsername());
-                return new ResponseEntity<>(map, HttpStatus.OK);
+                try {
+                    Member newM = memberService.userInfo(m.getId());
+                    Member returnM = new Member(newM.getId(), newM.getUsername(), newM.getEmail());
+                    return new ResponseEntity<>(returnM, HttpStatus.OK);
+                } catch (SQLException e) {
+                    return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
+                }
             } else {
                 // 세션에 멤버가 존재하지 않을 때
                 return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
             }
         } else {
             // 세션 만료
-            map.put("msg", "다시 로그인 해주세요");
-            return new ResponseEntity<>(map, HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
         }
 
     }
@@ -133,8 +135,15 @@ public class MemberController {
     }
 
     @GetMapping("/username")
-    public ResponseEntity<String> usernameCheck(@RequestParam("username") String username) {
+    public ResponseEntity<String> usernameCheck(@RequestParam("username") String username, HttpServletRequest request) {
         logger.info("Member username 중복 체크 호출 - {}", username);
+        HttpSession session = request.getSession(false);
+        if (session != null) {
+            Member sessionM = (Member) session.getAttribute("member");
+            if (sessionM.getUsername().equals(username)) {
+                return new ResponseEntity<>(SUCCESS, HttpStatus.OK);
+            }
+        }
         try {
             int cnt = memberService.usernameCheck(username);
             if (cnt == 0) {
@@ -148,59 +157,95 @@ public class MemberController {
     }
 
     @PostMapping("/update")
-    public ResponseEntity<String> update(@RequestParam Map<String, String> map, HttpServletRequest request) {
+    public ResponseEntity<String> update(@RequestBody Map<String, String> map, HttpServletRequest request) {
         logger.info("Member Update 호출");
         HttpSession session = request.getSession(false);
         if (session != null) {
             Member m = (Member) session.getAttribute("member");
+            logger.info("Member Update Member - {}", map);
 
             String id = map.get("id");
             String pw = map.get("pw");
             String username = map.get("username");
             String email = map.get("email");
-            Member l = new Member(id, pw);
-            try {
-                String loginM = memberService.login(l);
 
-                if (loginM != null && loginM != "") {
-                    if (m != null && m.getId().equals(map.get("id"))) {
-                        try {
-                            int i = memberService.update(map);
-                            if (i > 0) {
-                                session.setAttribute("member", new Member(id, pw, username, email));
-                                return new ResponseEntity<>(SUCCESS, HttpStatus.OK);
-                            }
-                        } catch (Exception e) {
-                            logger.warn("Exception -  {} ", e.getMessage());
-                            return new ResponseEntity<>(ERROR, HttpStatus.INTERNAL_SERVER_ERROR);
+            try {
+                if (m != null && m.getId().equals(id)) {
+                    try {
+                        int i = memberService.update(map);
+                        if (i > 0) {
+                            session.setAttribute("member", new Member(id, pw, username, email));
+                            return new ResponseEntity<>(SUCCESS, HttpStatus.OK);
                         }
+                    } catch (Exception e) {
+                        logger.warn("Exception -  {} ", e.getMessage());
+                        return new ResponseEntity<>(FAIL, HttpStatus.BAD_REQUEST);
                     }
                 }
+
                 return new ResponseEntity<>(FAIL, HttpStatus.BAD_REQUEST);
             } catch (Exception e) {
                 logger.warn("Exception -  {} ", e.getMessage());
-
+                return new ResponseEntity<>(ERROR, HttpStatus.INTERNAL_SERVER_ERROR);
             }
         }
-        return new ResponseEntity<>(ERROR, HttpStatus.INTERNAL_SERVER_ERROR);
+        //세션 만료
+        return new ResponseEntity<>(FAIL, HttpStatus.FORBIDDEN);
     }
 
     @PostMapping("/delete")
-    public ResponseEntity<String> delete(@RequestParam String id, HttpServletRequest request) {
-        logger.info("Member Update 호출 - ID : {}", id);
+    public ResponseEntity<String> delete(HttpServletRequest request) {
+        logger.info("Member Delete 호출");
         HttpSession session = request.getSession(false);
         if (session != null) {
-            try {
-                int i = memberService.delete(id);
-                if (i > 0) {
-                    session.invalidate();
-                    return new ResponseEntity<>(SUCCESS, HttpStatus.OK);
+            Member m = (Member) session.getAttribute("member");
+            if (m != null) {
+                String id = m.getId();
+                try {
+                    int i = memberService.delete(id);
+                    if (i > 0) {
+                        session.invalidate();
+                        return new ResponseEntity<>(SUCCESS, HttpStatus.OK);
+                    }
+
+                } catch (Exception e) {
+                    logger.warn("Exception -  {} , id : { }", e.getMessage());
                 }
-                return new ResponseEntity<>(FAIL, HttpStatus.NOT_FOUND);
-            } catch (Exception e) {
-                logger.warn("Exception -  {} , id : { }", e.getMessage());
             }
+            return new ResponseEntity<>(FAIL, HttpStatus.BAD_REQUEST);
+
         }
-        return new ResponseEntity<>(ERROR, HttpStatus.INTERNAL_SERVER_ERROR);
+        return new ResponseEntity<>(FAIL, HttpStatus.FORBIDDEN);
+    }
+
+    @PostMapping("/pwconfirm")
+    public ResponseEntity<String> PwCheck(@RequestBody Member m, HttpServletRequest request) {
+        logger.info("Member PwCheck  호출 ");
+        if (m.getPw() == null) {
+            return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
+        }
+        HttpSession session = request.getSession(false);
+        if (session != null) {
+            Member sessionM = (Member) session.getAttribute("member");
+            if (sessionM != null) {
+                m.setId(sessionM.getId());
+                try {
+                    String username = memberService.login(m);
+                    if (username != null) {
+                        return new ResponseEntity<>(SUCCESS, HttpStatus.OK);
+                    }
+                } catch (SQLException e) {
+                    return new ResponseEntity<>(FAIL, HttpStatus.BAD_REQUEST);
+                } catch (Exception e) {
+                    logger.warn("Exception -  {} , id : { }", e.getMessage());
+                    return new ResponseEntity<>(ERROR, HttpStatus.INTERNAL_SERVER_ERROR);
+                }
+            }
+            //잘못된 입력
+            return new ResponseEntity<>(FAIL, HttpStatus.BAD_REQUEST);
+        }
+        logger.warn("세션만료");
+        //세션 만료
+        return new ResponseEntity<>(FAIL, HttpStatus.FORBIDDEN);
     }
 }

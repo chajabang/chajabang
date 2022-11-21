@@ -54,10 +54,15 @@ public class MemberService {
 
     public  int update(Map<String,String> map) throws Exception{
         SecVO sec=secMapper.selectSecById(map.get("id"));
-        map.put("pw", new String(OpenCrypt.byteArrayToHex(OpenCrypt.getSHA256(map.get("newPw"), sec.getSalt()))));
-        System.out.println(map.get("pw"));
+        map.put("pw", new String(OpenCrypt.byteArrayToHex(OpenCrypt.getSHA256(map.get("pw"), sec.getSalt()))));
+        System.out.println("업데이트!! :"+map.get("pw"));
         return memberMapper.update(map);
     }
+
+    public Member userInfo(String id) throws SQLException {
+        return memberMapper.userInfo(id);
+    }
+
 
 
     @Transactional

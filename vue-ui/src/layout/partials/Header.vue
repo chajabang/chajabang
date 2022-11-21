@@ -24,15 +24,15 @@
         <b-nav-item>
           <span class="nav-link">
             <div class="nav-profile-img mx-2">
-              <img
-                src="@/assets/images/faces-clipart/pic-1.png"
-                alt="image"
-                @click="clickUpdateBtn"
-              />
+              <router-link :to="{ name: 'pwConfirm' }">
+                <img src="@/assets/images/faces-clipart/pic-1.png" alt="image" />
+              </router-link>
               <span class="availability-status online"></span>
             </div>
             <div class="nav-profile-text">
-              <p class="text-black" @click="clickUpdateBtn">{{ user.username }}</p>
+              <router-link :to="{ name: 'pwConfirm' }">
+                <p class="text-black">{{ user.username }}</p></router-link
+              >
             </div>
           </span>
         </b-nav-item>
@@ -79,9 +79,6 @@ export default {
     },
     toggleMobileSidebar: () => {
       document.querySelector("#sidebar").classList.toggle("active");
-    },
-    clickUpdateBtn() {
-      alert("UPDATE METHOD");
     },
     clickLogoutBtn() {
       this.logoutMember();

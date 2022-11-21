@@ -12,7 +12,11 @@ public class Member {
         setId(id);
         setPw(pw);
     }
-
+    public Member(String id, String pw,String email) {
+        setId(id);
+        setPw(pw);
+        setEmail(email);
+    }
     public Member(String id, String pw, String username, String email) {
         setId(id);
         setPw(pw);
