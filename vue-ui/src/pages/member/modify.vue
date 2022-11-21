@@ -183,6 +183,7 @@ export default {
         alert("이메일을 확인하세요");
         return;
       }
+      console.log("PW", this.pw);
 
       if (confirm("수정하시겠습니다까??")) {
         this.updateMember({
@@ -202,9 +203,9 @@ export default {
   computed: {
     ...mapState(memberStore, ["valid", "message", "user"]),
   },
-  async created() {
+  created() {
+    this.getMemberInfo();
     this.CLEAR_REGISTER_STATE();
-    await this.getMemberInfo();
     this.id = this.user.id;
     this.username = this.user.username;
     this.email = this.user.email;

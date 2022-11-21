@@ -168,13 +168,17 @@ public class MemberController {
             String pw = map.get("pw");
             String username = map.get("username");
             String email = map.get("email");
+            if(pw.trim().equals("")){
+                map.put("pw",null);
+            }
+            System.out.println(pw==null);
 
             try {
                 if (m != null && m.getId().equals(id)) {
                     try {
                         int i = memberService.update(map);
                         if (i > 0) {
-                            session.setAttribute("member", new Member(id, pw, username, email));
+                            session.setAttribute("member", new Member(id, username, email));
                             return new ResponseEntity<>(SUCCESS, HttpStatus.OK);
                         }
                     } catch (Exception e) {
