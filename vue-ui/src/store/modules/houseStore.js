@@ -78,8 +78,6 @@ const houseStore = {
     SET_HOUSE_DETAIL(state, { houseinfo, house }) {
       state.houseinfo = houseinfo;
       state.house = house;
-      console.log(state.houseinfo);
-      console.log(state.house);
     },
     SET_HOUSE_DEALS(state, housedeals) {
       housedeals.forEach((house) => {

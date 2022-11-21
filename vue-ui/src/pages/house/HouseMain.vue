@@ -154,8 +154,8 @@ export default {
       } else if (!this.dong) {
         alert("동이 선택되지 않았습니다.");
       } else {
-        this.mvHouseView({ sido: this.sido, gugun: this.gugun, dong: this.dong });
         this.getHouses({ sido: this.sido, gugun: this.gugun, dong: this.dong });
+        this.mvHouseView();
       }
     },
   },

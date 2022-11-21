@@ -28,7 +28,7 @@
         select distinct area, floor
         from housedeal
         where aptCode = #{aptCode}
-        order by floor, area
+        order by cast(floor as signed), cast(area as signed)
     </select>
 
     <select id="getHouseDeals" parameterType="Map" resultType="HouseDeal">

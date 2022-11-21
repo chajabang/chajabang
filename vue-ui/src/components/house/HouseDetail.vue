@@ -1,10 +1,24 @@
 <template>
   <b-container>
-    <b-row>
+    <b-row align-h="between">
+      <b-col>
+        <button type="button" class="btn btn-link px-0 py-0" @click="mvPrev">
+          <i class="mdi mdi-chevron-left"></i>목록
+        </button>
+      </b-col>
+      <b-col cols="2">
+        <button type="button" class="btn btn-link px-0 py-0">
+          <!-- <i class="mdi mdi-heart-outline"></i> -->
+          <i class="mdi mdi-heart"></i>
+        </button>
+      </b-col>
+    </b-row>
+    <b-row class="mt-3">
       <b-col
         ><h2>{{ house.apartmentName }}</h2></b-col
       >
     </b-row>
+    <house-road-view></house-road-view>
     <b-row class="mt-3">
       <b-col>
         <b-alert show variant="secondary"
@@ -42,6 +56,7 @@
 import { mapActions, mapState } from "vuex";
 import HouseInfo from "@/components/house/HouseInfo";
 import HouseDealChart from "@/components/house/HouseDealChart";
+import HouseRoadView from "@/components/house/HouseRoadView";
 
 const houseStore = "houseStore";
 
@@ -50,13 +65,17 @@ export default {
   components: {
     HouseInfo,
     HouseDealChart,
+    HouseRoadView,
   },
   created() {
     this.clearHouseDeals();
-    console.log(this.housedeals);
   },
   methods: {
-    ...mapActions(houseStore, ["clearHouseDeals"]),
+    ...mapActions(houseStore, ["clearHouseDeals", "clearHouse"]),
+    mvPrev() {
+      this.clearHouse();
+      this.clearHouseDeals();
+    },
   },
   computed: {
     ...mapState(houseStore, ["house", "houseinfo", "housedeals"]),
