@@ -1,4 +1,5 @@
-import { usernameCheck, userIdCheck, userRegister } from "@/api/member";
+import { usernameCheck, userIdCheck, userRegister, userLogin, userLogout } from "@/api/member";
+import router from "@/router";
 const memberStore = {
   namespaced: true,
   state: {
@@ -10,8 +11,13 @@ const memberStore = {
       email: false,
       usernameOk: false,
       usernameFail: false,
+      loginFail: false,
     },
     message: {
+      id: "",
+      username: "",
+    },
+    user: {
       id: "",
       username: "",
     },
@@ -61,6 +67,34 @@ const memberStore = {
     },
     REGISTER_MEMBER(_, message) {
       alert(message);
+      if (message == "회원가입 성공") {
+        router.push("/");
+      }
+    },
+    CLEAR_LOGIN_STATE(state) {
+      state.valid.loginFail = false;
+    },
+    CLEAR_REGISTER_STATE(state) {
+      state.valid.idOk = false;
+      state.valid.idFail = false;
+      state.valid.pw = false;
+      state.valid.confirmPw = false;
+      state.valid.email = false;
+      state.valid.usernameOk = false;
+      state.valid.usernameFail = false;
+    },
+    CLEAR_USER_STATE(state) {
+      state.user.id = "";
+      state.user.username = "";
+    },
+    LOGIN_SUCCESS(state, user) {
+      state.valid.loginFail = false;
+      state.user.id = user.id;
+      state.user.username = user.username;
+      router.go(-1);
+    },
+    LOGIN_FAIL(state) {
+      state.valid.loginFail = true;
     },
   },
   actions: {
@@ -82,7 +116,7 @@ const memberStore = {
     async checkId({ commit }, id) {
       // 아이디 중복 확인
       await userIdCheck(
-        id,
+        { id: id },
         ({ status }) => {
           if (status == 200) {
             commit("CHECK_ID_SUCCESS", id);
@@ -101,7 +135,7 @@ const memberStore = {
     async checkUsername({ commit }, username) {
       // 아이디 중복 확인
       await usernameCheck(
-        username,
+        { username: username },
         ({ status }) => {
           if (status == 200) {
             commit("CHECK_USERNAME_SUCCESS", username);
@@ -131,6 +165,40 @@ const memberStore = {
           } else {
             alert("에러! 잠시후에 시도해주세요.");
           }
+        }
+      );
+    },
+    async loginMember({ commit }, member) {
+      await userLogin(
+        member,
+        ({ data, status }) => {
+          if (status == 200) {
+            commit("LOGIN_SUCCESS", data);
+          }
+        },
+        async (error) => {
+          if (error.response.status == 400) {
+            commit("LOGIN_FAIL");
+          } else {
+            alert("에러! 잠시후에 시도해주세요.");
+          }
+        }
+      );
+    },
+    async logoutMember({ commit }) {
+      await userLogout(
+        ({ status }) => {
+          if (status == 200) {
+            commit("CLEAR_USER_STATE");
+            commit("LOGOUT_SUCCESS");
+            router.push("/");
+          }
+        },
+        async () => {
+          alert("다시 로그인 해주세요.");
+          commit("CLEAR_USER_STATE");
+          commit("LOGOUT_SUCCESS");
+          router.push("/");
         }
       );
     },

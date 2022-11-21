@@ -20,20 +20,24 @@
       >
         <span class="mdi mdi-menu"></span>
       </button>
-      <b-navbar-nav v-if="logined" class="navbar-nav-right ml-auto">
+      <b-navbar-nav v-if="user.username" class="navbar-nav-right ml-auto">
         <b-nav-item>
           <span class="nav-link">
             <div class="nav-profile-img mx-2">
-              <img src="@/assets/images/faces-clipart/pic-1.png" alt="image" />
+              <img
+                src="@/assets/images/faces-clipart/pic-1.png"
+                alt="image"
+                @click="clickUpdateBtn"
+              />
               <span class="availability-status online"></span>
             </div>
             <div class="nav-profile-text">
-              <p class="text-black">David Greymaax</p>
+              <p class="text-black" @click="clickUpdateBtn">{{ user.username }}</p>
             </div>
           </span>
         </b-nav-item>
         <b-nav-item class="nav-logout d-none d-lg-block">
-          <i class="mdi mdi-power"></i>
+          <i class="mdi mdi-power" @click="clickLogoutBtn"></i>
         </b-nav-item>
       </b-navbar-nav>
       <b-navbar-nav v-else class="navbar-nav-right ml-auto">
@@ -60,6 +64,9 @@
 </template>
 
 <script>
+import { mapState, mapActions } from "vuex";
+const memberStore = "memberStore";
+
 export default {
   name: "app-header",
   created() {
@@ -68,12 +75,22 @@ export default {
     }
   },
   methods: {
+    ...mapActions(memberStore, ["logoutMember"]),
     toggleSidebar: () => {
       document.querySelector("body").classList.toggle("sidebar-icon-only");
     },
     toggleMobileSidebar: () => {
       document.querySelector("#sidebar").classList.toggle("active");
     },
+    clickUpdateBtn() {
+      alert("UPDATE METHOD");
+    },
+    clickLogoutBtn() {
+      this.logoutMember();
+    },
+  },
+  computed: {
+    ...mapState(memberStore, ["user"]),
   },
 };
 </script>

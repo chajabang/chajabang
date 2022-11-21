@@ -2,38 +2,31 @@ import { apiInstance } from "./index.js";
 
 const api = apiInstance();
 
-async function login(user, success, fail) {
-  await api.post(`/member/login`, JSON.stringify(user)).then(success).catch(fail);
+async function userLogin(data, success, fail) {
+  await api.post("/member/login", data).then(success).catch(fail);
 }
 
 async function findById(userid, success, fail) {
   await api.post(`/member/info/${userid}`).then(success).catch(fail);
 }
 
-async function userIdCheck(id, success, fail) {
+async function userIdCheck(params, success, fail) {
   await api
     .get(`/member/id`, {
-      params: { id },
+      params: params,
     })
     .then(success)
     .catch(fail);
 }
-async function usernameCheck(username, success, fail) {
-  await api.get(`/member/username`, { params: { username } }).then(success).catch(fail);
+async function usernameCheck(params, success, fail) {
+  await api.get(`/member/username`, { params: params }).then(success).catch(fail);
 }
 
-async function logout(userid, success, fail) {
-  await api.post(`/member/logout/${userid}`).then(success).catch(fail);
+async function userLogout(success, fail) {
+  await api.post(`/member/logout`).then(success).catch(fail);
 }
-async function userRegister(member, success, fail) {
-  let data = {
-    id: member.id,
-    pw: member.pw,
-    username: member.username,
-    email: member.email,
-  };
-  console.log(data);
-  await api.post("/member/register", JSON.stringify(data)).then(success).catch(fail);
+async function userRegister(data, success, fail) {
+  await api.post("/member/register", data).then(success).catch(fail);
 }
 
-export { login, findById, userIdCheck, usernameCheck, logout, userRegister };
+export { userLogin, findById, userIdCheck, usernameCheck, userLogout, userRegister };

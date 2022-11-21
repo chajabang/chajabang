@@ -26,6 +26,7 @@
                         <button
                           type="button"
                           class="btn btn-gradient-primary btn-sm font-weight-medium"
+                          @click="clickIdBtn"
                         >
                           Check
                         </button>
@@ -120,7 +121,7 @@
 </template>
 
 <script>
-import { mapActions, mapState } from "vuex";
+import { mapActions, mapState, mapMutations } from "vuex";
 
 const memberStore = "memberStore";
 
@@ -156,6 +157,7 @@ export default {
       "checkUsername",
       "registerMember",
     ]),
+    ...mapMutations(memberStore, ["CLEAR_REGISTER_STATE"]),
     clickIdBtn() {
       this.checkId(this.id);
     },
@@ -164,7 +166,6 @@ export default {
     },
     clickSignUpBtn() {
       // 회원가입 버튼
-      console.log(this.valid.pw);
       if (this.valid.idFail) {
         alert("아이디를 확인하세요");
         return;
@@ -187,6 +188,9 @@ export default {
   },
   computed: {
     ...mapState(memberStore, ["valid", "message"]),
+  },
+  created() {
+    this.CLEAR_REGISTER_STATE();
   },
 };
 </script>

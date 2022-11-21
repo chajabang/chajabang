@@ -11,23 +11,35 @@
                 </div>
                 <h4>Hello! let's get started</h4>
                 <h6 class="font-weight-light">Login to continue.</h6>
+
                 <form class="pt-3">
+                  <div v-if="valid.loginFail" class="alert alert-danger" role="alert">
+                    ID, Password을 확인해주세요.
+                  </div>
                   <div class="form-group">
-                    <input type="text" class="form-control form-control-lg" placeholder="ID" />
+                    <input
+                      type="text"
+                      class="form-control form-control-lg"
+                      placeholder="ID"
+                      v-model="id"
+                    />
                   </div>
                   <div class="form-group">
                     <input
                       type="password"
                       class="form-control form-control-lg"
                       placeholder="Password"
+                      v-model="pw"
                     />
                   </div>
                   <div class="mt-3">
-                    <router-link
+                    <button
+                      type="button"
                       class="btn btn-block btn-gradient-primary btn-lg font-weight-medium auth-form-btn"
-                      to="/"
-                      >LOGIN</router-link
+                      @click="clickLoginBtn"
                     >
+                      LOGIN
+                    </button>
                   </div>
                   <div class="my-2 d-flex justify-content-between align-items-center">
                     <div class="form-check">
@@ -56,8 +68,30 @@
 </template>
 
 <script>
+import { mapActions, mapState, mapMutations } from "vuex";
+
+const memberStore = "memberStore";
 export default {
   name: "login",
+  data() {
+    return {
+      id: "",
+      pw: "",
+    };
+  },
+  methods: {
+    ...mapActions(memberStore, ["loginMember"]),
+    ...mapMutations(memberStore, ["CLEAR_LOGIN_STATE"]),
+    clickLoginBtn() {
+      this.loginMember({ id: this.id, pw: this.pw });
+    },
+  },
+  created() {
+    this.CLEAR_LOGIN_STATE();
+  },
+  computed: {
+    ...mapState(memberStore, ["valid"]),
+  },
 };
 </script>
 

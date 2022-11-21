@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.sql.SQLException;
 import java.util.Map;
 import java.util.UUID;
 
@@ -21,7 +22,7 @@ public class MemberService {
     @Autowired
     SecMapper secMapper;
 
-    public String login(Member m) throws Exception{
+    public String login(Member m) throws SQLException {
         SecVO sec = secMapper.selectSecById(m.getId());
         if (sec != null) {
             String pw = OpenCrypt.byteArrayToHex(OpenCrypt.getSHA256(m.getPw(), sec.getSalt()));
