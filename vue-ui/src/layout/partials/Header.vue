@@ -63,7 +63,9 @@
 export default {
   name: "app-header",
   created() {
-    this.toggleSidebar();
+    if (!document.querySelector("body").classList.contains("sideber-icon-only")) {
+      this.toggleSidebar();
+    }
   },
   methods: {
     toggleSidebar: () => {

@@ -4,7 +4,6 @@
       <b-thead>
         <b-tr class="text-center bg-light bg-gradient">
           <b-th><b>매물이름</b></b-th>
-          <b-th><b>층</b></b-th>
           <b-th><b>도로명주소</b></b-th>
         </b-tr>
       </b-thead>

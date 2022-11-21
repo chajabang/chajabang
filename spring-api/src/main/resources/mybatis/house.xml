@@ -18,11 +18,24 @@
     </select>
 
     <select id="getHouseList" parameterType="String" resultType="house">
-        select distinct i.aptCode, i.dong, i.roadName, cast(i.roadNameBonbun as signed) roadNameBonbun, cast(i.roadNameBubun as signed) roadNameBubun, i.apartmentName, i.lat, i.lng, d.floor, d.area
-        from houseinfo as i
-        inner join housedeal as d
-        on i.aptCode = d.aptCode
-        where i.dongCode = (select dongCode from dongcode where sidoName = #{sido} and gugunName = #{gugun} and dongName = #{dong})
+        select distinct aptCode, dong, cast(bonbun as signed) bonbun, cast(bubun as signed) bubun, roadName, cast(roadNameBonbun as signed) roadNameBonbun, cast(roadNameBubun as signed) roadNameBubun, apartmentName, lat, lng
+        from houseinfo
+        where dongCode = (select dongCode from dongcode where sidoName = #{sido} and gugunName = #{gugun} and dongName = #{dong})
+        order by apartmentName
+    </select>
+
+    <select id="getHouseDetail" parameterType="long" resultType="HouseDeal">
+        select distinct area, floor
+        from housedeal
+        where aptCode = #{aptCode}
+        order by floor, area
+    </select>
+
+    <select id="getHouseDeals" parameterType="Map" resultType="HouseDeal">
+        select distinct no, aptCode, dealYear, dealMonth, dealDay, dealAmount, area, floor
+        from housedeal
+        where aptCode = #{aptCode} and floor = #{floor} and area = #{area}
+        order by dealYear, dealMonth, dealDay
     </select>
 
 </mapper>

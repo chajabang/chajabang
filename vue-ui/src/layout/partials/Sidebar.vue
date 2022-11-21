@@ -156,10 +156,5 @@ export default {
       });
     });
   },
-  watch: {
-    $route() {
-      document.querySelector("#sidebar").classList.toggle("active");
-    },
-  },
 };
 </script>

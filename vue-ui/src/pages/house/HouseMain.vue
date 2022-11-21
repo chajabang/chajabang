@@ -49,7 +49,7 @@
             controls
             indicators
             background="#ababab"
-            style="text-shadow: 1px 1px 2px #333;"
+            style="text-shadow: 1px 1px 2px #333"
           >
             <!-- Text slides with image -->
             <b-carousel-slide>
@@ -81,7 +81,7 @@
             controls
             indicators
             background="#ababab"
-            style="text-shadow: 1px 1px 2px #333;"
+            style="text-shadow: 1px 1px 2px #333"
           >
             <!-- Text slides with image -->
             <b-carousel-slide>
@@ -154,8 +154,8 @@ export default {
       } else if (!this.dong) {
         alert("동이 선택되지 않았습니다.");
       } else {
-        this.getHouses({ sido: this.sido, gugun: this.gugun, dong: this.dong });
         this.mvHouseView({ sido: this.sido, gugun: this.gugun, dong: this.dong });
+        this.getHouses({ sido: this.sido, gugun: this.gugun, dong: this.dong });
       }
     },
   },

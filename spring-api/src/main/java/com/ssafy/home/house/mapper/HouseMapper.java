@@ -1,6 +1,7 @@
 package com.ssafy.home.house.mapper;
 
 import com.ssafy.home.house.dto.House;
+import com.ssafy.home.house.dto.HouseDeal;
 import org.apache.ibatis.annotations.Mapper;
 
 import java.util.List;
@@ -12,4 +13,8 @@ public interface HouseMapper {
     List<String> getDong(String sido, String gugun);
 
     List<String> getGugun(String sido);
+
+    List<HouseDeal> getHouseDetail(long aptCode);
+
+    List<HouseDeal> getHouseDeals(long aptCode, String floor, String area);
 }

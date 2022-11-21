@@ -1,38 +1,48 @@
 package com.ssafy.home.house.dto;
 
 public class House {
-    private long no;
-    private int roadNameBonbun, roadNameBubun;
-    private String aptCode, dong, roadName, apartmentName, lat, lng, floor, area, dealAmount;
+    private long aptCode;
+    private int bonbun, bubun, roadNameBonbun, roadNameBubun;
+    private String dong, roadName, apartmentName, lat, lng;
 
     public House() {
     }
 
-    public House(long no, int roadNameBonbun, int roadNameBubun, String aptCode, String dong, String roadName, String apartmentName, String lat, String lng, String floor,
-                 String area, String dealAmount) {
+    public House(long aptCode, int bonbun, int bubun, int roadNameBonbun, int roadNameBubun, String dong,
+                 String roadName, String apartmentName, String lat, String lng) {
+        setBonbun(bonbun);
+        setBubun(bubun);
         setRoadNameBonbun(roadNameBonbun);
         setRoadNameBubun(roadNameBubun);
-        setNo(no);
         setAptCode(aptCode);
         setDong(dong);
         setRoadName(roadName);
         setApartmentName(apartmentName);
         setLat(lat);
         setLng(lng);
-        setFloor(floor);
-        setArea(area);
-        setDealAmount(dealAmount);
     }
 
-    public long getNo() {
-        return no;
+    public int getBonbun() {
+        return bonbun;
     }
 
-    public void setNo(long no) {
-        if (no!=0) {
-            this.no = no;
-        } else {
+    public void setBonbun(int bonbun) {
+        if(bonbun < 0) {
             System.out.println("유효하지 않은 값입니다.");
+        } else {
+            this.bonbun = bonbun;
+        }
+    }
+
+    public int getBubun() {
+        return bubun;
+    }
+
+    public void setBubun(int bubun) {
+        if(bubun < 0) {
+            System.out.println("유효하지 않은 값입니다.");
+        } else {
+            this.bubun = bubun;
         }
     }
 
@@ -41,7 +51,7 @@ public class House {
     }
 
     public void setRoadNameBonbun(int roadNameBonbun) {
-        if(roadNameBonbun < 0) {
+        if (roadNameBonbun < 0) {
             System.out.println("유효하지 않은 값입니다.");
         } else {
             this.roadNameBonbun = roadNameBonbun;
@@ -53,19 +63,19 @@ public class House {
     }
 
     public void setRoadNameBubun(int roadNameBubun) {
-        if(roadNameBubun < 0) {
+        if (roadNameBubun < 0) {
             System.out.println("유효하지 않은 값입니다.");
         } else {
             this.roadNameBubun = roadNameBubun;
         }
     }
 
-    public String getAptCode() {
+    public long getAptCode() {
         return aptCode;
     }
 
-    public void setAptCode(String aptCode) {
-        if(aptCode != null) {
+    public void setAptCode(long aptCode) {
+        if (aptCode >= 0) {
             this.aptCode = aptCode;
         } else {
             System.out.println("유효하지 않은 값입니다.");
@@ -129,42 +139,6 @@ public class House {
     public void setLng(String lng) {
         if (lng != null) {
             this.lng = lng;
-        } else {
-            System.out.println("유효하지 않은 값입니다.");
-        }
-    }
-
-    public String getFloor() {
-        return floor;
-    }
-
-    public void setFloor(String floor) {
-        if (floor != null) {
-            this.floor = floor;
-        } else {
-            System.out.println("유효하지 않은 값입니다.");
-        }
-    }
-
-    public String getArea() {
-        return area;
-    }
-
-    public void setArea(String area) {
-        if (area != null) {
-            this.area = area;
-        } else {
-            System.out.println("유효하지 않은 값입니다.");
-        }
-    }
-
-    public String getDealAmount() {
-        return dealAmount;
-    }
-
-    public void setDealAmount(String dealAmount) {
-        if (dealAmount != null) {
-            this.dealAmount = dealAmount;
         } else {
             System.out.println("유효하지 않은 값입니다.");
         }

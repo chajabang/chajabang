@@ -1,4 +1,10 @@
-import { getGugunList, getDongList, getHouseList } from "@/api/house.js";
+import {
+  getGugunList,
+  getDongList,
+  getHouseList,
+  getHouseDetail,
+  getHouseDealInfo,
+} from "@/api/house.js";
 import router from "../../router";
 
 const houseStore = {
@@ -30,6 +36,8 @@ const houseStore = {
     guguns: [{ value: null, text: "구군" }],
     dongs: [{ value: null, text: "동" }],
     houses: [],
+    houseinfo: [],
+    housedeals: [],
     house: null,
   },
   mutations: {
@@ -38,6 +46,12 @@ const houseStore = {
     },
     CLEAR_DONG_LIST(state) {
       state.dongs = [{ value: null, text: "동" }];
+    },
+    CLEAR_HOUSE(state) {
+      state.house = null;
+    },
+    CLEAR_HOUSE_DEALS(state) {
+      state.housedeals = [];
     },
     SET_SIDO(state, sido) {
       state.sidoState = sido;
@@ -60,7 +74,21 @@ const houseStore = {
     },
     SET_HOUSE_LIST(state, houses) {
       state.houses = houses;
-      console.log(state.houses);
+    },
+    SET_HOUSE_DETAIL(state, { houseinfo, house }) {
+      state.houseinfo = houseinfo;
+      state.house = house;
+      console.log(state.houseinfo);
+      console.log(state.house);
+    },
+    SET_HOUSE_DEALS(state, housedeals) {
+      housedeals.forEach((house) => {
+        state.housedeals.push({
+          dealAmount: parseInt(house.dealAmount.replace(",", "")),
+          year: house.dealYear,
+          month: house.dealMonth,
+        });
+      });
     },
   },
   actions: {
@@ -70,6 +98,12 @@ const houseStore = {
     clearDongList({ commit }) {
       commit("CLEAR_DONG_LIST");
     },
+    clearHouse({ commit }) {
+      commit("CLEAR_HOUSE");
+    },
+    clearHouseDeals({ commit }) {
+      commit("CLEAR_HOUSE_DEALS");
+    },
     getGugun({ commit }, sido) {
       const params = { sido: sido };
       getGugunList(
@@ -77,8 +111,8 @@ const houseStore = {
         ({ data }) => {
           commit("SET_GUGUN_LIST", data);
         },
-        (error) => {
-          alert(error);
+        ({ response }) => {
+          alert(response.data);
         }
       );
     },
@@ -89,26 +123,51 @@ const houseStore = {
         ({ data }) => {
           commit("SET_DONG_LIST", data);
         },
-        (error) => {
-          alert(error);
+        ({ response }) => {
+          alert(response.data);
         }
       );
     },
-    mvHouseView({ commit }, { sido, gugun, dong }) {
-      commit("SET_SIDO", sido);
-      commit("SET_GUGUN", gugun);
-      commit("SET_DONG", dong);
+    mvHouseView() {
       router.push({ name: "houseview" });
     },
     getHouses({ commit }, { sido, gugun, dong }) {
+      commit("SET_SIDO", sido);
+      commit("SET_GUGUN", gugun);
+      commit("SET_DONG", dong);
       const params = { sido, gugun, dong };
       getHouseList(
         params,
         ({ data }) => {
+          commit("CLEAR_HOUSE");
           commit("SET_HOUSE_LIST", data);
         },
-        (error) => {
-          alert(error);
+        ({ response }) => {
+          alert(response.data);
+        }
+      );
+    },
+    getHouse({ commit }, house) {
+      const params = { aptCode: house.aptCode };
+      getHouseDetail(
+        params,
+        ({ data }) => {
+          commit("SET_HOUSE_DETAIL", { houseinfo: data, house: house });
+        },
+        ({ response }) => {
+          alert(response.data);
+        }
+      );
+    },
+    getHouseDeal({ commit }, { info, house }) {
+      const params = { aptCode: house.aptCode, floor: info.floor, area: info.area };
+      getHouseDealInfo(
+        params,
+        ({ data }) => {
+          commit("SET_HOUSE_DEALS", data);
+        },
+        ({ response }) => {
+          alert(response.data);
         }
       );
     },

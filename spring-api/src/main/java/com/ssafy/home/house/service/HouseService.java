@@ -1,6 +1,7 @@
 package com.ssafy.home.house.service;
 
 import com.ssafy.home.house.dto.House;
+import com.ssafy.home.house.dto.HouseDeal;
 import com.ssafy.home.house.mapper.HouseMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -23,5 +24,13 @@ public class HouseService {
 
     public List<String> getGugun(String sido) {
         return houseMapper.getGugun(sido);
+    }
+
+    public List<HouseDeal> getHouseDetail(long aptCode) {
+        return houseMapper.getHouseDetail(aptCode);
+    }
+
+    public List<HouseDeal> getHouseDeals(long aptCode, String floor, String area) {
+        return houseMapper.getHouseDeals(aptCode, floor, area);
     }
 }
