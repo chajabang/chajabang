@@ -37,6 +37,9 @@ async function userUpdate(data, success, fail) {
 async function userDelete(success, fail) {
   await api.post("/member/delete").then(success).catch(fail);
 }
+async function sessionCheck(success, fail) {
+  await api.get(`/member/check`).then(success).catch(fail);
+}
 
 export {
   userLogin,
@@ -48,4 +51,5 @@ export {
   userPwConfirm,
   userUpdate,
   userDelete,
+  sessionCheck,
 };

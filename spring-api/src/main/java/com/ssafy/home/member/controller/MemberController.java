@@ -168,10 +168,10 @@ public class MemberController {
             String pw = map.get("pw");
             String username = map.get("username");
             String email = map.get("email");
-            if(pw.trim().equals("")){
-                map.put("pw",null);
+            if (pw.trim().equals("")) {
+                map.put("pw", null);
             }
-            System.out.println(pw==null);
+            System.out.println(pw == null);
 
             try {
                 if (m != null && m.getId().equals(id)) {
@@ -251,5 +251,16 @@ public class MemberController {
         logger.warn("세션만료");
         //세션 만료
         return new ResponseEntity<>(FAIL, HttpStatus.FORBIDDEN);
+    }
+
+    @GetMapping("/check")
+    public ResponseEntity<String> sessionCheck(HttpServletRequest request) {
+        logger.info("Session Check - 호출 ");
+        HttpSession session = request.getSession(false);
+        if (session == null) {//세션 만료
+            return new ResponseEntity<>(FAIL, HttpStatus.UNAUTHORIZED);
+        }
+        return new ResponseEntity<>(SUCCESS, HttpStatus.OK);
+
     }
 }

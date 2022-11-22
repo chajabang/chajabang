@@ -8,6 +8,12 @@
             <i class="mdi mdi-home menu-icon"></i>
           </router-link>
         </li>
+        <li class="nav-item" v-on:click="collapseAll">
+          <router-link class="nav-link" to="/board">
+            <span class="menu-title">진짜 게시판</span>
+            <i class="mdi mdi-home menu-icon"></i>
+          </router-link>
+        </li>
         <li class="nav-item">
           <span class="nav-link" v-b-toggle="'ui-basic'">
             <span class="menu-title">게시판</span>
@@ -143,13 +149,13 @@ export default {
   mounted() {
     const body = document.querySelector("body");
     // add class 'hover-open' to sidebar navitem while hover in sidebar-icon-only menu
-    document.querySelectorAll(".sidebar .nav-item").forEach(function(el) {
-      el.addEventListener("mouseover", function() {
+    document.querySelectorAll(".sidebar .nav-item").forEach(function (el) {
+      el.addEventListener("mouseover", function () {
         if (body.classList.contains("sidebar-icon-only")) {
           el.classList.add("hover-open");
         }
       });
-      el.addEventListener("mouseout", function() {
+      el.addEventListener("mouseout", function () {
         if (body.classList.contains("sidebar-icon-only")) {
           el.classList.remove("hover-open");
         }

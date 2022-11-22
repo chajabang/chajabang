@@ -1,6 +1,5 @@
 package com.ssafy.home.board.dto;
 
-import java.util.List;
 
 public class Board {
     private int articleNo;
@@ -10,12 +9,12 @@ public class Board {
     private String content;
     private int hit;
     private String registerTime;
-    private List<FileInfo> fileInfos;
+
 
     public Board() {
     }
 
-    public Board(int articleNo, String userId, String userName, String subject, String content, int hit, String registerTime, List<FileInfo> fileInfos) {
+    public Board(int articleNo, String userId, String userName, String subject, String content, int hit, String registerTime) {
         setArticleNo(articleNo);
         setUserId(userId);
         setUserName(userName);
@@ -23,7 +22,7 @@ public class Board {
         setContent(content);
         setHit(hit);
         setRegisterTime(registerTime);
-        setFileInfos(fileInfos);
+
     }
 
     public int getArticleNo() {
@@ -89,14 +88,7 @@ public class Board {
             this.registerTime = registerTime;
     }
 
-    public List<FileInfo> getFileInfos() {
-        return fileInfos;
-    }
 
-    public void setFileInfos(List<FileInfo> fileInfos) {
-        if (fileInfos != null)
-            this.fileInfos = fileInfos;
-    }
 
     @Override
     public String toString() {
@@ -108,7 +100,6 @@ public class Board {
                 ", content='" + content + '\'' +
                 ", hit=" + hit +
                 ", registerTime='" + registerTime + '\'' +
-                ", fileInfos=" + fileInfos +
                 '}';
     }
 }
