@@ -12,9 +12,9 @@ public class Member {
         setId(id);
         setPw(pw);
     }
-    public Member(String id, String pw,String email) {
+    public Member(String id, String username, String email) {
         setId(id);
-        setPw(pw);
+        setUsername(username);
         setEmail(email);
     }
     public Member(String id, String pw, String username, String email) {

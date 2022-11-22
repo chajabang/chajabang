@@ -150,11 +150,10 @@ export default {
       "checkPassword",
       "checkConfirmPw",
       "checkUsername",
-      "getMemberInfo",
       "updateMember",
       "deleteMember",
     ]),
-    ...mapMutations(memberStore, ["CLEAR_REGISTER_STATE", "GET_MEMBER_INFO"]),
+    ...mapMutations(memberStore, ["CLEAR_REGISTER_STATE"]),
     clickUsernameBtn() {
       this.checkUsername(this.username);
     },
@@ -204,7 +203,6 @@ export default {
     ...mapState(memberStore, ["valid", "message", "user"]),
   },
   created() {
-    this.getMemberInfo();
     this.CLEAR_REGISTER_STATE();
     this.id = this.user.id;
     this.username = this.user.username;

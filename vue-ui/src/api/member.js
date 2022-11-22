@@ -6,10 +6,6 @@ async function userLogin(data, success, fail) {
   await api.post("/member/login", data).then(success).catch(fail);
 }
 
-async function userInfo(success, fail) {
-  await api.get(`/member/info`).then(success).catch(fail);
-}
-
 async function userIdCheck(params, success, fail) {
   await api
     .get(`/member/id`, {
@@ -40,7 +36,6 @@ async function userDelete(success, fail) {
 
 export {
   userLogin,
-  userInfo,
   userIdCheck,
   usernameCheck,
   userLogout,

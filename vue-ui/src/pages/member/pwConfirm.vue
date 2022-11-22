@@ -12,7 +12,7 @@
                 <h4>회원정보 수정 & 삭제를 위하여</h4>
                 <h6 class="font-weight-light">비밀번호를 다시 입력해주세요.</h6>
 
-                <form class="pt-3">
+                <div class="pt-3">
                   <div v-if="valid.loginFail" class="alert alert-danger" role="alert">
                     Password을 확인해주세요.
                   </div>
@@ -43,7 +43,7 @@
                     </div>
                     <a href="#" class="auth-link text-black">Forgot password?</a>
                   </div>
-                </form>
+                </div>
               </div>
             </div>
           </div>
@@ -77,7 +77,7 @@ export default {
     this.CLEAR_LOGIN_STATE();
   },
   computed: {
-    ...mapState(memberStore, ["valid"]),
+    ...mapState(memberStore, ["valid", "user"]),
   },
 };
 </script>

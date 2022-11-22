@@ -3,8 +3,10 @@
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.ssafy.home.member.mapper.MemberMapper">
-    <select id="login" resultType="String" parameterType="member">
-        select username from member where id = #{id} and pw = #{pw}
+    <select id="login" resultType="member" parameterType="member">
+        select *
+        from member
+        where id = #{id} and pw = #{pw}
     </select>
 
     <insert id="register" parameterType="member">
@@ -34,12 +36,5 @@
     <delete id="delete" parameterType="String">
         delete from member where id=#{id}
     </delete>
-
-    <select id="userInfo" parameterType="String" resultType="member">
-        select *
-        from member
-        where id = #{userId}
-    </select>
-
 
 </mapper>

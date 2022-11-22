@@ -53,13 +53,13 @@ public class MemberController {
         }
         Map<String, Object> map = new HashMap<>();
         try {
-            String username = memberService.login(m);
-            if (username != null) {
+            Member member = memberService.login(m);
+            if (member != null) {
                 // 로그인 성공
-                m.setUsername(username);
+                member.setPw("00000000");
                 HttpSession session = request.getSession();
-                session.setAttribute("member", m);
-                return new ResponseEntity<>(m, HttpStatus.OK);
+                session.setAttribute("member", member);
+                return new ResponseEntity<>(member, HttpStatus.OK);
             }
             // 로그인 실패
             return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
@@ -89,34 +89,6 @@ public class MemberController {
             logger.warn("Exception -  {} ", e.getMessage());
             return new ResponseEntity<>(ERROR, HttpStatus.INTERNAL_SERVER_ERROR);
         }
-    }
-
-    @GetMapping("/info")
-    public ResponseEntity<Member> getInfo(HttpServletRequest request) {
-        logger.info("Member Register 호출 ");
-        Map<String, Object> map = new HashMap<>();
-        HttpSession session = request.getSession(false);
-        if (session != null) {
-            // 세션이 있을 경우에만 있는지 갖고오기
-            Member m = (Member) session.getAttribute("member");
-            if (m != null) {
-                // 멤버가 존재할 때
-                try {
-                    Member newM = memberService.userInfo(m.getId());
-                    Member returnM = new Member(newM.getId(), newM.getUsername(), newM.getEmail());
-                    return new ResponseEntity<>(returnM, HttpStatus.OK);
-                } catch (SQLException e) {
-                    return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
-                }
-            } else {
-                // 세션에 멤버가 존재하지 않을 때
-                return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
-            }
-        } else {
-            // 세션 만료
-            return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
-        }
-
     }
 
     @GetMapping("/id")
@@ -168,10 +140,10 @@ public class MemberController {
             String pw = map.get("pw");
             String username = map.get("username");
             String email = map.get("email");
-            if(pw.trim().equals("")){
-                map.put("pw",null);
+            if (pw.trim().equals("")) {
+                map.put("pw", null);
             }
-            System.out.println(pw==null);
+            System.out.println(pw == null);
 
             try {
                 if (m != null && m.getId().equals(id)) {
@@ -234,8 +206,8 @@ public class MemberController {
             if (sessionM != null) {
                 m.setId(sessionM.getId());
                 try {
-                    String username = memberService.login(m);
-                    if (username != null) {
+                    Member member = memberService.login(m);
+                    if (member != null) {
                         return new ResponseEntity<>(SUCCESS, HttpStatus.OK);
                     }
                 } catch (SQLException e) {

@@ -22,7 +22,7 @@ public class MemberService {
     @Autowired
     SecMapper secMapper;
 
-    public String login(Member m) throws SQLException {
+    public Member login(Member m) throws SQLException {
         SecVO sec = secMapper.selectSecById(m.getId());
         if (sec != null) {
             String pw = OpenCrypt.byteArrayToHex(OpenCrypt.getSHA256(m.getPw(), sec.getSalt()));
@@ -59,11 +59,6 @@ public class MemberService {
         }
         return memberMapper.update(map);
     }
-
-    public Member userInfo(String id) throws SQLException {
-        return memberMapper.userInfo(id);
-    }
-
 
     @Transactional
     public int delete(String id) throws Exception {

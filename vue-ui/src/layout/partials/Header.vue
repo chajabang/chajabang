@@ -36,7 +36,7 @@
             </div>
           </span>
         </b-nav-item>
-        <b-nav-item class="nav-logout d-none d-lg-block">
+        <b-nav-item class="nav-logout">
           <i class="mdi mdi-power" @click="clickLogoutBtn"></i>
         </b-nav-item>
       </b-navbar-nav>

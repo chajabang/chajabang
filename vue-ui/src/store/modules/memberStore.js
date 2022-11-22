@@ -4,7 +4,6 @@ import {
   userRegister,
   userLogin,
   userLogout,
-  userInfo,
   userPwConfirm,
   userUpdate,
   userDelete,
@@ -102,6 +101,7 @@ const memberStore = {
       state.valid.loginFail = false;
       state.user.id = user.id;
       state.user.username = user.username;
+      state.user.email = user.email;
       router.push("/");
     },
     LOGIN_FAIL(state) {
@@ -109,12 +109,6 @@ const memberStore = {
     },
     PW_CONFIRM_FAIL(state) {
       state.valid.loginFail = true;
-    },
-    GET_MEMBER(state, user) {
-      state.user.id = user.id;
-      state.user.email = user.email;
-      state.user.username = user.username;
-      console.log("GETMEMBER 완료!!");
     },
     UPDATE_SUCCESS(state, user) {
       state.user.id = user.id;
@@ -223,19 +217,6 @@ const memberStore = {
           alert("다시 로그인 해주세요.");
           commit("CLEAR_USER_STATE");
           commit("LOGOUT_SUCCESS");
-          router.push("login");
-        }
-      );
-    },
-    async getMemberInfo({ commit }) {
-      await userInfo(
-        ({ data, status }) => {
-          if (status == 200) {
-            commit("GET_MEMBER", data);
-          }
-        },
-        async () => {
-          alert("다시 로그인 해주세요.");
           router.push("login");
         }
       );
