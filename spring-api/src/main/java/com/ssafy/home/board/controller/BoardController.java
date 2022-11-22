@@ -103,6 +103,8 @@ public class BoardController {
             return new ResponseEntity<>(FAIL, HttpStatus.UNAUTHORIZED);
         }
         Member m = (Member) session.getAttribute("member");
+        System.out.println(m);
+
         if (m != null && m.getId().equals(board.getUserId())) { // 세션의 id 값과 board의 userId 값이 동일해야 함!!
             int cnt = boardService.updateBoard(board);
             if (cnt > 0) {

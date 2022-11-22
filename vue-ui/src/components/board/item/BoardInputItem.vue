@@ -60,7 +60,7 @@ export default {
   created() {
     this.id = this.user.id;
     if (this.type === "modify") {
-      let param = this.$route.params.articleno;
+      let param = { articleNo: this.$route.params.articleNo };
       getArticle(
         param,
         ({ data }) => {
@@ -126,8 +126,8 @@ export default {
     },
     modifyArticle() {
       let param = {
-        articleno: this.article.articleno,
-        userid: this.article.userid,
+        articleNo: this.article.articleNo,
+        userId: this.article.userId,
         subject: this.article.subject,
         content: this.article.content,
       };
