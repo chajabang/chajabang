@@ -5,7 +5,7 @@ import layout from "../layout";
 import store from "@/store";
 Vue.use(Router);
 
-const onlyAuthUser = async () => {
+const onlyAuthUser = async (to, from, next) => {
   const checkUserInfo = store.getters["memberStore/checkUserInfo"];
   if (checkUserInfo && checkUserInfo !== "") {
     await store.dispatch("memberStore/getUserInfo");
@@ -13,6 +13,8 @@ const onlyAuthUser = async () => {
   if (!checkUserInfo || checkUserInfo === null) {
     alert("로그인이 필요한 페이지입니다..");
     router.push({ name: "login" });
+  } else {
+    next();
   }
 };
 
@@ -118,6 +120,7 @@ const routes = [
       {
         path: "write",
         name: "boardwrite",
+        beforeEnter: onlyAuthUser,
         component: () => import("@/components/board/BoardWrite"),
       },
       {

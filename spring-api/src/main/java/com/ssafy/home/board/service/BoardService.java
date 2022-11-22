@@ -35,7 +35,7 @@ public class BoardService {
 
     public int updateBoard(Board board){
 
-        return boardMapper.updateBoard(board);
+        return boardMapper.update(board);
 
     }
 }

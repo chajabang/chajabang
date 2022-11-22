@@ -14,7 +14,8 @@ public interface BoardMapper {
 
     int updateHit(int articleNo);
 
+
     int delete(int articleNo);
 
-    int updateBoard(Board board);
+    int update(Board board);
 }

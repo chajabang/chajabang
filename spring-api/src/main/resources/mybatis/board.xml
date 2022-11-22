@@ -36,6 +36,12 @@
         from board b, member m
         where article_no = #{articleNo} and b.id = m.id
     </select>
+    <update id="update" parameterType="board">
+        update board
+        set title=#{subject}, content=#{content}
+        where article_no=#{articleNo}
+    </update>
+
 
     <delete id="delete" parameterType="int">
         delete from board
