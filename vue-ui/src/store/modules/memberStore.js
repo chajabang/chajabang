@@ -1,4 +1,14 @@
-import { usernameCheck, userIdCheck, userRegister, userLogin, userLogout } from "@/api/member";
+import {
+  usernameCheck,
+  userIdCheck,
+  userRegister,
+  userLogin,
+  userLogout,
+  userInfo,
+  userPwConfirm,
+  userUpdate,
+  userDelete,
+} from "@/api/member";
 import router from "@/router";
 const memberStore = {
   namespaced: true,
@@ -20,6 +30,7 @@ const memberStore = {
     user: {
       id: "",
       username: "",
+      email: "",
     },
   },
   getters: {},
@@ -91,10 +102,24 @@ const memberStore = {
       state.valid.loginFail = false;
       state.user.id = user.id;
       state.user.username = user.username;
-      router.go(-1);
+      router.push("/");
     },
     LOGIN_FAIL(state) {
       state.valid.loginFail = true;
+    },
+    PW_CONFIRM_FAIL(state) {
+      state.valid.loginFail = true;
+    },
+    GET_MEMBER(state, user) {
+      state.user.id = user.id;
+      state.user.email = user.email;
+      state.user.username = user.username;
+      console.log("GETMEMBER 완료!!");
+    },
+    UPDATE_SUCCESS(state, user) {
+      state.user.id = user.id;
+      state.user.email = user.email;
+      state.user.username = user.username;
     },
   },
   actions: {
@@ -198,7 +223,75 @@ const memberStore = {
           alert("다시 로그인 해주세요.");
           commit("CLEAR_USER_STATE");
           commit("LOGOUT_SUCCESS");
-          router.push("/");
+          router.push("login");
+        }
+      );
+    },
+    async getMemberInfo({ commit }) {
+      await userInfo(
+        ({ data, status }) => {
+          if (status == 200) {
+            commit("GET_MEMBER", data);
+          }
+        },
+        async () => {
+          alert("다시 로그인 해주세요.");
+          router.push("login");
+        }
+      );
+    },
+    async reLoginMember({ commit }, member) {
+      await userPwConfirm(
+        member,
+        ({ status }) => {
+          if (status == 200) {
+            router.push("modify");
+          }
+        },
+        async (error) => {
+          if (error.response.status == 400) {
+            commit("PW_CONFIRM_FAIL");
+          } else if (error.response.status == 403) {
+            alert("다시 로그인 해주세요.");
+            router.push("login");
+          } else {
+            alert("에러! 잠시후에 시도해주세요.");
+          }
+        }
+      );
+    },
+    async updateMember({ commit }, member) {
+      await userUpdate(
+        member,
+        ({ status }) => {
+          if (status == 200) {
+            commit("UPDATE_SUCCESS", member);
+            router.push("/");
+          }
+        },
+        async (error) => {
+          if (error.response.status == 400) {
+            commit("PW_CONFIRM_FAIL");
+          } else if (error.response.status == 403) {
+            alert("다시 로그인 해주세요.");
+            router.push("login");
+          } else {
+            alert("에러! 잠시후에 시도해주세요.");
+          }
+        }
+      );
+    },
+    async deleteMember({ commit }) {
+      await userDelete(
+        ({ status }) => {
+          if (status == 200) {
+            commit("CLEAR_USER_STATE");
+            router.push("/");
+          }
+        },
+        async () => {
+          alert("다시 로그인 해주세요.");
+          router.push("login");
         }
       );
     },

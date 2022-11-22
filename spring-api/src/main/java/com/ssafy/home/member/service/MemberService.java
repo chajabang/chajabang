@@ -31,11 +31,11 @@ public class MemberService {
         return memberMapper.login(m);
     }
 
-    public int idCheck(String id) throws Exception{
+    public int idCheck(String id) throws Exception {
         return memberMapper.idCheck(id);
     }
 
-    public int usernameCheck(String username) throws Exception{
+    public int usernameCheck(String username) throws Exception {
         return memberMapper.usernameCheck(username);
     }
 
@@ -52,16 +52,21 @@ public class MemberService {
         }
     }
 
-    public  int update(Map<String,String> map) throws Exception{
-        SecVO sec=secMapper.selectSecById(map.get("id"));
-        map.put("pw", new String(OpenCrypt.byteArrayToHex(OpenCrypt.getSHA256(map.get("newPw"), sec.getSalt()))));
-        System.out.println(map.get("pw"));
+    public int update(Map<String, String> map) throws Exception {
+        SecVO sec = secMapper.selectSecById(map.get("id"));
+        if (map.get("pw") != null) {
+            map.put("pw", new String(OpenCrypt.byteArrayToHex(OpenCrypt.getSHA256(map.get("pw"), sec.getSalt()))));
+        }
         return memberMapper.update(map);
+    }
+
+    public Member userInfo(String id) throws SQLException {
+        return memberMapper.userInfo(id);
     }
 
 
     @Transactional
-    public int delete(String id ) throws Exception{
+    public int delete(String id) throws Exception {
         memberMapper.delete(id);
         return secMapper.delete(id);
     }

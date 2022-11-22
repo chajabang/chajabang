@@ -17,4 +17,6 @@ public interface MemberMapper {
 
     int delete(String id)throws SQLException;
 
+    Member userInfo(String id) throws SQLException;
+
 }

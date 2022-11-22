@@ -6,8 +6,8 @@ async function userLogin(data, success, fail) {
   await api.post("/member/login", data).then(success).catch(fail);
 }
 
-async function findById(userid, success, fail) {
-  await api.post(`/member/info/${userid}`).then(success).catch(fail);
+async function userInfo(success, fail) {
+  await api.get(`/member/info`).then(success).catch(fail);
 }
 
 async function userIdCheck(params, success, fail) {
@@ -28,5 +28,24 @@ async function userLogout(success, fail) {
 async function userRegister(data, success, fail) {
   await api.post("/member/register", data).then(success).catch(fail);
 }
+async function userPwConfirm(data, success, fail) {
+  await api.post("/member/pwconfirm", data).then(success).catch(fail);
+}
+async function userUpdate(data, success, fail) {
+  await api.post("/member/update", data).then(success).catch(fail);
+}
+async function userDelete(success, fail) {
+  await api.post("/member/delete").then(success).catch(fail);
+}
 
-export { userLogin, findById, userIdCheck, usernameCheck, userLogout, userRegister };
+export {
+  userLogin,
+  userInfo,
+  userIdCheck,
+  usernameCheck,
+  userLogout,
+  userRegister,
+  userPwConfirm,
+  userUpdate,
+  userDelete,
+};

@@ -90,6 +90,16 @@ export default new Router({
           name: "signup",
           component: () => import("@/pages/member/signup"),
         },
+        {
+          path: "modify",
+          name: "modify",
+          component: () => import("@/pages/member/modify"),
+        },
+        {
+          path: "pwConfirm",
+          name: "pwConfirm",
+          component: () => import("@/pages/member/pwConfirm"),
+        },
       ],
     },
     {
