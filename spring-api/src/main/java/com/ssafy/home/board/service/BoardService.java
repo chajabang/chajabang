@@ -32,4 +32,10 @@ public class BoardService {
     public int delete(int articleNo) {
         return boardMapper.delete(articleNo);
     }
+
+    public int updateBoard(Board board){
+
+        return boardMapper.updateBoard(board);
+
+    }
 }
