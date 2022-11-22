@@ -5,9 +5,14 @@ import com.github.pagehelper.PageInfo;
 import com.ssafy.home.board.dto.Board;
 import com.ssafy.home.board.dto.FileInfo;
 import com.ssafy.home.board.service.BoardService;
+import com.ssafy.home.member.controller.MemberController;
 import com.ssafy.home.member.dto.Member;
+import io.swagger.annotations.ApiParam;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -19,16 +24,21 @@ import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.*;
 
-@Controller
+@RestController
 @RequestMapping("/board")
 public class BoardController {
+
+    private static final Logger logger = LoggerFactory.getLogger(BoardController.class);
+    private static final String SUCCESS = "success";
+    private static final String FAIL = "fail";
+    private static final String ERROR = "error";
+
     @Autowired
     BoardService boardService;
     @Autowired
     private ServletContext servletContext;
 
-    @PostMapping("/selectAll")
-    @ResponseBody
+    @GetMapping("/selectAll")
     public PageInfo<Board> selectAll(HttpServletRequest request) {
         System.out.println(request.getParameter("pageNum"));
         PageHelper.startPage(request);
@@ -36,113 +46,57 @@ public class BoardController {
         return PageInfo.of(list);
     }
 
-    @GetMapping("/write")
-    public String writeBoard(HttpSession session) {
-        // CSRF Token 발행
-        String csrfToken = UUID.randomUUID().toString();
-        session.setAttribute("CSRF_TOKEN", csrfToken);
-        System.out.println(csrfToken);
-        return "boardWrite";
-    }
 
-    @PostMapping("/write")
-    public String writeBoard(Board board, String csrf_token, HttpSession session, HttpServletRequest request,
-                             @RequestParam("upfile") MultipartFile[] files) throws Exception {
-        System.out.println(board);
-        System.out.println("받은 " + csrf_token);
 
-        String CSRF_TOKEN = (String) session.getAttribute("CSRF_TOKEN");
-        Member m = (Member) session.getAttribute("member");
-        if (CSRF_TOKEN != null && CSRF_TOKEN.equals(csrf_token)) {
-
-            if (!files[0].isEmpty()) {
-                String realPath = servletContext.getRealPath("/WEB-INF/upload");
-                String today = new SimpleDateFormat("yyMMdd").format(new Date());
-                String saveFolder = realPath + File.separator + today;
-                File folder = new File(saveFolder);
-                if (!folder.exists()) {
-                    folder.mkdirs();
-                }
-
-                List<FileInfo> fileInfos = new ArrayList<>();
-                for (MultipartFile mfile : files) {
-                    FileInfo fileInfo = new FileInfo();
-                    String originalFileName = mfile.getOriginalFilename();
-                    if (!originalFileName.isEmpty()) {
-                        String saveFileName = System.nanoTime()
-                                + originalFileName.substring(originalFileName.lastIndexOf('.'));
-                        fileInfo.setSaveFolder(today);
-                        fileInfo.setOriginalFile(originalFileName);
-                        fileInfo.setSaveFile(saveFileName);
-                        mfile.transferTo(new File(folder, saveFileName));
-                    }
-                    fileInfos.add(fileInfo);
-
-                }
-                board.setFileInfos(fileInfos);
-            }
-            board.setUserId(m.getId());
-            long cnt = boardService.write(board);
-            if (cnt > 0) {
-                return "writeOk";
-            }
-        } else {
-            System.out.println(request.getRemoteAddr() + " 해킹 시도 감지");
-        }
-        return "writeFail";
-    }
-
-    @ResponseBody
-    @PostMapping("/upload")
-    public String upload(@RequestParam("file") MultipartFile file) {
-        String realPath = servletContext.getRealPath("WEB-INF/upload/webcam");
-        String today = new SimpleDateFormat("yyMMdd").format(new Date());
-        String saveFolder = realPath + File.separator + today;
-        System.out.println(saveFolder);
-        File folder = new File(saveFolder);
-        if (!folder.exists()) {
-            folder.mkdirs();
-        }
-        String originalFileName = file.getOriginalFilename();
-        String saveFileName = System.nanoTime()
-                + originalFileName.substring(originalFileName.lastIndexOf('.'));
-        try {
-            file.transferTo(new File(folder, saveFileName));
-            return "upload ok!!!";
-        } catch (IllegalStateException e) {
-            e.printStackTrace();
-            return "upload fail!!!";
-        } catch (IOException e) {
-            e.printStackTrace();
-            return "upload fail!!!";
-        }
-    }
-
-    @ResponseBody
-    @GetMapping("/view/{articleNo}")
-    public Map<String, Object> view(@PathVariable("articleNo") String articleNo) {
+    @GetMapping("/view")
+    public ResponseEntity<String> view(@RequestParam int articleNo) {
+        logger.info("Board View 호출 - {}",articleNo);
         Map<String, Object> map = new HashMap<>();
-        int no = Integer.parseInt(articleNo);
-        Board board = boardService.getView(no);
-        if(board != null) {
-            boardService.updateHit(no);
-            board.setHit(board.getHit()+1);
-            map.put("board", board);
-        } else {
-            map.put("msg", "글이 삭제되었거나 정상적인 URL 접근이 아닙니다.");
+        Board board = boardService.getView(articleNo);
+        if (board != null) {
+            boardService.updateHit(articleNo);
+            return new ResponseEntity<>(SUCCESS, HttpStatus.OK);
         }
-        return map;
+        return new ResponseEntity<>(FAIL,HttpStatus.NOT_FOUND);
     }
 
-    @ResponseBody
-    @PostMapping("/delete")
-    public String delete(String articleNo) {
-        int no = Integer.parseInt(articleNo);
-        int n = boardService.delete(no);
-        if(n > 0) {
-            return "삭제되었습니다.";
-        } else {
-            return "삭제에 실패하였습니다.";
+
+    @GetMapping("/delete")
+    public ResponseEntity<String> delete(@RequestParam int articleNo, HttpServletRequest request) {
+        logger.info("deleteArticle - 호출 {}",articleNo);
+        Board b = boardService.getView(articleNo);
+        HttpSession session = request.getSession(false);
+        if (session == null) {//세션 만료
+            return new ResponseEntity<>(FAIL, HttpStatus.FORBIDDEN);
         }
+        Member m = (Member) session.getAttribute("member");
+        if (m != null && m.getId().equals(b.getUserId())) {
+            int cnt = boardService.delete(articleNo);
+            if (cnt > 0) {
+                return new ResponseEntity<>(SUCCESS, HttpStatus.OK);
+            }
+        }
+        return new ResponseEntity<>(FAIL, HttpStatus.BAD_REQUEST);
+    }
+
+
+    @PostMapping("/update")
+    public ResponseEntity<String> modifyBoard(@RequestBody Board board, HttpServletRequest request) throws
+            Exception {
+        logger.info("modifyBoard - 호출 {}", board);
+
+        HttpSession session = request.getSession(false);
+        if (session == null) {//세션 만료
+            return new ResponseEntity<>(FAIL, HttpStatus.FORBIDDEN);
+        }
+        Member m = (Member) session.getAttribute("member");
+        if (m != null && m.getId().equals(board.getUserId())) { // 세션의 id 값과 board의 userId 값이 동일해야 함!!
+            int cnt = boardService.updateBoard(board);
+            if (cnt > 0) {
+                return new ResponseEntity<String>(SUCCESS, HttpStatus.OK);
+            }
+        }
+        return new ResponseEntity<String>(FAIL, HttpStatus.BAD_REQUEST);
+
     }
 }
