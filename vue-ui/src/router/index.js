@@ -108,10 +108,14 @@ const routes = [
   },
   {
     path: "/board",
-    name: "board",
-    component: () => import("@/pages/board/BoardView"),
-    redirect: "/board/list",
+    component: layout,
     children: [
+      {
+        path: "",
+        name: "board",
+        redirect: "/board/list",
+        component: () => import("@/pages/board/BoardView"),
+      },
       {
         path: "list",
         name: "boardlist",

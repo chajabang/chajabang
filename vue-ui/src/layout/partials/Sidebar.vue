@@ -9,7 +9,7 @@
           </router-link>
         </li>
         <li class="nav-item" v-on:click="collapseAll">
-          <router-link class="nav-link" to="/board">
+          <router-link class="nav-link" :to="{ name: 'board' }">
             <span class="menu-title">진짜 게시판</span>
             <i class="mdi mdi-home menu-icon"></i>
           </router-link>

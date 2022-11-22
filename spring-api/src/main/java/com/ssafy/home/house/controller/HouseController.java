@@ -12,13 +12,13 @@ import java.util.List;
 import java.util.Map;
 
 @RestController
+@CrossOrigin(origins = "http://localhost:8080")
 @RequestMapping("/house")
 public class HouseController {
 
     @Autowired
     HouseService houseService;
 
-    @CrossOrigin(origins = "http://localhost:8080")
     @GetMapping("/houselist")
     public ResponseEntity<?> getHouseList(@RequestParam("sido") String sido, @RequestParam("gugun") String gugun, @RequestParam("dong") String dong) {
         List<House> list = houseService.getHouseList(sido, gugun, dong);
@@ -29,7 +29,6 @@ public class HouseController {
         }
     }
 
-    @CrossOrigin(origins = "http://localhost:8080")
     @GetMapping("/dong")
     public ResponseEntity<?> getDong(@RequestParam("sido") String sido, @RequestParam("gugun") String gugun) {
         List<String> list = houseService.getDong(sido, gugun);
@@ -40,7 +39,6 @@ public class HouseController {
         }
     }
 
-    @CrossOrigin(origins = "http://localhost:8080")
     @GetMapping("/gugun")
     public ResponseEntity<?> getGugun(@RequestParam("sido") String sido) {
         List<String> list = houseService.getGugun(sido);
@@ -51,7 +49,6 @@ public class HouseController {
         }
     }
 
-    @CrossOrigin(origins = "http://localhost:8080")
     @GetMapping("/detail")
     public ResponseEntity<?> getDetail(@RequestParam("aptCode") long aptCode) {
         List<HouseDeal> list = houseService.getHouseDetail(aptCode);
@@ -62,7 +59,6 @@ public class HouseController {
         }
     }
 
-    @CrossOrigin(origins = "http://localhost:8080")
     @GetMapping("/deal")
     public ResponseEntity<?> getDeals(@RequestParam("aptCode") long aptCode, @RequestParam("floor") String floor, @RequestParam("area") String area) {
         List<HouseDeal> list = houseService.getHouseDeals(aptCode, floor, area);
