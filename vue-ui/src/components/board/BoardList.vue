@@ -50,6 +50,7 @@ export default {
     listArticle(
       param,
       ({ data }) => {
+        console.log(data);
         this.articles = data;
       },
       (error) => {
