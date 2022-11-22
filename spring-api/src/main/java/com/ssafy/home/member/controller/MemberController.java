@@ -224,4 +224,15 @@ public class MemberController {
         //세션 만료
         return new ResponseEntity<>(FAIL, HttpStatus.FORBIDDEN);
     }
+
+    @GetMapping("/check")
+    public ResponseEntity<String> sessionCheck(HttpServletRequest request) {
+        logger.info("Session Check - 호출 ");
+        HttpSession session = request.getSession(false);
+        if (session == null) {//세션 만료
+            return new ResponseEntity<>(FAIL, HttpStatus.UNAUTHORIZED);
+        }
+        return new ResponseEntity<>(SUCCESS, HttpStatus.OK);
+
+    }
 }

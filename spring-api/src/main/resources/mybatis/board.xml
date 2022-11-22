@@ -5,23 +5,23 @@
 <mapper namespace="com.ssafy.home.board.mapper.BoardMapper">
     <resultMap type="board" id="article">
         <result column="article_no" property="articleNo"/>
-        <result column="user_id" property="userId"/>
-        <result column="name" property="userName"/>
-        <result column="subject" property="subject"/>
+        <result column="id" property="userId"/>
+        <result column="username" property="userName"/>
+        <result column="title" property="subject"/>
         <result column="content" property="content"/>
         <result column="hit" property="hit"/>
-        <result column="register_time" property="registerTime"/>
+        <result column="reg_date" property="registerTime"/>
     </resultMap>
 
     <select id="selectAll"  resultMap="article">
-        select b.article_no, b.subject, m.name, b.hit, b.register_time
+        select b.article_no, b.title, m.username, b.hit, b.reg_date
         from board b, member m
-        where b.user_id = m.id
+        where b.id = m.id
         order by article_no desc
     </select>
 
     <insert id="write" parameterType="board">
-        insert into board (user_id, subject, content, hit, register_time)
+        insert into board (id, title, content, hit, reg_date)
         values (#{userId}, #{subject}, #{content}, 0, now())
     </insert>
 
@@ -32,9 +32,9 @@
     </update>
 
     <select id="getView" parameterType="int" resultMap="article">
-        select b.article_no, b.user_id, b.subject, b.content, b.hit, b.register_time, m.name
+        select b.article_no, b.id, b.title, b.content, b.hit, b.reg_date, m.username
         from board b, member m
-        where article_no = #{articleNo} and b.user_id = m.id
+        where article_no = #{articleNo} and b.id = m.id
     </select>
 
     <delete id="delete" parameterType="int">

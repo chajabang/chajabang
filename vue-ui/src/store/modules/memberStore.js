@@ -7,6 +7,7 @@ import {
   userPwConfirm,
   userUpdate,
   userDelete,
+  sessionCheck,
 } from "@/api/member";
 import router from "@/router";
 const memberStore = {
@@ -32,7 +33,11 @@ const memberStore = {
       email: "",
     },
   },
-  getters: {},
+  getters: {
+    checkUserInfo: function (state) {
+      return state.user.username;
+    },
+  },
   mutations: {
     CHECK_EMAIL(state, { validateEmail, email }) {
       if (!validateEmail.test(email) || !email) {
@@ -115,8 +120,34 @@ const memberStore = {
       state.user.email = user.email;
       state.user.username = user.username;
     },
+    INIT_DEFAULT(state) {
+      state.user.id = "";
+      state.user.email = "";
+      state.user.username = "";
+    },
   },
   actions: {
+    async getUserInfo({ dispatch }) {
+      await sessionCheck(
+        ({ status }) => {
+          if (status == 200) {
+            console.log("세션 초기화");
+          } else {
+            console.log("유저 정보 없음!!!!");
+          }
+        },
+        async (error) => {
+          console.log("세션만료!!! ", error.response.status);
+          await dispatch("initDefault");
+        }
+      );
+    },
+
+    initDefault({ commit }) {
+      commit("INIT_DEFAULT");
+      router.push("login");
+    },
+
     checkEmail({ commit }, email) {
       // 이메일 형식 검사
       const validateEmail = /^[A-Za-z0-9_\\.\\-]+@[A-Za-z0-9\\-]+\.[A-Za-z0-9\\-]+/;
