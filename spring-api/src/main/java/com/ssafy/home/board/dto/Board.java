@@ -8,19 +8,21 @@ public class Board {
     private String subject;
     private String content;
     private int hit;
+    private int likes;
     private String registerTime;
 
 
     public Board() {
     }
 
-    public Board(int articleNo, String userId, String userName, String subject, String content, int hit, String registerTime) {
+    public Board(int articleNo, String userId, String userName, String subject, String content, int hit, int likes,String registerTime) {
         setArticleNo(articleNo);
         setUserId(userId);
         setUserName(userName);
         setSubject(subject);
         setContent(content);
         setHit(hit);
+        setLikes(likes);
         setRegisterTime(registerTime);
 
     }
@@ -79,6 +81,15 @@ public class Board {
             this.hit = hit;
     }
 
+    public int getLikes() {
+        return likes;
+    }
+
+    public void setLikes(int likes) {
+        if (likes >= 0)
+            this.likes = likes;
+    }
+
     public String getRegisterTime() {
         return registerTime;
     }
@@ -99,6 +110,7 @@ public class Board {
                 ", subject='" + subject + '\'' +
                 ", content='" + content + '\'' +
                 ", hit=" + hit +
+                ", likes="+ likes +
                 ", registerTime='" + registerTime + '\'' +
                 '}';
     }

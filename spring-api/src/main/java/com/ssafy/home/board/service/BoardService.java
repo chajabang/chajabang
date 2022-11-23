@@ -33,9 +33,21 @@ public class BoardService {
         return boardMapper.delete(articleNo);
     }
 
-    public int updateBoard(Board board){
+    public int updateBoard(Board board) {
 
         return boardMapper.update(board);
 
+    }
+
+    public int checkLike(String userId, int articleNo) {
+        return boardMapper.checkLike(userId,articleNo);
+    }
+
+    public int addLike(String userId, int articleNo) {
+        return boardMapper.addLike(userId,articleNo);
+    }
+
+    public int removeLike(String userId, int articleNo) {
+        return boardMapper.removeLike(userId,articleNo);
     }
 }
