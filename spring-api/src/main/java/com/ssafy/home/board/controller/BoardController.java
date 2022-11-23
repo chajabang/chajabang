@@ -170,6 +170,7 @@ public class BoardController {
         }
         Member m = (Member) session.getAttribute("member");
         Board b = boardService.getView(articleNo);
+        System.out.println(b);
         if (m != null && b!=null) { // 세션의 id 값과 board의 userId 값이 동일해야 함!!
             int cnt = boardService.checkLike(m.getId(),articleNo);
             if(cnt>0){

@@ -6,10 +6,14 @@
           <i class="mdi mdi-chevron-left"></i>목록
         </button>
       </b-col>
-      <b-col cols="2">
-        <button type="button" class="btn btn-link px-0 py-0">
-          <!-- <i class="mdi mdi-heart-outline"></i> -->
+      <b-col cols="2" v-if="check">
+        <button type="button" class="btn btn-link px-0 py-0" @click="rmInterested">
           <i class="mdi mdi-heart"></i>
+        </button>
+      </b-col>
+      <b-col cols="2" v-else>
+        <button type="button" class="btn btn-link px-0 py-0" @click="addInterested">
+          <i class="mdi mdi-heart-outline"></i>
         </button>
       </b-col>
     </b-row>
@@ -57,11 +61,18 @@ import { mapActions, mapState } from "vuex";
 import HouseInfo from "@/components/house/HouseInfo";
 import HouseDealChart from "@/components/house/HouseDealChart";
 import HouseRoadView from "@/components/house/HouseRoadView";
+import { checkInter, addInter, rmInter } from "@/api/house.js";
 
 const houseStore = "houseStore";
+const memberStore = "memberStore";
 
 export default {
   name: "HouseDetail",
+  data() {
+    return {
+      check: false,
+    };
+  },
   components: {
     HouseInfo,
     HouseDealChart,
@@ -69,16 +80,69 @@ export default {
   },
   created() {
     this.clearHouseDeals();
+    this.checkSession();
+    if (this.user.username) {
+      const params = { id: this.user.id, aptCode: this.house.aptCode };
+      checkInter(
+        params,
+        ({ status }) => {
+          if (status == 200) {
+            this.check = true;
+          }
+        },
+        (error) => {
+          console.log(error.response.data);
+        }
+      );
+    }
   },
   methods: {
     ...mapActions(houseStore, ["clearHouseDeals", "clearHouse"]),
+    ...mapActions(memberStore, ["checkSession", "getUserInfo"]),
     mvPrev() {
       this.clearHouse();
       this.clearHouseDeals();
     },
+    addInterested() {
+      this.getUserInfo();
+      if (this.user.username) {
+        const params = { id: this.user.id, aptCode: this.house.aptCode };
+        addInter(
+          params,
+          ({ status }) => {
+            if (status == 200) {
+              this.check = !this.check;
+              alert("관심목록에 추가되었습니다!");
+            }
+          },
+          (error) => {
+            console.log(error.response.data);
+          }
+        );
+      }
+    },
+    rmInterested() {
+      this.getUserInfo();
+      if (this.user.username) {
+        const params = { id: this.user.id, aptCode: this.house.aptCode };
+        rmInter(
+          params,
+          ({ status }) => {
+            if (status == 200) {
+              this.check = !this.check;
+              alert("관심목록에서 제거되었습니다.");
+            }
+          },
+          (error) => {
+            console.log(error.response.data);
+          }
+        );
+      }
+    },
   },
   computed: {
     ...mapState(houseStore, ["house", "houseinfo", "housedeals"]),
+    ...mapState(memberStore, ["user"]),
     getDongJibun() {
       if (this.house.bubun > 0) {
         return this.house.bonbun + "-" + this.house.bubun;

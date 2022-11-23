@@ -127,6 +127,22 @@ const memberStore = {
     },
   },
   actions: {
+    async checkSession({ dispatch }) {
+      await sessionCheck(
+        ({ status }) => {
+          if (status == 200) {
+            console.log("세션 초기화");
+          } else {
+            console.log("유저 정보 없음!!!!");
+            dispatch("initDefault");
+          }
+        },
+        async (error) => {
+          console.log("세션만료!!! ", error.response.status);
+          dispatch("initDefault");
+        }
+      );
+    },
     async getUserInfo({ dispatch }) {
       await sessionCheck(
         ({ status }) => {
@@ -134,18 +150,21 @@ const memberStore = {
             console.log("세션 초기화");
           } else {
             console.log("유저 정보 없음!!!!");
+            dispatch("initDefault");
+            router.push({ name: "login" });
           }
         },
         async (error) => {
           console.log("세션만료!!! ", error.response.status);
-          await dispatch("initDefault");
+          alert("세션이 만료되었습니다. 다시 로그인 해주세요.");
+          dispatch("initDefault");
+          router.push({ name: "login" });
         }
       );
     },
 
     initDefault({ commit }) {
       commit("INIT_DEFAULT");
-      router.push("login");
     },
 
     checkEmail({ commit }, email) {
@@ -240,15 +259,13 @@ const memberStore = {
         ({ status }) => {
           if (status == 200) {
             commit("CLEAR_USER_STATE");
-            commit("LOGOUT_SUCCESS");
             router.push("/");
           }
         },
         async () => {
           alert("다시 로그인 해주세요.");
           commit("CLEAR_USER_STATE");
-          commit("LOGOUT_SUCCESS");
-          router.push("login");
+          router.push({ name: "login" });
         }
       );
     },
@@ -257,7 +274,7 @@ const memberStore = {
         member,
         ({ status }) => {
           if (status == 200) {
-            router.push("modify");
+            router.push({ name: "modify" });
           }
         },
         async (error) => {
@@ -265,7 +282,7 @@ const memberStore = {
             commit("PW_CONFIRM_FAIL");
           } else if (error.response.status == 403) {
             alert("다시 로그인 해주세요.");
-            router.push("login");
+            router.push({ name: "login" });
           } else {
             alert("에러! 잠시후에 시도해주세요.");
           }
@@ -286,7 +303,7 @@ const memberStore = {
             commit("PW_CONFIRM_FAIL");
           } else if (error.response.status == 403) {
             alert("다시 로그인 해주세요.");
-            router.push("login");
+            router.push({ name: "login" });
           } else {
             alert("에러! 잠시후에 시도해주세요.");
           }
@@ -303,7 +320,7 @@ const memberStore = {
         },
         async () => {
           alert("다시 로그인 해주세요.");
-          router.push("login");
+          router.push({ name: "login" });
         }
       );
     },

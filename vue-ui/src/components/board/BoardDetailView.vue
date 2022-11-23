@@ -34,13 +34,19 @@
     </b-row>
     <b-row class="mb-1">
       <b-col>
-        <b-card
-          :header-html="`<h3>${article.articleNo}.
-          ${article.subject} [${article.hit}]</h3><div><h6 class='text-right'>${article.userId}</div><div class='text-right'>${article.registerTime}</h6><h5> 추천 : ${article.likes}</h5></div>`"
-          class="mb-2"
-          border-variant="dark"
-          no-body
-        >
+        <b-card header-tag="header" class="mb-2" border-variant="dark" no-body>
+          <template #header>
+            <h3 style="font-family: 'TmoneyRoundWindExtraBold'">
+              {{ article.articleNo }}. {{ article.subject }} [{{ article.hit }}]
+            </h3>
+            <div class="text-right">
+              <h5 style="font-family: 'TmoneyRoundWindExtraBold'">{{ article.userName }} <br /></h5>
+              <h6 style="font-family: 'TmoneyRoundWindExtraBold'">
+                추천 : {{ article.likes }} <br />
+                {{ article.registerTime }}
+              </h6>
+            </div>
+          </template>
           <b-card-body class="text-left">
             <div v-html="message"></div>
           </b-card-body>
@@ -93,6 +99,7 @@ export default {
       ({ data }) => {
         console.log(data);
         this.article = data;
+        this.article.hit++;
       },
       (error) => {
         console.log(error);
@@ -138,6 +145,7 @@ export default {
         ({ status }) => {
           if (status == 200) {
             this.isLike = true;
+            this.article.likes++;
           }
         },
         (error) => {
@@ -153,6 +161,7 @@ export default {
         ({ status }) => {
           if (status == 200) {
             this.isLike = false;
+            this.article.likes--;
           }
         },
         (error) => {
@@ -163,5 +172,3 @@ export default {
   },
 };
 </script>
-
-<style></style>

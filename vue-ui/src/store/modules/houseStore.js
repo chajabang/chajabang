@@ -109,8 +109,8 @@ const houseStore = {
         ({ data }) => {
           commit("SET_GUGUN_LIST", data);
         },
-        ({ response }) => {
-          alert(response.data);
+        (error) => {
+          alert(error.response.data);
         }
       );
     },
@@ -121,8 +121,8 @@ const houseStore = {
         ({ data }) => {
           commit("SET_DONG_LIST", data);
         },
-        ({ response }) => {
-          alert(response.data);
+        (error) => {
+          alert(error.response.data);
         }
       );
     },
@@ -140,8 +140,8 @@ const houseStore = {
           commit("CLEAR_HOUSE");
           commit("SET_HOUSE_LIST", data);
         },
-        ({ response }) => {
-          alert(response.data);
+        (error) => {
+          alert(error.response.data);
         }
       );
     },
@@ -152,8 +152,8 @@ const houseStore = {
         ({ data }) => {
           commit("SET_HOUSE_DETAIL", { houseinfo: data, house: house });
         },
-        ({ response }) => {
-          alert(response.data);
+        (error) => {
+          alert(error.response.data);
         }
       );
     },
@@ -164,8 +164,8 @@ const houseStore = {
         ({ data }) => {
           commit("SET_HOUSE_DEALS", data);
         },
-        ({ response }) => {
-          alert(response.data);
+        (error) => {
+          alert(error.response.data);
         }
       );
     },

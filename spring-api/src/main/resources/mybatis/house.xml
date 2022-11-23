@@ -8,19 +8,32 @@
     <select id="getGugun" parameterType="String" resultType="String">
         select distinct gugunName
         from dongcode
-        where sidoName = #{sido} and gugunName is not null
+        where sidoName = #{sido}
+          and gugunName is not null
     </select>
 
     <select id="getDong" parameterType="String" resultType="String">
         select distinct dongName
         from dongcode
-        where sidoName = #{sido} and gugunName = #{gugun} and dongName is not null
+        where sidoName = #{sido}
+          and gugunName = #{gugun}
+          and dongName is not null
     </select>
 
     <select id="getHouseList" parameterType="String" resultType="house">
-        select distinct aptCode, dong, cast(bonbun as signed) bonbun, cast(bubun as signed) bubun, roadName, cast(roadNameBonbun as signed) roadNameBonbun, cast(roadNameBubun as signed) roadNameBubun, apartmentName, lat, lng
+        select distinct aptCode,
+                        dong,
+                        cast(bonbun as signed)         bonbun,
+                        cast(bubun as signed)          bubun,
+                        roadName,
+                        cast(roadNameBonbun as signed) roadNameBonbun,
+                        cast(roadNameBubun as signed)  roadNameBubun,
+                        apartmentName,
+                        lat,
+                        lng
         from houseinfo
-        where dongCode = (select dongCode from dongcode where sidoName = #{sido} and gugunName = #{gugun} and dongName = #{dong})
+        where dongCode =
+              (select dongCode from dongcode where sidoName = #{sido} and gugunName = #{gugun} and dongName = #{dong})
         order by apartmentName
     </select>
 
@@ -34,8 +47,28 @@
     <select id="getHouseDeals" parameterType="Map" resultType="HouseDeal">
         select distinct no, aptCode, dealYear, dealMonth, dealDay, dealAmount, area, floor
         from housedeal
-        where aptCode = #{aptCode} and floor = #{floor} and area = #{area}
+        where aptCode = #{aptCode}
+          and floor = #{floor}
+          and area = #{area}
         order by dealYear, dealMonth, dealDay
     </select>
+
+    <select id="checkInterested" parameterType="Map" resultType="int">
+        select count(id)
+        from interestplace
+        where id = #{id}
+          and aptCode = #{aptCode}
+    </select>
+
+    <insert id="addInterested" parameterType="Map">
+        insert into interestplace(id, aptCode)
+        values (#{id}, #{aptCode})
+    </insert>
+
+    <delete id="rmInterested" parameterType="Map">
+        delete from interestplace
+        where id = #{id}
+          and aptCode = #{aptCode}
+    </delete>
 
 </mapper>

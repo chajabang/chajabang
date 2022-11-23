@@ -42,7 +42,10 @@
   </b-container>
 </template>
 <script>
+import { mapActions } from "vuex";
 import { listArticle } from "@/api/board";
+
+const memberStore = "memberStore";
 
 export default {
   name: "BoardList",
@@ -63,6 +66,7 @@ export default {
     };
   },
   created() {
+    this.checkSession();
     this.getListArticle();
   },
   watch: {
@@ -71,6 +75,7 @@ export default {
     },
   },
   methods: {
+    ...mapActions(memberStore, ["checkSession"]),
     moveWrite() {
       this.$router.push({ name: "boardwrite" });
     },

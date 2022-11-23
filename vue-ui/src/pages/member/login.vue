@@ -80,7 +80,7 @@ export default {
     };
   },
   methods: {
-    ...mapActions(memberStore, ["loginMember"]),
+    ...mapActions(memberStore, ["loginMember", "checkSession"]),
     ...mapMutations(memberStore, ["CLEAR_LOGIN_STATE"]),
     clickLoginBtn() {
       this.loginMember({ id: this.id, pw: this.pw });
@@ -88,9 +88,14 @@ export default {
   },
   created() {
     this.CLEAR_LOGIN_STATE();
+    this.checkSession();
+    if (this.user.username) {
+      console.log("test");
+      this.$router.push("/");
+    }
   },
   computed: {
-    ...mapState(memberStore, ["valid"]),
+    ...mapState(memberStore, ["user", "valid"]),
   },
 };
 </script>

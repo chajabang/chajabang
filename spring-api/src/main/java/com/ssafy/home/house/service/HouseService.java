@@ -33,4 +33,16 @@ public class HouseService {
     public List<HouseDeal> getHouseDeals(long aptCode, String floor, String area) {
         return houseMapper.getHouseDeals(aptCode, floor, area);
     }
+
+    public int checkInterested(String id, long aptCode) {
+        return houseMapper.checkInterested(id, aptCode);
+    }
+
+    public int addInterested(String id, long aptCode) {
+        return houseMapper.addInterested(id, aptCode);
+    }
+
+    public int rmInterested(String id, long aptCode) {
+        return houseMapper.rmInterested(id, aptCode);
+    }
 }

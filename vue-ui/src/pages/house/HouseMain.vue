@@ -113,6 +113,7 @@
 <script>
 import { mapActions, mapState } from "vuex";
 const houseStore = "houseStore";
+const memberStore = "memberStore";
 
 export default {
   name: "HouseMain",
@@ -124,10 +125,12 @@ export default {
     };
   },
   created() {
+    this.checkSession();
     this.clearGugunList();
     this.clearDongList();
   },
   methods: {
+    ...mapActions(memberStore, ["checkSession"]),
     ...mapActions(houseStore, [
       "clearGugunList",
       "clearDongList",

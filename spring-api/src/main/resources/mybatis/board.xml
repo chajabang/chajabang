@@ -15,7 +15,7 @@
     </resultMap>
 
     <select id="selectAll"  resultMap="article">
-        select b.article_no, b.title, m.username, b.hit, (select count(id) from boardlike where article_no =b.article_no) as likes , b.reg_date
+        select b.article_no, b.title, m.username, b.hit, (select count(id) from boardlike where article_no=b.article_no) as likes , b.reg_date
         from board b, member m
         where b.id = m.id
         order by article_no desc
@@ -37,6 +37,7 @@
         from board b, member m
         where article_no = #{articleNo} and b.id = m.id
     </select>
+
     <update id="update" parameterType="board">
         update board
         set title=#{subject}, content=#{content}

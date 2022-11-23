@@ -47,6 +47,7 @@ import HouseDetail from "@/components/house/HouseDetail";
 import HouseMap from "@/components/house/HouseMap";
 
 const houseStore = "houseStore";
+const memberStore = "memberStore";
 
 export default {
   name: "HouseView",
@@ -63,12 +64,14 @@ export default {
     HouseMap,
   },
   created() {
+    this.checkSession();
     this.sido = this.sidoState;
     this.gugun = this.gugunState;
     this.dong = this.dongState;
     this.clearHouse();
   },
   methods: {
+    ...mapActions(memberStore, ["checkSession"]),
     ...mapActions(houseStore, [
       "clearGugunList",
       "clearDongList",

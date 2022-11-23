@@ -17,4 +17,10 @@ public interface HouseMapper {
     List<HouseDeal> getHouseDetail(long aptCode);
 
     List<HouseDeal> getHouseDeals(long aptCode, String floor, String area);
+
+    int checkInterested(String id, long aptCode);
+
+    int addInterested(String id, long aptCode);
+
+    int rmInterested(String id, long aptCode);
 }

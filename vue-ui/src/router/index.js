@@ -17,6 +17,7 @@ const onlyAuthUser = async (to, from, next) => {
     next();
   }
 };
+
 const routes = [
   {
     path: "/",
@@ -126,7 +127,7 @@ const routes = [
             component: () => import("@/components/board/BoardWrite"),
           },
           {
-            path: "view/:articleno",
+            path: "view/:articleNo",
             name: "boarddetail",
             beforeEnter: onlyAuthUser,
             component: () => import("@/components/board/BoardDetailView"),
@@ -138,7 +139,7 @@ const routes = [
             component: () => import("@/components/board/BoardModify"),
           },
           {
-            path: "delete/:articleno",
+            path: "delete/:articleNo",
             name: "boarddelete",
             beforeEnter: onlyAuthUser,
             component: () => import("@/components/board/BoardDelete"),
@@ -203,3 +204,4 @@ const router = new Router({
 });
 
 export default router;
+export { onlyAuthUser };

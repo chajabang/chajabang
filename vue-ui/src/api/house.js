@@ -22,4 +22,25 @@ function getHouseDealInfo(params, success, fail) {
   api.get(`/house/deal`, { params: params }).then(success).catch(fail);
 }
 
-export { getGugunList, getDongList, getHouseList, getHouseDetail, getHouseDealInfo };
+function checkInter(params, success, fail) {
+  api.get(`/house/checkinter`, { params: params }).then(success).catch(fail);
+}
+
+function addInter(params, success, fail) {
+  api.get(`/house/addinter`, { params: params }).then(success).catch(fail);
+}
+
+function rmInter(params, success, fail) {
+  api.get(`/house/rminter`, { params: params }).then(success).catch(fail);
+}
+
+export {
+  getGugunList,
+  getDongList,
+  getHouseList,
+  getHouseDetail,
+  getHouseDealInfo,
+  checkInter,
+  addInter,
+  rmInter,
+};
