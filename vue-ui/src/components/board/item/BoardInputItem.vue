@@ -27,11 +27,29 @@
           ></b-form-textarea>
         </b-form-group>
 
-        <b-button type="submit" variant="primary" class="m-1" v-if="this.type === 'register'"
+        <b-button
+          type="submit"
+          variant="primary"
+          class="btn-sm m-1"
+          v-if="this.type === 'register'"
+          style="font-family: 'TmoneyRoundWindExtraBold'"
           >글작성</b-button
         >
-        <b-button type="submit" variant="primary" class="m-1" v-else>글수정</b-button>
-        <b-button type="reset" variant="danger" class="m-1">초기화</b-button>
+        <b-button
+          type="submit"
+          variant="primary"
+          class="btn-sm m-1"
+          v-else
+          style="font-family: 'TmoneyRoundWindExtraBold'"
+          >글수정</b-button
+        >
+        <b-button
+          type="reset"
+          variant="danger"
+          class="btn-sm m-1"
+          style="font-family: 'TmoneyRoundWindExtraBold'"
+          >취소</b-button
+        >
       </b-form>
     </b-col>
   </b-row>

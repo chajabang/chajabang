@@ -2,12 +2,18 @@
   <b-container class="bv-example-row mt-3">
     <b-row>
       <b-col>
-        <b-alert show><h3>글목록</h3></b-alert>
+        <b-alert show><h3 style="font-family: 'TmoneyRoundWindExtraBold'">글목록</h3></b-alert>
       </b-col>
     </b-row>
     <b-row class="mb-1">
       <b-col class="text-right">
-        <b-button variant="outline-primary" @click="moveWrite()">글쓰기</b-button>
+        <b-button
+          class="btn-sm"
+          variant="outline-primary"
+          @click="moveWrite()"
+          style="font-family: 'TmoneyRoundWindExtraBold'"
+          >글쓰기</b-button
+        >
       </b-col>
     </b-row>
     <b-row>
@@ -51,6 +57,7 @@ export default {
       param,
       ({ data }) => {
         this.articles = data.list;
+        console.log(data);
         console.log(this.articles);
       },
       (error) => {

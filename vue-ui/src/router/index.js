@@ -17,7 +17,6 @@ const onlyAuthUser = async (to, from, next) => {
     next();
   }
 };
-
 const routes = [
   {
     path: "/",
@@ -113,37 +112,38 @@ const routes = [
       {
         path: "",
         name: "board",
-        redirect: "/board/list",
         component: () => import("@/pages/board/BoardView"),
-      },
-      {
-        path: "list",
-        name: "boardlist",
-        component: () => import("@/components/board/BoardList"),
-      },
-      {
-        path: "write",
-        name: "boardwrite",
-        beforeEnter: onlyAuthUser,
-        component: () => import("@/components/board/BoardWrite"),
-      },
-      {
-        path: "view/:articleno",
-        name: "boardview",
-        beforeEnter: onlyAuthUser,
-        component: () => import("@/components/board/BoardDetailView"),
-      },
-      {
-        path: "modify",
-        name: "boardmodify",
-        beforeEnter: onlyAuthUser,
-        component: () => import("@/components/board/BoardModify"),
-      },
-      {
-        path: "delete/:articleno",
-        name: "boarddelete",
-        beforeEnter: onlyAuthUser,
-        component: () => import("@/components/board/BoardDelete"),
+        children: [
+          {
+            path: "list",
+            name: "boardlist",
+            component: () => import("@/components/board/BoardList"),
+          },
+          {
+            path: "write",
+            name: "boardwrite",
+            beforeEnter: onlyAuthUser,
+            component: () => import("@/components/board/BoardWrite"),
+          },
+          {
+            path: "view/:articleno",
+            name: "boardview",
+            beforeEnter: onlyAuthUser,
+            component: () => import("@/components/board/BoardDetailView"),
+          },
+          {
+            path: "modify",
+            name: "boardmodify",
+            beforeEnter: onlyAuthUser,
+            component: () => import("@/components/board/BoardModify"),
+          },
+          {
+            path: "delete/:articleno",
+            name: "boarddelete",
+            beforeEnter: onlyAuthUser,
+            component: () => import("@/components/board/BoardDelete"),
+          },
+        ],
       },
     ],
   },

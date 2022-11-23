@@ -2,18 +2,28 @@
   <b-container class="bv-example-row mt-3">
     <b-row>
       <b-col>
-        <b-alert show><h3>글보기</h3></b-alert>
+        <b-alert show><h3 style="font-family: 'TmoneyRoundWindExtraBold'">글보기</h3></b-alert>
       </b-col>
     </b-row>
     <b-row class="mb-1">
       <b-col class="text-left">
-        <b-button variant="outline-primary" @click="moveList">목록</b-button>
+        <b-button
+          variant="outline-primary"
+          class="btn-sm"
+          @click="moveList"
+          style="font-family: 'TmoneyRoundWindExtraBold'"
+          >목록</b-button
+        >
       </b-col>
       <b-col class="text-right" v-if="user.id === article.userId">
-        <b-button variant="outline-info" size="sm" @click="moveModifyArticle" class="mr-2"
+        <b-button
+          variant="outline-info"
+          class="br-2 btn-sm"
+          @click="moveModifyArticle"
+          style="font-family: 'TmoneyRoundWindExtraBold'"
           >글수정</b-button
         >
-        <b-button variant="outline-danger" size="sm" @click="deleteArticle">글삭제</b-button>
+        <b-button variant="outline-danger" class="btn-sm" @click="deleteArticle">글삭제</b-button>
       </b-col>
     </b-row>
     <b-row class="mb-1">

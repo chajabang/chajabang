@@ -5,7 +5,7 @@
         <span class="page-title-icon bg-gradient-primary text-white mr-2">
           <i class="mdi mdi-home"></i>
         </span>
-        Where Is My Home?
+        너의 집을 찾아방
       </h3>
     </div>
     <div class="card main-card my-2">
