@@ -47,4 +47,22 @@
         delete from board
         where article_no = #{articleNo}
     </delete>
+
+    <select id="checkLike" resultType="int">
+        select count(id)
+        from boardlike
+        where id = #{userId} and article_no = #{articleNo}
+    </select>
+
+    <insert id="addLike">
+        insert into boardlike(id,article_no)
+        values(#{userId},#{articleNo})
+    </insert>
+    <delete id="removeLike">
+        delete from boardlike
+        where article_no = #{articleNo} and id = #{userId}
+    </delete>
+
+
+
 </mapper>

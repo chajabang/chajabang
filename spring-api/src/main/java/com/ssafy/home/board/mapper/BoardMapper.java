@@ -18,4 +18,9 @@ public interface BoardMapper {
     int delete(int articleNo);
 
     int update(Board board);
+
+    int checkLike(String userId,int articleNo);
+    int addLike(String userId,int articleNo);
+    int removeLike(String userId,int articleNo);
+
 }

@@ -115,6 +115,76 @@ public class BoardController {
 
     }
 
+    @GetMapping("/checkLike")
+    public ResponseEntity<String> checkLike(@RequestParam int articleNo, HttpServletRequest request) throws
+            Exception {
+        logger.info("checkLike - 호출 {}", articleNo);
+        HttpSession session = request.getSession(false);
+        if (session == null) {//세션 만료
+            return new ResponseEntity<>(FAIL, HttpStatus.UNAUTHORIZED);
+        }
+        Member m = (Member) session.getAttribute("member");
+        if (m != null) { // 세션의 id 값과 board의 userId 값이 동일해야 함!!
+            Board b = boardService.getView(articleNo);
+            if(b==null){
+                return new ResponseEntity<>(FAIL, HttpStatus.NOT_FOUND);
+            }
+            int cnt = boardService.checkLike(m.getId(),articleNo);
+            if (cnt > 0) {
+                return new ResponseEntity<>("exist", HttpStatus.OK);
+            }
+            return new ResponseEntity<>("not exist",HttpStatus.NO_CONTENT);
+        }
+        return new ResponseEntity<>(FAIL, HttpStatus.BAD_REQUEST);
+    }
+
+    @GetMapping("/addLike")
+    public ResponseEntity<String> addLike(@RequestParam int articleNo, HttpServletRequest request) throws
+            Exception {
+        logger.info("addLike - 호출 {}" , articleNo);
+        HttpSession session = request.getSession(false);
+        if (session == null) {//세션 만료
+            return new ResponseEntity<>(FAIL, HttpStatus.UNAUTHORIZED);
+        }
+        Member m = (Member) session.getAttribute("member");
+        Board b = boardService.getView(articleNo);
+        if (m != null && b!=null) { // 세션의 id 값과 board의 userId 값이 동일해야 함!!
+            int cnt = boardService.checkLike(m.getId(),articleNo);
+            if(cnt==0){
+                int result = boardService.addLike(m.getId(),articleNo);
+                if (result > 0) {
+                    return new ResponseEntity<>(SUCCESS, HttpStatus.OK);
+                }
+            }
+        }
+        return new ResponseEntity<>(FAIL, HttpStatus.BAD_REQUEST);
+
+    }
+    @GetMapping("/removeLike")
+    public ResponseEntity<String> removeLike(@RequestParam int articleNo, HttpServletRequest request) throws
+            Exception {
+        logger.info("removeLike - 호출 {}" , articleNo);
+        HttpSession session = request.getSession(false);
+        if (session == null) {//세션 만료
+            return new ResponseEntity<>(FAIL, HttpStatus.UNAUTHORIZED);
+        }
+        Member m = (Member) session.getAttribute("member");
+        Board b = boardService.getView(articleNo);
+        if (m != null && b!=null) { // 세션의 id 값과 board의 userId 값이 동일해야 함!!
+            int cnt = boardService.checkLike(m.getId(),articleNo);
+            if(cnt>0){
+                int result = boardService.removeLike(m.getId(),articleNo);
+                if (result > 0) {
+                    return new ResponseEntity<>(SUCCESS, HttpStatus.OK);
+                }
+            }
+        }
+        return new ResponseEntity<>(FAIL, HttpStatus.BAD_REQUEST);
+
+    }
+
+
+
 
 
 //    @PostMapping("/upload")
