@@ -10,11 +10,12 @@
         <result column="title" property="subject"/>
         <result column="content" property="content"/>
         <result column="hit" property="hit"/>
+        <result column="likes" property="likes"/>
         <result column="reg_date" property="registerTime"/>
     </resultMap>
 
     <select id="selectAll"  resultMap="article">
-        select b.article_no, b.title, m.username, b.hit, b.reg_date
+        select b.article_no, b.title, m.username, b.hit, (select count(id) from boardlike where article_no =b.article_no) as likes , b.reg_date
         from board b, member m
         where b.id = m.id
         order by article_no desc
@@ -32,7 +33,7 @@
     </update>
 
     <select id="getView" parameterType="int" resultMap="article">
-        select b.article_no, b.id, b.title, b.content, b.hit, b.reg_date, m.username
+        select b.article_no, b.id, b.title, b.content, b.hit,(select count(id) from boardlike where article_no =b.article_no) as likes, b.reg_date, m.username
         from board b, member m
         where article_no = #{articleNo} and b.id = m.id
     </select>

@@ -43,6 +43,7 @@ export default {
         { key: "userName", label: "작성자", tdClass: "tdClass" },
         { key: "registerTime", label: "작성일", tdClass: "tdClass" },
         { key: "hit", label: "조회수", tdClass: "tdClass" },
+        { key: "likes", label: "좋아요", tdClass: "tdClass" },
       ],
     };
   },
