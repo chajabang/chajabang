@@ -6,6 +6,7 @@
     <mappers>
         <mapper resource="mybatis/member.xml"/>
         <mapper resource="mybatis/board.xml"/>
+        <mapper resource="mybatis/notice.xml"/>
         <mapper resource="mybatis/sec.xml"/>
         <mapper resource="mybatis/house.xml"/>
     </mappers>

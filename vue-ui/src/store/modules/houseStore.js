@@ -169,6 +169,9 @@ const houseStore = {
         }
       );
     },
+    setHouses({ commit }, data) {
+      commit("SET_HOUSE_LIST", data);
+    },
   },
 };
 

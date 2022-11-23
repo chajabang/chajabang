@@ -34,6 +34,10 @@ function rmInter(params, success, fail) {
   api.get(`/house/rminter`, { params: params }).then(success).catch(fail);
 }
 
+function getInterestList(params, success, fail) {
+  api.get(`/house/interestlist`, { params: params }).then(success).catch(fail);
+}
+
 export {
   getGugunList,
   getDongList,
@@ -43,4 +47,5 @@ export {
   checkInter,
   addInter,
   rmInter,
+  getInterestList,
 };

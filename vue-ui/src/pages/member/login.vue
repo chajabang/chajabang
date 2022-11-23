@@ -9,8 +9,8 @@
                 <div class="brand-logo">
                   <img src="../../assets/images/logo.png" />
                 </div>
-                <h4>Hello! let's get started</h4>
-                <h6 class="font-weight-light">Login to continue.</h6>
+                <h4>안녕하세요!</h4>
+                <h6 class="font-weight-light">계속하려면 로그인하세요.</h6>
 
                 <form class="pt-3">
                   <div v-if="valid.loginFail" class="alert alert-danger" role="alert">
@@ -41,18 +41,8 @@
                       LOGIN
                     </button>
                   </div>
-                  <div class="my-2 d-flex justify-content-between align-items-center">
-                    <div class="form-check">
-                      <label class="form-check-label text-muted">
-                        <input type="checkbox" class="form-check-input" />
-                        Remember me
-                        <i class="input-helper"></i>
-                      </label>
-                    </div>
-                    <a href="#" class="auth-link text-black">Forgot password?</a>
-                  </div>
                   <div class="text-center mt-4 font-weight-light">
-                    Don't have an account?
+                    아직 계정이 없으신가요?
                     <router-link :to="{ name: 'signup' }" class="text-primary">Create</router-link>
                   </div>
                 </form>

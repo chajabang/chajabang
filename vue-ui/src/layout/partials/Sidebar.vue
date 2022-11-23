@@ -8,9 +8,21 @@
             <i class="mdi mdi-home menu-icon"></i>
           </router-link>
         </li>
+        <li class="nav-item" v-on:click="collapseAll" v-if="user.username">
+          <router-link class="nav-link" :to="{ name: 'interestview' }">
+            <span class="menu-title">관심있는 집을 찾아방</span>
+            <i class="mdi mdi-home-map-marker menu-icon"></i>
+          </router-link>
+        </li>
+        <li class="nav-item" v-on:click="collapseAll">
+          <router-link class="nav-link" :to="{ name: 'noticelist' }">
+            <span class="menu-title">공지사항</span>
+            <i class="mdi mdi-alert-box menu-icon"></i>
+          </router-link>
+        </li>
         <li class="nav-item" v-on:click="collapseAll">
           <router-link class="nav-link" :to="{ name: 'boardlist' }">
-            <span class="menu-title">게시판</span>
+            <span class="menu-title">자유게시판</span>
             <i class="mdi mdi-view-list menu-icon"></i>
           </router-link>
         </li>
@@ -20,6 +32,8 @@
 </template>
 
 <script>
+import { mapState } from "vuex";
+
 export default {
   name: "sidebar",
   data() {
@@ -51,6 +65,9 @@ export default {
         }
       });
     });
+  },
+  computed: {
+    ...mapState("memberStore", ["user"]),
   },
 };
 </script>

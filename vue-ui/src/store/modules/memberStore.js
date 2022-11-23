@@ -156,7 +156,7 @@ const memberStore = {
         },
         async (error) => {
           console.log("세션만료!!! ", error.response.status);
-          alert("세션이 만료되었습니다. 다시 로그인 해주세요.");
+          alert("로그인이 필요합니다.");
           dispatch("initDefault");
           router.push({ name: "login" });
         }

@@ -23,4 +23,6 @@ public interface HouseMapper {
     int addInterested(String id, long aptCode);
 
     int rmInterested(String id, long aptCode);
+
+    List<House> getInterList(String id);
 }

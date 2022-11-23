@@ -45,4 +45,8 @@ public class HouseService {
     public int rmInterested(String id, long aptCode) {
         return houseMapper.rmInterested(id, aptCode);
     }
+
+    public List<House> getInterList(String id) {
+        return houseMapper.getInterList(id);
+    }
 }

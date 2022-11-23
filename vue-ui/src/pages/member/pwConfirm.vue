@@ -33,16 +33,6 @@
                       LOGIN
                     </button>
                   </div>
-                  <div class="my-2 d-flex justify-content-between align-items-center">
-                    <div class="form-check">
-                      <label class="form-check-label text-muted">
-                        <input type="checkbox" class="form-check-input" />
-                        Remember me
-                        <i class="input-helper"></i>
-                      </label>
-                    </div>
-                    <a href="#" class="auth-link text-black">Forgot password?</a>
-                  </div>
                 </div>
               </div>
             </div>

@@ -36,6 +36,18 @@ const routes = [
     ],
   },
   {
+    path: "/interest",
+    component: layout,
+    children: [
+      {
+        path: "",
+        name: "interestview",
+        beforeEnter: onlyAuthUser,
+        component: () => import("@/pages/interest/InterestView"),
+      },
+    ],
+  },
+  {
     path: "/basic-ui",
     component: layout,
     children: [
@@ -143,6 +155,47 @@ const routes = [
             name: "boarddelete",
             beforeEnter: onlyAuthUser,
             component: () => import("@/components/board/BoardDelete"),
+          },
+        ],
+      },
+    ],
+  },
+  {
+    path: "/notice",
+    component: layout,
+    children: [
+      {
+        path: "",
+        name: "notice",
+        component: () => import("@/pages/notice/NoticeView"),
+        children: [
+          {
+            path: "list",
+            name: "noticelist",
+            component: () => import("@/components/notice/NoticeList"),
+          },
+          {
+            path: "write",
+            name: "noticewrite",
+            beforeEnter: onlyAuthUser,
+            component: () => import("@/components/notice/NoticeWrite"),
+          },
+          {
+            path: "view/:articleNo",
+            name: "noticedetail",
+            component: () => import("@/components/notice/NoticeDetailView"),
+          },
+          {
+            path: "modify",
+            name: "noticemodify",
+            beforeEnter: onlyAuthUser,
+            component: () => import("@/components/notice/NoticeModify"),
+          },
+          {
+            path: "delete/:articleNo",
+            name: "noticedelete",
+            beforeEnter: onlyAuthUser,
+            component: () => import("@/components/notice/NoticeDelete"),
           },
         ],
       },

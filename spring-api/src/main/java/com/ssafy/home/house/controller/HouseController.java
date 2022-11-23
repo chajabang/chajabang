@@ -77,7 +77,7 @@ public class HouseController {
         if(list != null) {
             return new ResponseEntity<>(list, HttpStatus.OK);
         } else {
-            return new ResponseEntity<>("상세정보 불러오기 실패", HttpStatus.NOT_FOUND);
+            return new ResponseEntity<>("가격정보 불러오기 실패", HttpStatus.NOT_FOUND);
         }
     }
 
@@ -120,6 +120,17 @@ public class HouseController {
             return new ResponseEntity<>(FAIL, HttpStatus.NO_CONTENT);
         } else {
             return new ResponseEntity<>("잘못된 요청입니다.", HttpStatus.BAD_REQUEST);
+        }
+    }
+
+    @GetMapping("/interestlist")
+    public ResponseEntity<?> getInterList(@RequestParam("id") String id) {
+        logger.info("House getInterList 호출");
+        List<House> list = houseService.getInterList(id);
+        if(list != null) {
+            return new ResponseEntity<>(list, HttpStatus.OK);
+        } else {
+            return new ResponseEntity<>("관심 매물정보 불러오기 실패", HttpStatus.NOT_FOUND);
         }
     }
 

@@ -9,7 +9,7 @@
                 <div class="brand-logo">
                   <img src="../../assets/images/logo.png" />
                 </div>
-                <h4>Member Update & Delete</h4>
+                <h4>회원정보 수정 & 삭제</h4>
                 <form class="pt-3">
                   <div class="form-group">
                     <b-row>

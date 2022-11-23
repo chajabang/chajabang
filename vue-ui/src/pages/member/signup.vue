@@ -9,8 +9,10 @@
                 <div class="brand-logo">
                   <img src="../../assets/images/logo.png" />
                 </div>
-                <h4>New here?</h4>
-                <h6 class="font-weight-light">Sign Up is easy. It only takes a few steps</h6>
+                <h4>처음 오셨나요?</h4>
+                <h6 class="font-weight-light">
+                  다음 몇단계만 거치면 쉽게 회원가입 할 수 있습니다.
+                </h6>
                 <form class="pt-3">
                   <div class="form-group">
                     <b-row>
@@ -96,13 +98,15 @@
                     <p v-if="valid.email" class="text-danger">이메일 주소를 정확히 입력해주세요.</p>
                   </div>
 
-                  <vue-recaptcha
-                    ref="recaptcha"
-                    :sitekey="secretKey"
-                    @verify="onVerify"
-                    @expired="onExpired"
-                  >
-                  </vue-recaptcha>
+                  <div style="overflow: hidden">
+                    <vue-recaptcha
+                      ref="recaptcha"
+                      :sitekey="secretKey"
+                      @verify="onVerify"
+                      @expired="onExpired"
+                    >
+                    </vue-recaptcha>
+                  </div>
 
                   <div class="mt-3">
                     <button
@@ -114,7 +118,7 @@
                     </button>
                   </div>
                   <div class="text-center mt-4 font-weight-light">
-                    Already have an account?
+                    이미 계정이 있나요?
                     <router-link :to="{ name: 'login' }" class="text-primary">Login</router-link>
                   </div>
                 </form>

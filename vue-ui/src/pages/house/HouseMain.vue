@@ -41,69 +41,45 @@
         </div>
       </b-container>
     </div>
-    <div class="row">
+    <div class="row mt-5">
       <div class="col-md-6 grid-margin stretch-card">
-        <div class="card">
-          <b-carousel
-            :interval="4000"
-            controls
-            indicators
-            background="#ababab"
-            style="text-shadow: 1px 1px 2px #333"
-          >
-            <!-- Text slides with image -->
-            <b-carousel-slide>
-              <template #img>
-                <img class="d-block" src="@/assets/images/carousel/apt_1.jpg" alt="image slot" />
-              </template>
-            </b-carousel-slide>
-
-            <!-- Slides with custom text -->
-            <b-carousel-slide>
-              <template #img>
-                <img class="d-block" src="@/assets/images/carousel/apt_2.jpg" alt="image slot" />
-              </template>
-            </b-carousel-slide>
-
-            <!-- Slides with image only -->
-            <b-carousel-slide>
-              <template #img>
-                <img class="d-block" src="@/assets/images/carousel/apt_3.jpg" alt="image slot" />
-              </template>
-            </b-carousel-slide>
-          </b-carousel>
+        <div class="card text-center" style="overflow: hidden">
+          <h3 class="text-primary mt-3" style="font-family: 'TmoneyRoundWindExtraBold'">
+            <i class="mdi mdi-alert-box"></i> 공지사항
+          </h3>
+          <b-row>
+            <b-col>
+              <b-table hover :items="notices" :fields="nfields">
+                <template #cell(subject)="data">
+                  <router-link
+                    :to="{ name: 'noticedetail', params: { articleNo: data.item.articleNo } }"
+                  >
+                    {{ data.item.subject }}
+                  </router-link>
+                </template>
+              </b-table>
+            </b-col>
+          </b-row>
         </div>
       </div>
       <div class="col-md-6 grid-margin stretch-card">
-        <div class="card">
-          <b-carousel
-            :interval="4000"
-            controls
-            indicators
-            background="#ababab"
-            style="text-shadow: 1px 1px 2px #333"
-          >
-            <!-- Text slides with image -->
-            <b-carousel-slide>
-              <template #img>
-                <img class="d-block" src="@/assets/images/carousel/apt_2.jpg" alt="image slot" />
-              </template>
-            </b-carousel-slide>
-
-            <!-- Slides with custom text -->
-            <b-carousel-slide>
-              <template #img>
-                <img class="d-block" src="@/assets/images/carousel/apt_3.jpg" alt="image slot" />
-              </template>
-            </b-carousel-slide>
-
-            <!-- Slides with image only -->
-            <b-carousel-slide>
-              <template #img>
-                <img class="d-block" src="@/assets/images/carousel/apt_1.jpg" alt="image slot" />
-              </template>
-            </b-carousel-slide>
-          </b-carousel>
+        <div class="card text-center" style="overflow: hidden">
+          <h3 class="text-primary mt-3" style="font-family: 'TmoneyRoundWindExtraBold'">
+            <i class="mdi mdi-view-list"></i> 자유게시판
+          </h3>
+          <b-row>
+            <b-col>
+              <b-table hover :items="articles" :fields="fields">
+                <template #cell(subject)="data">
+                  <router-link
+                    :to="{ name: 'boarddetail', params: { articleNo: data.item.articleNo } }"
+                  >
+                    {{ data.item.subject }}
+                  </router-link>
+                </template>
+              </b-table>
+            </b-col>
+          </b-row>
         </div>
       </div>
     </div>
@@ -112,6 +88,9 @@
 
 <script>
 import { mapActions, mapState } from "vuex";
+import { listNotice } from "@/api/notice";
+import { listArticle } from "@/api/board";
+
 const houseStore = "houseStore";
 const memberStore = "memberStore";
 
@@ -122,12 +101,31 @@ export default {
       sido: null,
       gugun: null,
       dong: null,
+      notices: [],
+      nfields: [
+        { key: "articleNo", label: "글번호", tdClass: "tdClass" },
+        { key: "subject", label: "제목", tdClass: "tdSubject" },
+        { key: "userName", label: "작성자", tdClass: "tdClass" },
+        { key: "registerTime", label: "작성일", tdClass: "tdClass" },
+        { key: "hit", label: "조회수", tdClass: "tdClass" },
+      ],
+      articles: [],
+      fields: [
+        { key: "articleNo", label: "글번호", tdClass: "tdClass" },
+        { key: "subject", label: "제목", tdClass: "tdSubject" },
+        { key: "userName", label: "작성자", tdClass: "tdClass" },
+        { key: "registerTime", label: "작성일", tdClass: "tdClass" },
+        { key: "hit", label: "조회수", tdClass: "tdClass" },
+        { key: "likes", label: "좋아요", tdClass: "tdClass" },
+      ],
     };
   },
   created() {
     this.checkSession();
     this.clearGugunList();
     this.clearDongList();
+    this.getListNotice();
+    this.getListArticle();
   },
   methods: {
     ...mapActions(memberStore, ["checkSession"]),
@@ -160,6 +158,32 @@ export default {
         this.getHouses({ sido: this.sido, gugun: this.gugun, dong: this.dong });
         this.mvHouseView();
       }
+    },
+    getListNotice() {
+      listNotice(
+        { pageNum: 1, pageSize: 5 },
+        ({ data }) => {
+          this.notices = data.list;
+          console.log(data);
+          console.log(this.articles);
+        },
+        (error) => {
+          console.log(error);
+        }
+      );
+    },
+    getListArticle() {
+      listArticle(
+        { pageNum: 1, pageSize: 5 },
+        ({ data }) => {
+          this.articles = data.list;
+          console.log(data);
+          console.log(this.articles);
+        },
+        (error) => {
+          console.log(error);
+        }
+      );
     },
   },
   computed: {

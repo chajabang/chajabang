@@ -3,9 +3,9 @@
     <div class="page-header">
       <h3 class="page-title text-dark">
         <span class="page-title-icon bg-gradient-primary text-white mr-2">
-          <i class="mdi mdi-view-list"></i>
+          <i class="mdi mdi-alert-box"></i>
         </span>
-        자유게시판
+        공지사항
       </h3>
     </div>
     <b-card class="text-center">
@@ -15,7 +15,7 @@
 </template>
 <script>
 export default {
-  name: "AppBoard",
+  name: "AppNotice",
 };
 </script>
 <style scoped>

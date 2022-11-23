@@ -37,6 +37,24 @@
         order by apartmentName
     </select>
 
+    <select id="getInterList" parameterType="String" resultType="house">
+        select distinct h.aptCode,
+                        h.dong,
+                        cast(h.bonbun as signed)         bonbun,
+                        cast(h.bubun as signed)          bubun,
+                        h.roadName,
+                        cast(h.roadNameBonbun as signed) roadNameBonbun,
+                        cast(h.roadNameBubun as signed)  roadNameBubun,
+                        h.apartmentName,
+                        h.lat,
+                        h.lng
+        from houseinfo h
+        inner join interestplace i
+        on h.aptCode = i.aptCode
+        where i.id = #{id}
+        order by apartmentName
+    </select>
+
     <select id="getHouseDetail" parameterType="long" resultType="HouseDeal">
         select distinct area, floor
         from housedeal
