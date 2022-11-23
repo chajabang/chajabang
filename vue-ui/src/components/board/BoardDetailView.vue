@@ -36,7 +36,7 @@
       <b-col>
         <b-card
           :header-html="`<h3>${article.articleNo}.
-          ${article.subject} [${article.hit}]</h3><div><h6>${article.userId}</div><div>${article.registerTime}</h6></div>`"
+          ${article.subject} [${article.hit}]</h3><div><h6 class='text-right'>${article.userId}</div><div class='text-right'>${article.registerTime}</h6><h5> 추천 : ${article.likes}</h5></div>`"
           class="mb-2"
           border-variant="dark"
           no-body
@@ -47,12 +47,26 @@
         </b-card>
       </b-col>
     </b-row>
+    <b-row>
+      <b-col class="text-right">
+        <div v-if="isLike">
+          <b-button variant="primary" class="btn-sm m-1" @click="clickRemoveLike"
+            >추천 취소~! <i class="mdi mdi-thumb-up"></i>
+          </b-button>
+        </div>
+        <div v-else>
+          <b-button variant="primary" class="btn-sm m-1" @click="clickAddLike"
+            >추천~! <i class="mdi mdi-thumb-up-outline"></i
+          ></b-button>
+        </div>
+      </b-col>
+    </b-row>
   </b-container>
 </template>
 
 <script>
 // import moment from "moment";
-import { getArticle } from "@/api/board";
+import { getArticle, checkLikeArticle, addLikeArticle, removeLikeArticle } from "@/api/board";
 import { mapState } from "vuex";
 
 const memberStore = "memberStore";
@@ -62,6 +76,7 @@ export default {
   data() {
     return {
       article: {},
+      isLike: false,
     };
   },
   computed: {
@@ -78,6 +93,19 @@ export default {
       ({ data }) => {
         console.log(data);
         this.article = data;
+      },
+      (error) => {
+        console.log(error);
+      }
+    );
+    checkLikeArticle(
+      params,
+      ({ status }) => {
+        if (status == 200) {
+          this.isLike = true;
+        } else if (status == 204) {
+          this.isLike = false;
+        }
       },
       (error) => {
         console.log(error);
@@ -102,6 +130,35 @@ export default {
     },
     moveList() {
       this.$router.push({ name: "boardlist" });
+    },
+    clickAddLike() {
+      let params = { articleNo: this.article.articleNo };
+      addLikeArticle(
+        params,
+        ({ status }) => {
+          if (status == 200) {
+            this.isLike = true;
+          }
+        },
+        (error) => {
+          console.log(error);
+        }
+      );
+    },
+    clickRemoveLike() {
+      let params = { articleNo: this.article.articleNo };
+
+      removeLikeArticle(
+        params,
+        ({ status }) => {
+          if (status == 200) {
+            this.isLike = false;
+          }
+        },
+        (error) => {
+          console.log(error);
+        }
+      );
     },
   },
 };
