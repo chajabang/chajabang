@@ -95,11 +95,20 @@
                     />
                     <p v-if="valid.email" class="text-danger">이메일 주소를 정확히 입력해주세요.</p>
                   </div>
+
+                  <vue-recaptcha
+                    ref="recaptcha"
+                    :sitekey="secretKey"
+                    @verify="onVerify"
+                    @expired="onExpired"
+                  >
+                  </vue-recaptcha>
+
                   <div class="mt-3">
                     <button
                       type="button"
                       class="btn btn-block btn-gradient-primary btn-lg font-weight-medium"
-                      @click="clickSignUpBtn"
+                      @click="checkRobot()"
                     >
                       SIGN UP
                     </button>
@@ -122,11 +131,15 @@
 
 <script>
 import { mapActions, mapState, mapMutations } from "vuex";
+import { VueRecaptcha } from "vue-recaptcha";
 
 const memberStore = "memberStore";
 
 export default {
   name: "signup",
+  components: {
+    VueRecaptcha,
+  },
   data() {
     return {
       id: "",
@@ -134,6 +147,8 @@ export default {
       confirmPw: "",
       email: "",
       username: "",
+      response: "",
+      secretKey: process.env.VUE_APP_RECAPCHA_KEY,
     };
   },
   watch: {
@@ -158,6 +173,22 @@ export default {
       "registerMember",
     ]),
     ...mapMutations(memberStore, ["CLEAR_REGISTER_STATE"]),
+    onVerify(r) {
+      this.response = r;
+    },
+    onExpired() {
+      this.response = "";
+      this.$refs.recaptcha.reset();
+    },
+    checkRobot() {
+      if (this.response) {
+        this.clickSignUpBtn();
+      } else {
+        alert("로봇이 아님을 확인해주세요");
+        this.$refs.recaptcha.execute();
+      }
+    },
+
     clickIdBtn() {
       this.checkId(this.id);
     },
