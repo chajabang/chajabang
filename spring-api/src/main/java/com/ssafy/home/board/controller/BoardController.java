@@ -33,12 +33,12 @@ public class BoardController {
 
 
     @GetMapping("/selectAll")
-    public ResponseEntity<PageInfo<Board>> selectAll(int pageNum, int pageSize, HttpServletRequest request) {
+    public ResponseEntity<PageInfo<Board>> selectAll(HttpServletRequest request) {
         logger.info("Board SelectAll 호출");
         PageHelper.startPage(request);
         List<Board> list = boardService.selectAll();
         System.out.println(list.size());
-        return new ResponseEntity<>(PageInfo.of(list), HttpStatus.OK);
+        return new ResponseEntity<>(PageInfo.of(list, 10), HttpStatus.OK);
     }
 
     @PostMapping("/write")

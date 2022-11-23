@@ -127,7 +127,7 @@ const routes = [
           },
           {
             path: "view/:articleno",
-            name: "boardview",
+            name: "boarddetail",
             beforeEnter: onlyAuthUser,
             component: () => import("@/components/board/BoardDetailView"),
           },

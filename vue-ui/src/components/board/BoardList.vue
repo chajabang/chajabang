@@ -2,7 +2,7 @@
   <b-container class="bv-example-row mt-3">
     <b-row>
       <b-col>
-        <b-alert show><h3 style="font-family: 'TmoneyRoundWindExtraBold'">글목록</h3></b-alert>
+        <h3 class="text-dark" style="font-family: 'TmoneyRoundWindExtraBold'">📑 글목록</h3>
       </b-col>
     </b-row>
     <b-row class="mb-1">
@@ -16,15 +16,27 @@
         >
       </b-col>
     </b-row>
-    <b-row>
+    <b-row style="overflow: auto">
       <b-col>
-        <b-table striped hover :items="articles" :fields="fields" @row-clicked="viewArticle">
+        <b-table striped hover :items="articles" :fields="fields">
           <template #cell(subject)="data">
-            <router-link :to="{ name: 'boardview', params: { articleNo: data.item.articleNo } }">
+            <router-link :to="{ name: 'boarddetail', params: { articleNo: data.item.articleNo } }">
               {{ data.item.subject }}
             </router-link>
           </template>
         </b-table>
+      </b-col>
+    </b-row>
+    <b-row>
+      <b-col>
+        <b-pagination
+          v-model="pageNum"
+          :total-rows="total"
+          :per-page="pageSize"
+          align="center"
+          size="sm"
+          class="mt-4"
+        ></b-pagination>
       </b-col>
     </b-row>
   </b-container>
@@ -44,26 +56,18 @@ export default {
         { key: "registerTime", label: "작성일", tdClass: "tdClass" },
         { key: "hit", label: "조회수", tdClass: "tdClass" },
       ],
+      pageNum: 1,
+      pageSize: 10,
+      total: 0,
     };
   },
   created() {
-    let param = {
-      pageNum: 1,
-      pageSize: 20,
-      key: null,
-      word: null,
-    };
-    listArticle(
-      param,
-      ({ data }) => {
-        this.articles = data.list;
-        console.log(data);
-        console.log(this.articles);
-      },
-      (error) => {
-        console.log(error);
-      }
-    );
+    this.getListArticle();
+  },
+  watch: {
+    pageNum() {
+      this.getListArticle();
+    },
   },
   methods: {
     moveWrite() {
@@ -71,9 +75,23 @@ export default {
     },
     viewArticle(article) {
       this.$router.push({
-        name: "boardview",
+        name: "boarddetail",
         params: { articleNo: article.articleNo },
       });
+    },
+    getListArticle() {
+      listArticle(
+        { pageNum: this.pageNum, pageSize: this.pageSize },
+        ({ data }) => {
+          this.articles = data.list;
+          this.total = data.total;
+          console.log(data);
+          console.log(this.articles);
+        },
+        (error) => {
+          console.log(error);
+        }
+      );
     },
   },
 };

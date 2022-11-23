@@ -2,11 +2,11 @@
   <b-container class="bv-example-row mt-3">
     <b-row>
       <b-col>
-        <b-alert show><h3 style="font-family: 'TmoneyRoundWindExtraBold'">글목록</h3></b-alert>
+        <h3 class="text-dark" style="font-family: 'TmoneyRoundWindExtraBold'">✂️ 글삭제</h3>
       </b-col>
     </b-row>
     <b-row>
-      <b-col><b-alert show variant="danger">삭제처리중...</b-alert></b-col>
+      <b-col class="text-danger">삭제처리중...</b-col>
     </b-row>
   </b-container>
 </template>

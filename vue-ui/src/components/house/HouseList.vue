@@ -1,5 +1,9 @@
 <template>
-  <b-container v-if="houses && houses.length != 0" class="bv-example-row mt-3">
+  <b-container
+    v-if="houses && houses.length != 0"
+    class="bv-example-row mt-3"
+    style="overflow: auto"
+  >
     <b-table-simple hover>
       <b-thead>
         <b-tr class="text-center bg-light bg-gradient">
@@ -14,7 +18,7 @@
   </b-container>
   <b-container v-else class="bv-example-row mt-3">
     <b-row>
-      <b-col><b-alert show>주택 목록이 없습니다.</b-alert></b-col>
+      <b-col class="text-info">🏚 주택 목록이 없습니다.</b-col>
     </b-row>
   </b-container>
 </template>
