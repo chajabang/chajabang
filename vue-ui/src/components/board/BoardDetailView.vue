@@ -137,12 +137,11 @@ export default {
     getArticle(
       params,
       ({ data }) => {
-        console.log(data);
         this.article = data;
         this.article.hit++;
       },
       (error) => {
-        console.log(error);
+        // console.log(error);
       }
     );
 
@@ -152,7 +151,7 @@ export default {
         this.commentList = data;
       },
       (error) => {
-        console.log(error);
+        // console.log(error);
       }
     );
     checkLikeArticle(
@@ -165,7 +164,7 @@ export default {
         }
       },
       (error) => {
-        console.log(error);
+        // console.log(error);
       }
     );
   },
@@ -199,7 +198,7 @@ export default {
           }
         },
         (error) => {
-          console.log(error);
+          // console.log(error);
         }
       );
     },
@@ -216,12 +215,11 @@ export default {
       writeComment(
         params,
         ({ data }) => {
-          console.log(data);
           this.commentList.push(data);
           this.commentData = "";
         },
         (error) => {
-          console.log(error);
+          // console.log(error);
         }
       );
     },
@@ -249,7 +247,7 @@ export default {
         },
 
         (error) => {
-          console.log(error);
+          // console.log(error);
         }
       );
     },

@@ -89,7 +89,7 @@ export default {
           this.article = data;
         },
         (error) => {
-          console.log(error);
+          // console.log(error);
         }
       );
     }
@@ -138,7 +138,7 @@ export default {
           this.moveList();
         },
         (error) => {
-          console.log(error);
+          // console.log(error);
         }
       );
     },
@@ -161,7 +161,7 @@ export default {
           this.moveList();
         },
         (error) => {
-          console.log(error);
+          // console.log(error);
         }
       );
     },

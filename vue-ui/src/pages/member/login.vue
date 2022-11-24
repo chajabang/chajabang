@@ -80,7 +80,6 @@ export default {
     this.CLEAR_LOGIN_STATE();
     this.checkSession();
     if (this.user.username) {
-      console.log("test");
       this.$router.push("/");
     }
   },

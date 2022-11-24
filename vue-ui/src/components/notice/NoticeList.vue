@@ -90,11 +90,9 @@ export default {
         ({ data }) => {
           this.articles = data.list;
           this.total = data.total;
-          console.log(data);
-          console.log(this.articles);
         },
         (error) => {
-          console.log(error);
+          // console.log(error);
         }
       );
     },

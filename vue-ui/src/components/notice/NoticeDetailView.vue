@@ -82,12 +82,11 @@ export default {
     getArticle(
       params,
       ({ data }) => {
-        console.log(data);
         this.article = data;
         this.article.hit++;
       },
       (error) => {
-        console.log(error);
+        // console.log(error);
       }
     );
   },

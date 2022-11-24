@@ -143,7 +143,7 @@ public class MemberController {
             if (pw.trim().equals("")) {
                 map.put("pw", null);
             }
-            System.out.println(pw == null);
+//            System.out.println(pw == null);
 
             try {
                 if (m != null && m.getId().equals(id)) {

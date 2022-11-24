@@ -34,7 +34,7 @@ public class NoticeController {
         logger.info("Notice SelectAll 호출");
         PageHelper.startPage(request);
         List<Notice> list = noticeService.selectAll();
-        System.out.println(list.size());
+//        System.out.println(list.size());
         return new ResponseEntity<>(PageInfo.of(list, 10), HttpStatus.OK);
     }
 
@@ -49,7 +49,7 @@ public class NoticeController {
         if ((m.getId()).equals(notice.getUserId())) {
             notice.setUserName(m.getUsername());
             long i = noticeService.write(notice);
-            System.out.println(i);
+//            System.out.println(i);
             if (i > 0) {
                 return new ResponseEntity<>(SUCCESS, HttpStatus.CREATED);
             }
@@ -100,7 +100,7 @@ public class NoticeController {
             return new ResponseEntity<>(FAIL, HttpStatus.UNAUTHORIZED);
         }
         Member m = (Member) session.getAttribute("member");
-        System.out.println(m);
+//        System.out.println(m);
 
         if (m != null && m.getId().equals(notice.getUserId())) { // 세션의 id 값과 notice의 userId 값이 동일해야 함!!
             int cnt = noticeService.updateNotice(notice);

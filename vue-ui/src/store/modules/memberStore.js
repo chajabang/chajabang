@@ -195,7 +195,7 @@ const memberStore = {
           if (error.response.status == 409) {
             commit("CHECK_ID_FAIL", id);
           } else {
-            console.log("에러발생... ", error.response.status);
+            // console.log("에러발생... ", error.response.status);
             alert("에러! 잠시후에 시도해주세요.");
           }
         }
@@ -214,7 +214,7 @@ const memberStore = {
           if (error.response.status == 409) {
             commit("CHECK_USERNAME_FAIL", username);
           } else {
-            console.log("에러발생... ", error.response.status);
+            // console.log("에러발생... ", error.response.status);
             alert("에러! 잠시후에 시도해주세요.");
           }
         }

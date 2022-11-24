@@ -30,9 +30,9 @@ public class CommentController {
     public ResponseEntity<List<Comment>> selectAll(int articleNo, HttpServletRequest request) {
         logger.info("Comment GetAll 호출{}", articleNo);
         List<Comment> list = commentService.getComments(articleNo);
-        for (Comment c : list) {
-            System.out.println(c);
-        }
+//        for (Comment c : list) {
+//            System.out.println(c);
+//        }
         return new ResponseEntity<>(list, HttpStatus.OK);
     }
 
@@ -47,7 +47,7 @@ public class CommentController {
         if ((m.getId()).equals(comment.getUserId())) {
             comment.setUserName(m.getUsername());
             long i = commentService.write(comment);
-            System.out.println(i);
+//            System.out.println(i);
             if (i > 0) {
                 return new ResponseEntity<>(comment, HttpStatus.CREATED);
             }

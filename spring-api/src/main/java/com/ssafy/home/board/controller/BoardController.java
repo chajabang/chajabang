@@ -37,7 +37,7 @@ public class BoardController {
         logger.info("Board SelectAll 호출");
         PageHelper.startPage(request);
         List<Board> list = boardService.selectAll();
-        System.out.println(list.size());
+//        System.out.println(list.size());
         return new ResponseEntity<>(PageInfo.of(list, 10), HttpStatus.OK);
     }
 
@@ -52,7 +52,7 @@ public class BoardController {
         if ((m.getId()).equals(board.getUserId())) {
             board.setUserName(m.getUsername());
             long i = boardService.write(board);
-            System.out.println(i);
+//            System.out.println(i);
             if (i > 0) {
                 return new ResponseEntity<>(SUCCESS, HttpStatus.CREATED);
             }
@@ -103,7 +103,7 @@ public class BoardController {
             return new ResponseEntity<>(FAIL, HttpStatus.UNAUTHORIZED);
         }
         Member m = (Member) session.getAttribute("member");
-        System.out.println(m);
+//        System.out.println(m);
 
         if (m != null && m.getId().equals(board.getUserId())) { // 세션의 id 값과 board의 userId 값이 동일해야 함!!
             int cnt = boardService.updateBoard(board);
@@ -170,7 +170,7 @@ public class BoardController {
         }
         Member m = (Member) session.getAttribute("member");
         Board b = boardService.getView(articleNo);
-        System.out.println(b);
+//        System.out.println(b);
         if (m != null && b!=null) { // 세션의 id 값과 board의 userId 값이 동일해야 함!!
             int cnt = boardService.checkLike(m.getId(),articleNo);
             if(cnt>0){

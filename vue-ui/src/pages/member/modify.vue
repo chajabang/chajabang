@@ -182,7 +182,6 @@ export default {
         alert("이메일을 확인하세요");
         return;
       }
-      console.log("PW", this.pw);
 
       if (confirm("수정하시겠습니다까??")) {
         this.updateMember({

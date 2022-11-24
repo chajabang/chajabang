@@ -164,11 +164,9 @@ export default {
         { pageNum: 1, pageSize: 5 },
         ({ data }) => {
           this.notices = data.list;
-          console.log(data);
-          console.log(this.articles);
         },
         (error) => {
-          console.log(error);
+          // console.log(error);
         }
       );
     },
@@ -177,11 +175,9 @@ export default {
         { pageNum: 1, pageSize: 5 },
         ({ data }) => {
           this.articles = data.list;
-          console.log(data);
-          console.log(this.articles);
         },
         (error) => {
-          console.log(error);
+          // console.log(error);
         }
       );
     },
