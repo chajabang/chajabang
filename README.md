@@ -57,7 +57,9 @@
 
 ![ER 다이어그램](https://user-images.githubusercontent.com/62232531/203816937-a4300dd0-570f-4da4-9194-d06690fcae98.png)
 
+### 클래스 다이어그램
 
+![클래스 다이어그램](https://user-images.githubusercontent.com/47595515/203857179-126e7d5c-773b-465a-b13e-22f70783e29c.png)
 
 ## 설계서
 
