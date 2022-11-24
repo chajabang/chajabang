@@ -93,7 +93,7 @@ export default {
           this.total = data.total;
         },
         (error) => {
-          // console.log(error);
+          console.log(error);
         }
       );
     },

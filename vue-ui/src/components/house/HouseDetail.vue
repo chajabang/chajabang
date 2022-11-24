@@ -91,7 +91,7 @@ export default {
           }
         },
         (error) => {
-          // console.log(error.response.data);
+          console.log(error.response.data);
         }
       );
     }
@@ -116,7 +116,7 @@ export default {
             }
           },
           (error) => {
-            // console.log(error.response.data);
+            console.log(error.response.data);
           }
         );
       }
@@ -134,7 +134,7 @@ export default {
             }
           },
           (error) => {
-            // console.log(error.response.data);
+            console.log(error.response.data);
           }
         );
       }

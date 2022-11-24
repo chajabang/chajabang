@@ -30,7 +30,7 @@ export default {
         this.$router.push({ name: "noticelist" });
       },
       (error) => {
-        // console.log(error);
+        console.log(error);
       }
     );
   },

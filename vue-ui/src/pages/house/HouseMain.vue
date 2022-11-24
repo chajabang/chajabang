@@ -166,7 +166,7 @@ export default {
           this.notices = data.list;
         },
         (error) => {
-          // console.log(error);
+          console.log(error);
         }
       );
     },
@@ -177,7 +177,7 @@ export default {
           this.articles = data.list;
         },
         (error) => {
-          // console.log(error);
+          console.log(error);
         }
       );
     },

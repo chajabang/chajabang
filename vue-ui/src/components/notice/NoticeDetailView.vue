@@ -86,7 +86,7 @@ export default {
         this.article.hit++;
       },
       (error) => {
-        // console.log(error);
+        console.log(error);
       }
     );
   },
