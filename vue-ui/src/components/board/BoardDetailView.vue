@@ -213,11 +213,17 @@ export default {
         userId: this.id,
         content: this.commentData,
       };
-      writeComment(params, ({ data }) => {
-        console.log(data);
-        this.commentList.push(data);
-      }),
-        console.log("ERR");
+      writeComment(
+        params,
+        ({ data }) => {
+          console.log(data);
+          this.commentList.push(data);
+          this.commentData = "";
+        },
+        (error) => {
+          console.log(error);
+        }
+      );
     },
     clickRemoveComment(index) {
       deleteComment(
@@ -225,7 +231,9 @@ export default {
         () => {
           this.commentList.splice(index, 1);
         },
-        console.log("ERR")
+        () => {
+          alert("ERR");
+        }
       );
     },
     clickRemoveLike() {
