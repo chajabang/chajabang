@@ -67,12 +67,48 @@
         </div>
       </b-col>
     </b-row>
+    <span class="text-left"><h3>댓글</h3></span>
+    <b-card v-for="(comment, index) in commentList" :key="index">
+      <div v-if="1">
+        <b-row align-h="between">
+          <b-col cols="8">
+            <p>닉네임 : {{ comment.userName }}</p>
+            <p>댓글 : {{ comment.content }}</p>
+          </b-col>
+
+          <b-col cols="2">
+            <button
+              class="btn btn-sm btn-outline-danger float-end"
+              @click="clickRemoveComment(`${index}`)"
+              v-if="user.id == `${comment.userId}`"
+            >
+              삭제
+            </button>
+          </b-col>
+        </b-row>
+      </div>
+    </b-card>
+    <!-- 댓글 추가 -->
+    <!-- <div v-if="user.id"> -->
+    <div v-if="1">
+      <b-row class="mt-4">
+        <b-form-textarea
+          id="textarea-rows"
+          placeholder="댓글 작성"
+          v-model="commentData"
+          @keyup.enter="clickAddComment"
+        ></b-form-textarea>
+        <span class="text-secondary text-lg-end mb-2">{{ commentData.length }} / 500</span>
+      </b-row>
+      <b-button variant="outline-warning" @click="clickAddComment">댓글 작성</b-button>
+    </div>
   </b-container>
 </template>
 
 <script>
 // import moment from "moment";
 import { getArticle, checkLikeArticle, addLikeArticle, removeLikeArticle } from "@/api/board";
+import { listComment, writeComment, deleteComment } from "@/api/comment";
 import { mapState } from "vuex";
 
 const memberStore = "memberStore";
@@ -82,7 +118,10 @@ export default {
   data() {
     return {
       article: {},
+      commentList: [],
+      commentData: "",
       isLike: false,
+      id: "",
     };
   },
   computed: {
@@ -93,6 +132,7 @@ export default {
     },
   },
   created() {
+    this.id = this.user.id;
     let params = { articleNo: this.$route.params.articleNo };
     getArticle(
       params,
@@ -100,6 +140,16 @@ export default {
         console.log(data);
         this.article = data;
         this.article.hit++;
+      },
+      (error) => {
+        console.log(error);
+      }
+    );
+
+    listComment(
+      params,
+      ({ data }) => {
+        this.commentList = data;
       },
       (error) => {
         console.log(error);
@@ -153,6 +203,31 @@ export default {
         }
       );
     },
+    clickAddComment() {
+      if (this.commentData === "") {
+        alert("댓글을 작성해주세요");
+        return;
+      }
+      let params = {
+        articleNo: parseInt(this.article.articleNo),
+        userId: this.id,
+        content: this.commentData,
+      };
+      writeComment(params, ({ data }) => {
+        console.log(data);
+        this.commentList.push(data);
+      }),
+        console.log("ERR");
+    },
+    clickRemoveComment(index) {
+      deleteComment(
+        { id: this.commentList[index].id },
+        () => {
+          this.commentList.splice(index, 1);
+        },
+        console.log("ERR")
+      );
+    },
     clickRemoveLike() {
       let params = { articleNo: this.article.articleNo };
 
@@ -164,6 +239,7 @@ export default {
             this.article.likes--;
           }
         },
+
         (error) => {
           console.log(error);
         }
