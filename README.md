@@ -41,7 +41,7 @@
 
 
 ### 유스케이스 다이어그램
-![usecase diagram](https://user-images.githubusercontent.com/62232531/202087060-5e23bca4-6161-453e-ae95-1e1060c9ea29.png)
+![usecase diagram](https://user-images.githubusercontent.com/62232531/203817459-1bd03d8e-fd96-4088-9c51-0a7d968165dc.png)
 
 
 ### ER 다이어그램
@@ -55,7 +55,7 @@
 | member    | id(pk)<br/>pw(SHA을 이용하여 암호화)<br/>nickname(유니크)<br/>reg_date<br/>                                                                                                                                                                                                                                 |
 | board     | article_no(pk)<br/>id(member의 id 참조)<br/>title<br/>content<br/>hit(기본값 0)<br/>reg_date(게시글 작성시각)<br/>                                                                                                                                                                                            |
 
-![ER 다이어그램](https://user-images.githubusercontent.com/62232531/202130732-7b6b0dce-2a00-4d8e-af6b-6ec4abd19a52.png)
+![ER 다이어그램](https://user-images.githubusercontent.com/62232531/203816937-a4300dd0-570f-4da4-9194-d06690fcae98.png)
 
 
 
